@@ -18,15 +18,18 @@ void B2dPlay::draw(){
 	 start.Set(2,3);
 	 b2Vec2 end = b2Vec2::b2Vec2();
 	 end.Set(9,1);
-	 DrawHill(start,end,1,10,2,5);
+	 DrawHill(start,end,0.6,10,2,5);
+	 float nextHill;
+	// nextHill=drawHill(1,5,3,10,8,world);
 	  //GenSquare(2,1,B2DLayer::world);
 	B2DLayer::Debug(true);
 	return true;
  }  
 
-void B2dPlay::DrawHill(b2Vec2 start,b2Vec2 end,int stepWidth,int width, int innerHeight,int peak){
+void B2dPlay::DrawHill(b2Vec2 start,b2Vec2 end,float stepWidth,int width, int innerHeight,int peak){
 	int steps = width/stepWidth;
-	float inclinePerStep = peak/(steps/2);
+	float sideStepCount = steps/2;
+	float inclinePerStep = peak/(sideStepCount);
 	b2Vec2 vertices[4];
 	b2Vec2  startPos = start;
 	for(int i = 1;i<= steps;i++){
@@ -34,7 +37,7 @@ void B2dPlay::DrawHill(b2Vec2 start,b2Vec2 end,int stepWidth,int width, int inne
 			GetVertsInclineSquare(vertices,stepWidth,innerHeight,inclinePerStep,-1);
 			GenSquare(vertices,world,startPos);
 			startPos.x += vertices[1].x+(vertices[1].x/2);
-			startPos.y += vertices[1].y-((vertices[1].y+inclinePerStep)/2);
+			startPos.y += vertices[1].y-(((vertices[1].y+inclinePerStep)/2));
 		}else{
 			GetVertsInclineSquare(vertices,stepWidth,innerHeight,inclinePerStep,+1);
 			GenSquare(vertices,world,startPos);
@@ -124,83 +127,77 @@ void B2dPlay::GetVerts(b2Vec2 vertices[],float width,float height){
  }
 
 void B2dPlay::update(float dt){
-	float angle = body->GetAngle();
+	//float angle = body->GetAngle();
 	//body->SetTransform( body->GetPosition(), angle+1 );
 	B2DLayer::update(dt);
 }
 
 
-	//float B2dPlay::drawHill(int pixelStep,float xOffset,float yOffset,float width,float height,b2World* world) {
-	//		float hillStartY=yOffset;
-	//		float hillWidth=120+width;
-	//		_realWidth += hillWidth;
-	//		int numberOfSlices=hillWidth/pixelStep;
-	//		b2Vec2 hillVector;
-	//		float  randomHeight = height;
-	//		_realHeight+=randomHeight;
-	//		hillStartY-=randomHeight;
-	//		for (int j =0; j<numberOfSlices/2; j++) {
-	//			b2Vec2 hillVector [4];
-	//			hillVector[0].Set((j*pixelStep+xOffset)/worldScale,480/worldScale));
-	//			hillVector[0].Set((j*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*Math.cos(2*Math.PI/numberOfSlices*j))/worldScale));
-	//			hillVector[0].Set(((j+1)*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*Math.cos(2*Math.PI/numberOfSlices*(j+1)))/worldScale));
-	//			hillVector[0].Set(((j+1)*pixelStep+xOffset)/worldScale,480/worldScale));
-	//			b2BodyDef* sliceBody ;
-	//			b2Vec2 centre = findCentroid(hillVector,4);
-	//			sliceBody->position.Set(centre.x,centre.y);
-	//			for (int z=0; z<4; z++) {
-	//				hillVector[z].Subtract(centre);
-	//			}
-	//			b2PolygonShape* slicePoly  ;
-	//			slicePoly->Set(hillVector,4);
-	//			b2FixtureDef* sliceFixture;
-	//			sliceFixture->shape=slicePoly;
-	//			b2Body* worldSlice=world->CreateBody(sliceBody);
-	//			worldSlice->CreateFixture(sliceFixture);
-	//		}
-	//		for (j=numberOfSlices/2; j<numberOfSlices; j++) {
-	//			hillVector=new Vector.<b2Vec2>();
-	//			hillVector.push(new b2Vec2((j*pixelStep+xOffset)/worldScale,480/worldScale));
-	//			hillVector.push(new b2Vec2((j*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*Math.cos(2*Math.PI/numberOfSlices*j))/worldScale));
-	//			hillVector.push(new b2Vec2(((j+1)*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*Math.cos(2*Math.PI/numberOfSlices*(j+1)))/worldScale));
-	//			hillVector.push(new b2Vec2(((j+1)*pixelStep+xOffset)/worldScale,480/worldScale));
-	//			sliceBody=new b2BodyDef  ;
-	//			centre=findCentroid(hillVector,hillVector.length);
-	//			sliceBody.position.Set(centre.x,centre.y);
-	//			for (z=0; z<hillVector.length; z++) {
-	//				hillVector[z].Subtract(centre);
-	//			}
-	//			slicePoly=new b2PolygonShape  ;
-	//			slicePoly.SetAsVector(hillVector,4);
-	//			sliceFixture=new b2FixtureDef  ;
-	//			sliceFixture.shape=slicePoly;
-	//			worldSlice=world.CreateBody(sliceBody);
-	//			worldSlice.CreateFixture(sliceFixture);
-	//		}
-	//		hillStartY=hillStartY+randomHeight;
-	//		return (hillStartY);
-	//	}
+	float B2dPlay::drawHill(int pixelStep,float xOffset,float yOffset,float width,float height,b2World* world) {
+		float worldScale = 50;	
+		float hillStartY=yOffset;
+			float hillWidth=120+width;
+			int numberOfSlices=hillWidth/pixelStep;
+			b2Vec2 hillVector;
+			float  randomHeight = height;
+			hillStartY-=randomHeight;
+			for (int j =0; j<numberOfSlices/2; j++) {
+				b2Vec2 hillVector [4];
+				float p =j*pixelStep+xOffset;
+				hillVector[0].Set((j*pixelStep+xOffset)/worldScale,480/worldScale);
+				hillVector[1].Set((j*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*std::cos(2*PI/numberOfSlices*j)/worldScale));
+				hillVector[2].Set(((j+1)*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*std::cos(2*PI/numberOfSlices*(j+1))/worldScale));
+				hillVector[3].Set(((j+1)*pixelStep+xOffset)/worldScale,480/worldScale);
+				b2BodyDef sliceBody ;
+				b2Vec2 centre = findCentroid(hillVector,4);
+				sliceBody.position.Set(0,0);//centre.x,centre.y);
+				b2PolygonShape slicePoly  ;
+				slicePoly.Set(hillVector,4);
+				b2FixtureDef sliceFixture;
+				sliceFixture.shape=&slicePoly;
+				b2Body* worldSlice=world->CreateBody(&sliceBody);
+				worldSlice->CreateFixture(&sliceFixture);
+			}
+			for (int j=numberOfSlices/2; j<numberOfSlices; j++) {
+				b2Vec2 hillVector [4];
+				hillVector[0].Set((j*pixelStep+xOffset)/worldScale,480/worldScale);
+				hillVector[1].Set((j*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*std::cos(2*PI/numberOfSlices*j)/worldScale));
+				hillVector[2].Set(((j+1)*pixelStep+xOffset)/worldScale,(hillStartY+randomHeight*std::cos(2*PI/numberOfSlices*(j+1))/worldScale));
+				hillVector[3].Set(((j+1)*pixelStep+xOffset)/worldScale,480/worldScale);
+				b2BodyDef sliceBody ;
+				b2Vec2 centre = findCentroid(hillVector,4);
+				sliceBody.position.Set(centre.x,centre.y);
+				b2PolygonShape slicePoly  ;
+				slicePoly.Set(hillVector,4);
+				b2FixtureDef sliceFixture;
+				sliceFixture.shape=&slicePoly;
+				b2Body* worldSlice=world->CreateBody(&sliceBody);
+				worldSlice->CreateFixture(&sliceFixture);
+			}
+			hillStartY=hillStartY+randomHeight;
+			return (hillStartY);
+		}
 
-	//	 findCentroid(vs:Vector.<b2Vec2>, count:uint):b2Vec2 {
-	//		var c:b2Vec2 = new b2Vec2();
-	//		var area:Number=0.0;
-	//		var p1X:Number=0.0;
-	//		var p1Y:Number=0.0;
-	//		var inv3:Number=1.0/3.0;
-	//		for (var i:int = 0; i < count; ++i) {
-	//			var p2:b2Vec2=vs[i];
-	//			var p3:b2Vec2=i+1<count?vs[int(i+1)]:vs[0];
-	//			var e1X:Number=p2.x-p1X;
-	//			var e1Y:Number=p2.y-p1Y;
-	//			var e2X:Number=p3.x-p1X;
-	//			var e2Y:Number=p3.y-p1Y;
-	//			var D:Number = (e1X * e2Y - e1Y * e2X);
-	//			var triangleArea:Number=0.5*D;
-	//			area+=triangleArea;
-	//			c.x += triangleArea * inv3 * (p1X + p2.x + p3.x);
-	//			c.y += triangleArea * inv3 * (p1Y + p2.y + p3.y);
-	//		}
-	//		c.x*=1.0/area;
-	//		c.y*=1.0/area;
-	//		return c;
-	//	}
+		b2Vec2 B2dPlay::findCentroid(b2Vec2 vs[], int count) {
+			b2Vec2 c= b2Vec2::b2Vec2();
+			float area=0.0;
+			float p1X=0.0;
+			float p1Y=0.0;
+			float inv3=1.0/3.0;
+			for (int i = 0; i < count; ++i) {
+				b2Vec2 p2=vs[i];
+				b2Vec2 p3=i+1<count?vs[int(i+1)]:vs[0];
+				float e1X=p2.x-p1X;
+				float e1Y=p2.y-p1Y;
+				float e2X=p3.x-p1X;
+				float e2Y=p3.y-p1Y;
+				float D = (e1X * e2Y - e1Y * e2X);
+				float triangleArea=0.5*D;
+				area+=triangleArea;
+				c.x += triangleArea * inv3 * (p1X + p2.x + p3.x);
+				c.y += triangleArea * inv3 * (p1Y + p2.y + p3.y);
+			}
+			c.x*=1.0/area;
+			c.y*=1.0/area;
+			return c;
+		}

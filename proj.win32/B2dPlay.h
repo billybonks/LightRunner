@@ -2,9 +2,9 @@
 #include "B2DLayer.h"
 #include "GameObject.h"
 #define PTM_RATIO 32
-#define POSITIVESLOPE 1;
-#define NEGATIVESLOPE 1;
-
+#define POSITIVESLOPE 1
+#define NEGATIVESLOPE 1
+#define PI 3.14159265359
 
 using namespace cocos2d;
 
@@ -19,11 +19,12 @@ private:
 	void CleanWorld();
 	GameObject* _floor;
 	b2Body* body;
-	void DrawHill(b2Vec2 start,b2Vec2 end,int stepWidth,int width, int innerHeight,int peak);
+	void DrawHill(b2Vec2 start,b2Vec2 end,float stepWidth,int width, int innerHeight,int peak);
 	b2FixtureDef* B2dPlay::GenSquare(b2Vec2 vertices[],b2World* world,b2Vec2 position);
 public:
 	LAYER_NODE_FUNC(B2dPlay);
-
+	b2Vec2 B2dPlay::findCentroid(b2Vec2 vs[], int count);
+	float B2dPlay::drawHill(int pixelStep,float xOffset,float yOffset,float width,float height,b2World* world) ;
 	 void GetVerts(b2Vec2 vertices[],float width,float height);
 	 void GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline,int slopeType);
 	 b2FixtureDef* GenSquare(float width, float height,b2World* world);

@@ -126,14 +126,15 @@ void Game::update(float dt) {
 		if((spawnrate<=0)&&(_boss->getSprite()->getPositionY()<winSize.height*0.1+0.5*winSize.height)){//err:doesn't account for change in players height on new platform
 			//Platform* test = GameObject::retainedObjectWithSprite(Light::retainedLight());
 			CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-			CCPoint origin = ccp(-50,0);
+			CCPoint origin = ccp(40,0);
 			CCPoint destination = ccp(MIN(winSize.width*0.9-getPositionX(),50),0);
-			Platform  *test = new Platform(origin,destination,5.0f);
+			Platform  *test = new Platform(origin,5,2);
 			test->getSprite()->setPosition(ccp(_boss->getSprite()->getPositionX()+50, _boss->getSprite()->getPositionY()));
 			this->addChild(test->getSprite());	
 			test->createBox2dObject(world);
-			test->getBody()->SetLinearVelocity(b2Vec2(-5.0f, 0.0f));
-			test->getBody()->SetType(b2_kinematicBody);
+			b2Body* body = test->getBody();
+			body->SetLinearVelocity(b2Vec2(-5.0f, 0.0f));
+			body->SetType(b2_kinematicBody);
 			//test->getSprite()->runAction(CCMoveBy::create( 4 ,ccp(-winSize.width*1.5, 0)));
 			spawnrate=0;
 			platforms.push_back((GameObject*)test);

@@ -5,7 +5,8 @@
 
 class Platform :  public GameObject  {
 public:
-	Platform(CCPoint origin,CCPoint destination,float lineWidth);
+	CCPoint _position;
+	Platform(CCPoint position,float width,float height);
 	virtual void createBox2dObject(b2World* world);
 protected:
 	Light light;

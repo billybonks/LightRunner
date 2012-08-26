@@ -8,14 +8,15 @@ class Light : public CCSprite
 {
 public:
 	Light();
-	Light(CCPoint origin,CCPoint destination,float lineWidth);
+	Light(CCPoint position,float width,float height);
 	float _width;
+	float _height;
 	static Light* retainedLight();
 	virtual void draw();
 	virtual void removeFromParentAndCleanup();
 	bool IsTouched();
 	void IsTouched(bool touched);
-	CCPoint _origin;
+	CCPoint _position;
 	CCPoint _destination;
 protected:
 	bool _touched;
