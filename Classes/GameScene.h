@@ -31,12 +31,12 @@ private:
 	std::vector<GameObject*> platforms;
 	Statistics _stats;
 	void CleanWorld();
-		CCRect screenBounds;
-
+	CCRect screenBounds;
+	void setVelocity(b2Vec2 velocity);
+	CCPoint _lastPos;
 public:
 	virtual void draw();
 	    LAYER_CREATE_FUNC(Game);
-
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 	virtual bool init();  
 
@@ -47,7 +47,7 @@ public:
 	virtual void menuCloseCallback(CCObject* pSender);
 	
 	virtual void ccTouchesBegan(CCSet* touches, cocos2d::CCEvent* event);
-
+	Statistics* GetStats();
 	// implement the "static node()" method manually
 	LAYER_NODE_FUNC(Game);
 

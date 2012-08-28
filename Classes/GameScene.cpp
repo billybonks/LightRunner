@@ -62,7 +62,7 @@ _stats =  Statistics();
 	CCArray* frames = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner3.png"),NULL);
 	CCAnimation *animation = CCAnimation::create(frames,0.2f);
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
-
+	_lastPos = _player->getSprite()->getPosition();
 	//boss
 	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
 	_boss->getSprite()->setPosition(ccp(winSize.width * 0.9, winSize.height * 0.5));
@@ -115,15 +115,20 @@ void Game::update(float dt) {
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
 
 	//acceleration
-	_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
-	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
-	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
-//	CCLog("%f + %f",_boss->getBody()->GetPosition().y * PTM_RATIO, -this->getScreenBounds().origin.y+this->getScreenBounds().size.height+50);
+	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
+		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
+		_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
+		_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
+	}
+	//	CCLog("%f + %f",_boss->getBody()->GetPosition().y * PTM_RATIO, -this->getScreenBounds().origin.y+this->getScreenBounds().size.height+50);
 
 	// Instruct the world to perform a single step of simulation. It is
 	// generally best to keep the time step and iterations fixed.
 		B2DLayer::update(dt);
-
+		CCPoint newPoint = _player->getSprite()->getPosition();
+		float distance = newPoint.x - _lastPos.x;
+		_lastPos = newPoint;
+		_stats.IncrementDistance(distance);
 	CleanWorld();
 	if(move==false){
 		spawnrate+=dt;
@@ -154,6 +159,7 @@ void Game::update(float dt) {
 			CCLog("%i", _batchNode->getChildrenCount());//err:gameobjects arent autoreleased(coz it doesnt work dunno wtf- cocos releases them too early maybe?) so makesure to release when done - check/confirm memusage with this print
 		}
 	}
+	_stats.SetVelocity(_player->getBody()->GetLinearVelocity().x);
 }
 
 void Game::CleanWorld(){
@@ -188,6 +194,10 @@ void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 	//if(_player->getSprite()->getPositionY()==0.1*winSize.height){//err:doesn't account for change in players height on new platform
 		_player->jump();
 	//}
+}
+
+Statistics* Game::GetStats(){
+	return &_stats;
 }
 
 void Game::menuCloseCallback(CCObject* pSender)

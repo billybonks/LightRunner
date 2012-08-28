@@ -153,6 +153,7 @@
     <ClInclude Include="B2DLayer.h" />
     <ClInclude Include="B2dPlay.h" />
     <ClInclude Include="backgroundlayer.h" />
+    <ClInclude Include="BrazierCurve.h" />
     <ClInclude Include="ContactListener.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Platform.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="B2DLayer.cpp" />
     <ClCompile Include="B2DPlay.cpp" />
     <ClCompile Include="BackgroundLayer.cpp" />
+    <ClCompile Include="BrazierCurve.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Platform.cpp" />

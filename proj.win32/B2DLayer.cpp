@@ -8,6 +8,7 @@ bool B2DLayer::init(){
 		return false;
 	}
 	b2Vec2 gravity;
+	_secondCounter=0.0f;
 	gravity.Set(0.0f, -10.0f);
 	world = new b2World(gravity);
 	world->SetContinuousPhysics(true);
@@ -29,7 +30,7 @@ void B2DLayer::draw(){
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
 	kmGLPushMatrix();
 	if(_debug){
-		//world->DrawDebugData();
+		world->DrawDebugData();
 	}
 	kmGLPopMatrix();
 }
@@ -40,9 +41,14 @@ void B2DLayer::Debug(bool debug){
 
 
 void B2DLayer::update(float dt){
+	_secondCounter++;
 	int32 velocityIterations = 8;
 	int32 positionIterations = 1;
-	world->Step(dt, velocityIterations, positionIterations);
+	float32 timeStep = 1.0f / 60.0f;
+	world->Step(timeStep, velocityIterations, positionIterations);
+	if(_secondCounter == 60){
+		_secondCounter = 0;
+	}
 }
 
 void B2DLayer::menuCloseCallback(CCObject* pSender)

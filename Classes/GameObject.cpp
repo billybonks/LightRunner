@@ -9,7 +9,7 @@ GameObject::GameObject()
 		 this->colour =c;
 		 this->colourmode=0;
 
-    CCNode::CCNode();
+	CCNode::CCNode();
 }
 	bool GameObject::canBeOffScreen(){
 	return false;
@@ -25,49 +25,49 @@ GameObject::GameObject()
 GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr )
 {
 	GameObject *obj = new GameObject();
-    if (obj->sprite=CCSprite::createWithSpriteFrameName(pszSpriteFrameName))
-    {
+	if (obj->sprite=CCSprite::createWithSpriteFrameName(pszSpriteFrameName))
+	{
 		obj->newtrail=0.05f;
 		_ccColor3B c =  {255,0,0};
 		 obj->colour =c;
-		 		 obj->colourmode=0;
-				 				 				 obj->screen=scr;
+				 obj->colourmode=0;
+												 obj->screen=scr;
 
 		 return obj;
-    }
-    CC_SAFE_DELETE(obj);
+	}
+	CC_SAFE_DELETE(obj);
 	return NULL;
 }
 
 GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame, CCRect* scr )
 {
 	GameObject *obj = new GameObject();
-    if (obj->sprite=CCSprite::create(pSpriteFrame))
-    {
+	if (obj->sprite=CCSprite::create(pSpriteFrame))
+	{
 		obj->newtrail=0.05f;
 		_ccColor3B c =  {255,0,0};
 		 obj->colour =c;
-		 		 obj->colourmode=0;
-				 				 				 obj->screen=scr;
+				 obj->colourmode=0;
+												 obj->screen=scr;
 
 		 return obj;
-    }
-    CC_SAFE_DELETE(obj);
+	}
+	CC_SAFE_DELETE(obj);
 	return NULL;
 }
 
 GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr )
 {
 	GameObject *obj = new GameObject();
-    obj->sprite=pSprite;
-    obj->newtrail=0.05f;
+	obj->sprite=pSprite;
+	obj->newtrail=0.05f;
 	_ccColor3B c =  {255,0,0};
 	 obj->colour =c;
 	 obj->colourmode=0;
-	 				 				 obj->screen=scr;
+									 obj->screen=scr;
 
 	 return obj;
-    
+	
 }
 
 	CCSprite* GameObject::getSprite(){
@@ -118,7 +118,7 @@ GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr 
 	}
 
 	void GameObject::createBox2dObject(b2World* world) {
-    b2BodyDef playerBodyDef;
+	b2BodyDef playerBodyDef;
 	playerBodyDef.type = b2_dynamicBody;
 	playerBodyDef.position.Set(this->sprite->getPosition().x/PTM_RATIO, this->sprite->getPosition().y/PTM_RATIO);
 	playerBodyDef.userData = this;
@@ -129,9 +129,9 @@ GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr 
 	   b2PolygonShape dynamicBox;
 	   dynamicBox.SetAsBox((this->sprite->getContentSize().width/PTM_RATIO)/2, (this->sprite->getContentSize().height/PTM_RATIO)/2);//These are mid points for our 1m box err:if object is scaled/rotated this will bug out
 
-//	b2CircleShape circleShape;
+	//b2CircleShape circleShape;
 	//circleShape.m_radius = 0.7f; 
-	   //err:change collision&other paramaters
+	//err:change collision&other paramaters
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
