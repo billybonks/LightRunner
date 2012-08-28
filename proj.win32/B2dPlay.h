@@ -5,6 +5,7 @@
 #define POSITIVESLOPE 1
 #define NEGATIVESLOPE 1
 #define PI 3.14159265359
+#define PIXELTOCENTIMETER 0.026458333
 
 using namespace cocos2d;
 
@@ -19,7 +20,7 @@ private:
 	void CleanWorld();
 	GameObject* _floor;
 	b2Body* body;
-	void DrawHill(b2Vec2 start,b2Vec2 end,float stepWidth,int width, int innerHeight,int peak);
+	void DrawHill(b2Vec2 start,b2Vec2 end,float stepWidth,int width,int peak);
 	b2FixtureDef* B2dPlay::GenSquare(b2Vec2 vertices[],b2World* world,b2Vec2 position);
 public:
 	LAYER_NODE_FUNC(B2dPlay);

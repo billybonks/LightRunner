@@ -5,7 +5,7 @@
 #include "SimpleAudioEngine.h"
 #include "ScoreLayer.h"
 #include "BackgroundLayer.h"
-//#include "B2dPlay.h" 
+#include "B2dPlay.h" 
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -36,10 +36,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	// create a scene. it's an autorelease object
 	CCScene *pScene = CCScene::create();
-	//B2dPlay *playLayer = B2dPlay::create();
-	//pScene ->addChild(playLayer,1);
-	Game *layer = Game::create();
-	pScene->addChild(layer,1);
+	B2dPlay *playLayer = B2dPlay::create();
+	pScene ->addChild(playLayer,1);
+	//Game *layer = Game::create();
+	//pScene->addChild(layer,1);
 	ScoreLayer *scorelayer = ScoreLayer::create();
 	pScene ->addChild(scorelayer,2);
 	BackgroundLayer *backgroundLayer = BackgroundLayer::create();
