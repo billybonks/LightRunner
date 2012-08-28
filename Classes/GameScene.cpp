@@ -120,6 +120,8 @@ void Game::update(float dt) {
 		_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
 		_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 	}
+	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
+		_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 	//	CCLog("%f + %f",_boss->getBody()->GetPosition().y * PTM_RATIO, -this->getScreenBounds().origin.y+this->getScreenBounds().size.height+50);
 
 	// Instruct the world to perform a single step of simulation. It is
