@@ -16,9 +16,9 @@ public:
 	//used so i can easily identify a gameObject in the world
 	string id;
 	GameObject();
-	static GameObject* retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName);
-	static GameObject* retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame );
-	static GameObject* retainedObjectWithSprite(CCSprite *pSprite );
+	static GameObject* retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr);
+	static GameObject* retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame, CCRect* scr );
+	static GameObject* retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr );
 	void updateTrail(float dt);
 	bool canBeOffScreen();
 	bool isOffScreen();
@@ -27,6 +27,8 @@ public:
 	void SetPosition(CCPoint position);
 	void SetTarget(CCPoint position);
 	float velocity;
+		CCRect *screen;
+
 private:
 	int colourmode;
 		_ccColor3B colour;

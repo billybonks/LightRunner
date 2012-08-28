@@ -1,3 +1,4 @@
+/*
 #include "Spawner.h"
 
 Spawner::Spawner(Statistics stats){
@@ -49,3 +50,5 @@ void Spawner::Spawn(CCLayer layer){
 }
 
 	void SpawnLine();
+
+	*/

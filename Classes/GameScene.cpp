@@ -52,7 +52,7 @@ platforms.reserve(10);
 //prep stats
 _stats =  Statistics();
 	 winSize = CCDirector::sharedDirector()->getWinSize();
-	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png");
+	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png",&screenBounds);
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
 	_player->createBox2dObject(B2DLayer::world);
@@ -64,11 +64,11 @@ _stats =  Statistics();
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
 
 	//boss
-	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png");
+	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
 	_boss->getSprite()->setPosition(ccp(winSize.width * 0.9, winSize.height * 0.5));
 	_batchNode->addChild(_boss->getSprite(), 1);
 	_boss->createBox2dObject(B2DLayer::world);
-		_boss->getBody()->SetType(b2_kinematicBody);
+
 	//Register for touches and gameloop
 	this->setTouchEnabled(true) ;
 	this->scheduleUpdate();
@@ -81,16 +81,15 @@ _stats =  Statistics();
   //and set it back
   _boss->getBody()->GetFixtureList()->SetFilterData(filter);
 	//floor
-	_floor = GameObject::retainedObjectWithSpriteFrameName("floor.png");
+	_floor = GameObject::retainedObjectWithSpriteFrameName("floor.png",&screenBounds);
 	_floor->getSprite()->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.1));
 	_batchNode->addChild(_floor->getSprite(), 1);
 	_floor->createBox2dObject(world);
-	_floor->getBody()->SetType(b2_staticBody);
+	_floor->getBody()->SetType(b2_kinematicBody);
 	return true;
 }
 void Game::update(float dt) {
-	B2DLayer::update(dt);
-	//clean out out of bounds platforms
+	//clean out out of bounds platforms (is this all legit plz check - why is removefromparent commented and l is unused all this actually does is erase begin
 	int platCount = platforms.size();
 	if(platCount > 0){
 		GameObject *obj =  platforms.front();
@@ -109,36 +108,48 @@ void Game::update(float dt) {
 	//http://gafferongames.com/game-physics/fix-your-timestep/
  
 
- 
+	this->setPosition(ccp(-_player->getBody()->GetPosition().x*PTM_RATIO+winSize.width * 0.1,0));
+ 	screenBounds= CCRect(this->getPositionX() ,this->getPositionY(),this->getContentSize().width,this->getContentSize().height);
+
+	//boss antigravity:
+	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
+
+	//acceleration
+	_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
+	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
+	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
+//	CCLog("%f + %f",_boss->getBody()->GetPosition().y * PTM_RATIO, -this->getScreenBounds().origin.y+this->getScreenBounds().size.height+50);
+
 	// Instruct the world to perform a single step of simulation. It is
 	// generally best to keep the time step and iterations fixed.
+		B2DLayer::update(dt);
+
 	CleanWorld();
 	if(move==false){
 		spawnrate+=dt;
 		if(spawnrate>=1){
 			spawnrate=0.5;
-			CCDirector::sharedDirector()->getActionManager()->resumeTarget(_boss->getSprite());
+			//_boss->getBody()->ApplyLinearImpulse(b2Vec2(0.0f, 0.5f),_boss->getBody()->GetWorldCenter());
 			move=true;
 		}
 	}
 	else{
 		spawnrate-=dt;
 		if((spawnrate<=0)&&(_boss->getSprite()->getPositionY()<winSize.height*0.1+0.5*winSize.height)){//err:doesn't account for change in players height on new platform
-			//Platform* test = GameObject::retainedObjectWithSprite(Light::retainedLight());
-			CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-			CCPoint origin = ccp(40,0);
-			CCPoint destination = ccp(MIN(winSize.width*0.9-getPositionX(),50),0);
-			Platform  *test = new Platform(origin,5,2);
+			GameObject* test = GameObject::retainedObjectWithSprite(Light::retainedLight(&screenBounds),&screenBounds);
+			//CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+			//CCPoint origin = ccp(40,0);
+			//CCPoint destination = ccp(MIN(winSize.width*0.9-getPositionX(),50),0);
+			//Platform  *test = new Platform(,&screenBounds);
 			test->getSprite()->setPosition(ccp(_boss->getSprite()->getPositionX()+50, _boss->getSprite()->getPositionY()));
 			this->addChild(test->getSprite());	
 			test->createBox2dObject(world);
+
 			b2Body* body = test->getBody();
-			body->SetLinearVelocity(b2Vec2(-5.0f, 0.0f));
-			body->SetType(b2_kinematicBody);
+			body->SetType(b2_staticBody);
 			//test->getSprite()->runAction(CCMoveBy::create( 4 ,ccp(-winSize.width*1.5, 0)));
 			spawnrate=0;
 			platforms.push_back((GameObject*)test);
-			CCDirector::sharedDirector()->getActionManager()->pauseTarget(_boss->getSprite());
 			move=false;
 			CCLog("%i", _batchNode->getChildrenCount());//err:gameobjects arent autoreleased(coz it doesnt work dunno wtf- cocos releases them too early maybe?) so makesure to release when done - check/confirm memusage with this print
 		}
@@ -157,6 +168,8 @@ void Game::CleanWorld(){
 					objectsToClean.push_back(myActor);	
 				}else{
 					//place in screen again
+					myActor->getSprite()->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
+				myActor->getSprite()->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
 				}
 			}
 			else {

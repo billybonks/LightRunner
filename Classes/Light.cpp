@@ -13,23 +13,23 @@ Light::Light()
 Light::Light(CCPoint position,float width,float height)
 {;
 	CCSprite::CCSprite();
-	_position = position;
-	_width = width;
-	_height = height;
 }
 
-	Light* Light::retainedLight(){
+	Light* Light::retainedLight(CCRect* scr){
 	Light* l = new Light();
 	l->setContentSize(CCSize(100,5));
+		l->screen=scr;
+
 	return l;
 }
 
 void Light::draw(){
-	//glLineWidth(_height);
-	//glColor4ub(255.0f,0.0f,0.0f,255.0f);
-	//_destination = ccp(_position.x+_width,_position.y);
-	//ccDrawLine(_position, _destination);
-	//glColor4ub(255,255,255,255);
+	glLineWidth( 5.0f );
+	glColor4ub(255.0f,0.0f,0.0f,255.0f);
+	ccDrawLine( ccp(-50,0), ccp(MIN(-screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
+	glLineWidth(1);
+	glColor4ub(255,255,255,255);
+
 
 }
 

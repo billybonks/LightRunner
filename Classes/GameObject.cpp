@@ -14,15 +14,15 @@ GameObject::GameObject()
 	bool GameObject::canBeOffScreen(){
 	return false;
 	}
-	bool GameObject::isOffScreen(){
-					CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-					if(this->sprite->getPositionX()<-50||this->sprite->getPositionX()>winSize.width+50||this->sprite->getPositionY()<-50||this->sprite->getPositionY()>winSize.height+50){
+	bool GameObject::isOffScreen(){//err: need to implement properly for y axis maybe
+				//CCLog("May bug here in offscreen when screen moves up/down");
+		if(this->body->GetPosition().x* PTM_RATIO<-screen->origin.x-50||this->body->GetPosition().x* PTM_RATIO>-screen->origin.x+screen->size.width+50||this->body->GetPosition().y<screen->origin.y* PTM_RATIO-50||this->body->GetPosition().y* PTM_RATIO>screen->origin.y+screen->size.height+50){
 					return true;
 					}
 	return false;
 	}
 
-GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName )
+GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr )
 {
 	GameObject *obj = new GameObject();
     if (obj->sprite=CCSprite::createWithSpriteFrameName(pszSpriteFrameName))
@@ -31,6 +31,7 @@ GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteF
 		_ccColor3B c =  {255,0,0};
 		 obj->colour =c;
 		 		 obj->colourmode=0;
+				 				 				 obj->screen=scr;
 
 		 return obj;
     }
@@ -38,7 +39,7 @@ GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteF
 	return NULL;
 }
 
-GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame )
+GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame, CCRect* scr )
 {
 	GameObject *obj = new GameObject();
     if (obj->sprite=CCSprite::create(pSpriteFrame))
@@ -47,6 +48,7 @@ GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFram
 		_ccColor3B c =  {255,0,0};
 		 obj->colour =c;
 		 		 obj->colourmode=0;
+				 				 				 obj->screen=scr;
 
 		 return obj;
     }
@@ -54,7 +56,7 @@ GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFram
 	return NULL;
 }
 
-GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite )
+GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr )
 {
 	GameObject *obj = new GameObject();
     obj->sprite=pSprite;
@@ -62,6 +64,8 @@ GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite )
 	_ccColor3B c =  {255,0,0};
 	 obj->colour =c;
 	 obj->colourmode=0;
+	 				 				 obj->screen=scr;
+
 	 return obj;
     
 }
@@ -140,12 +144,11 @@ GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite )
 		this->newtrail-=dt;
 		if(this->newtrail<=0){
 			this->newtrail=0.05f;
-		GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame()); 
+		GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame(),screen); 
 		trail->sprite->setPosition(ccp(this->sprite->getPositionX(), this->sprite->getPositionY()));
 		trail->createBox2dObject(this->body->GetWorld());
-		trail->body->ApplyLinearImpulse(b2Vec2(-0.5f, 0.0f) ,this->body->GetWorldCenter());
 		this->sprite->getParent()->addChild(trail->getSprite());
-		trail->body->SetType(b2_kinematicBody);
+		trail->body->SetType(b2_staticBody);
 		//get the existing filter
   b2Filter filter = trail->body->GetFixtureList()->GetFilterData();
   //make no collisions

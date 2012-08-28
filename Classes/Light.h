@@ -9,15 +9,13 @@ class Light : public CCSprite
 public:
 	Light();
 	Light(CCPoint position,float width,float height);
-	float _width;
-	float _height;
-	static Light* retainedLight();
+	static Light* retainedLight(CCRect* scr);
 	virtual void draw();
 	virtual void removeFromParentAndCleanup();
 	bool IsTouched();
 	void IsTouched(bool touched);
-	CCPoint _position;
-	CCPoint _destination;
+			CCRect *screen;
+
 protected:
 	bool _touched;
 };

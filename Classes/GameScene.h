@@ -31,6 +31,8 @@ private:
 	std::vector<GameObject*> platforms;
 	Statistics _stats;
 	void CleanWorld();
+		CCRect screenBounds;
+
 public:
 	virtual void draw();
 	    LAYER_CREATE_FUNC(Game);
