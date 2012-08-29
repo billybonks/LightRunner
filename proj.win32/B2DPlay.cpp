@@ -18,8 +18,7 @@ void B2dPlay::draw(){
 	 start.Set(2,3);
 	 b2Vec2 end = b2Vec2::b2Vec2();
 	 end.Set(9,1);
-	 DrawHill(start,end,0.3,10,5);
-	 float nextHill;
+	 DrawHill(start,end,0.3f,10,5);
 	// nextHill=drawHill(1,5,3,10,8,world);
 	  //GenSquare(2,1,B2DLayer::world);
 	B2DLayer::Debug(true);
@@ -35,12 +34,12 @@ void B2dPlay::DrawHill(b2Vec2 start,b2Vec2 end,float stepWidth,int width,int pea
 	b2Vec2  startPos = start;
 	for(int i = 1;i<= steps;i++){
 		if(i>steps/2){
-			GetVertsInclineSquare(vertices,stepWidth,innerHeight,inclinePerStep,-1);
+			GetVertsInclineSquare(vertices,stepWidth,innerHeight,(-1*inclinePerStep));
 			GenSquare(vertices,world,startPos);
 			startPos.x += vertices[1].x+(vertices[1].x);
 			startPos.y +=-(((inclinePerStep/2)));
 		}else{
-			GetVertsInclineSquare(vertices,stepWidth,innerHeight,inclinePerStep,+1);
+			GetVertsInclineSquare(vertices,stepWidth,innerHeight,inclinePerStep);
 			GenSquare(vertices,world,startPos);
 			startPos.x += vertices[2].x+(vertices[2].x);
 			startPos.y +=(inclinePerStep/2);
@@ -50,10 +49,10 @@ void B2dPlay::DrawHill(b2Vec2 start,b2Vec2 end,float stepWidth,int width,int pea
 
 
 
-void B2dPlay::GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline,int slopeType){
+void B2dPlay::GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline){
 	vertices[0].Set(-width/2, -height/2);
-	vertices[1].Set(width/2, (-height/2)+(slopeType*(incline/2)));
-	vertices[2].Set(width/2, (height/2)+(slopeType*(incline/2)));
+	vertices[1].Set(width/2, (-height/2)+(incline/2));
+	vertices[2].Set(width/2, (height/2)+(incline/2));
 	vertices[3].Set(-width/2, height/2);
 }
 
@@ -184,7 +183,7 @@ void B2dPlay::update(float dt){
 			float area=0.0;
 			float p1X=0.0;
 			float p1Y=0.0;
-			float inv3=1.0/3.0;
+			float inv3=1.0f/3.0f;
 			for (int i = 0; i < count; ++i) {
 				b2Vec2 p2=vs[i];
 				b2Vec2 p3=i+1<count?vs[int(i+1)]:vs[0];

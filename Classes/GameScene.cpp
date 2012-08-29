@@ -56,6 +56,7 @@ _stats =  Statistics();
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
 	_player->createBox2dObject(B2DLayer::world);
+	float playerY = _player->getSprite()->getPosition().y;
 	//_player->getBody()->SetLinearVelocity(b2Vec2(1.0f, 0.0f));
 	//_player->getBody()->SetType(b2_kinematicBody);
 	//animation
@@ -79,6 +80,7 @@ _stats =  Statistics();
   //make no collisions
   filter.maskBits = 0;
   //and set it back
+  //this->setScale(0.5);
   _boss->getBody()->GetFixtureList()->SetFilterData(filter);
 	//floor
 	_floor = GameObject::retainedObjectWithSpriteFrameName("floor.png",&screenBounds);
@@ -109,8 +111,9 @@ void Game::update(float dt) {
  
 
 	this->setPosition(ccp(-_player->getBody()->GetPosition().x*PTM_RATIO+winSize.width * 0.1,0));
- 	screenBounds= CCRect(this->getPositionX() ,this->getPositionY(),this->getContentSize().width,this->getContentSize().height);
-
+	float thisY =this->getPosition().y;
+	screenBounds= CCRect(this->getPositionX() ,this->getPositionY(),this->getContentSize().width,this->getContentSize().height);
+	
 	//boss antigravity:
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
 
@@ -120,6 +123,7 @@ void Game::update(float dt) {
 		_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
 		_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 	}
+	//_boss->
 	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
 		_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 	//	CCLog("%f + %f",_boss->getBody()->GetPosition().y * PTM_RATIO, -this->getScreenBounds().origin.y+this->getScreenBounds().size.height+50);

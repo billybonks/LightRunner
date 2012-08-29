@@ -27,7 +27,7 @@ public:
 	b2Vec2 B2dPlay::findCentroid(b2Vec2 vs[], int count);
 	float B2dPlay::drawHill(int pixelStep,float xOffset,float yOffset,float width,float height,b2World* world) ;
 	 void GetVerts(b2Vec2 vertices[],float width,float height);
-	 void GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline,int slopeType);
+	 void GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline);
 	 b2FixtureDef* GenSquare(float width, float height,b2World* world);
 	virtual void draw();
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone

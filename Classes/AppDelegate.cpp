@@ -36,7 +36,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	// create a scene. it's an autorelease object
 	CCScene *pScene = CCScene::create();
-	//B2dPlay *playLayer = B2dPlay::create();
+	B2dPlay *playLayer = B2dPlay::create();
 	//pScene ->addChild(playLayer,1);
 	Game *layer = Game::create();
 	pScene->addChild(layer,1);

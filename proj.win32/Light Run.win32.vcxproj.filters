@@ -107,6 +107,9 @@
     <ClInclude Include="BrazierCurve.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="LineSegment.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -158,6 +161,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="BrazierCurve.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="LineSegment.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
