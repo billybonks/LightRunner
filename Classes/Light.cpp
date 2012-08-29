@@ -26,7 +26,7 @@ Light::Light(CCPoint position,float width,float height)
 void Light::draw(){
 	glLineWidth( 5.0f );
 	glColor4ub(255.0f,0.0f,0.0f,255.0f);
-	ccDrawLine( ccp(-50,0), ccp(MIN(-screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
+	ccDrawLine( ccp(-50,0), ccp(MIN(screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
 	glLineWidth(1);
 	glColor4ub(255,255,255,255);
 

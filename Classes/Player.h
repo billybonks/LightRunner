@@ -11,6 +11,7 @@ class Player : public GameObject {
 public:
 	Player();
 	void jump();
+
 };
   
 #endif

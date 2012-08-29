@@ -25,17 +25,22 @@ public:
 	virtual void removeFromParentAndCleanup();
 	void update(float dt);
 	void SetPosition(CCPoint position);
+	void SetCanBeOffScreen(bool can);
 	void SetTarget(CCPoint position);
 	float velocity;
-		CCRect *screen;
+	CCRect *screen;
+	bool CanBeOffScreen;
+	void init(CCRect* scr);
 
 private:
+
 	int colourmode;
-		_ccColor3B colour;
-		float newtrail;
-		_ccColor3B nextColour();
+	_ccColor3B colour;
+	float newtrail;
+	_ccColor3B nextColour();
+
 protected:
-	    b2Body *body;
-		CCSprite* sprite;
+	b2Body *body;
+	CCSprite* sprite;
 };
 #endif

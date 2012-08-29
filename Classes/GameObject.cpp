@@ -13,15 +13,30 @@
 		}
 
 		bool GameObject::canBeOffScreen(){
-		return false;
+			return CanBeOffScreen;
+		}
+
+		void GameObject::SetCanBeOffScreen(bool can)
+		{
+			this->CanBeOffScreen=can;
+		}
+		
+		void GameObject::init(CCRect* scr)
+		{
+			this->newtrail=0.05f;
+			_ccColor3B c =  {255,0,0};
+			this->colour =c;
+			this->colourmode=0;
+			this->screen=scr;
+			this->CanBeOffScreen=false;
 		}
 
 		bool GameObject::isOffScreen(){//err: need to implement properly for y axis maybe
-					//CCLog("May bug here in offscreen when screen moves up/down");
-			if(this->body->GetPosition().x* PTM_RATIO<-screen->origin.x-50||this->body->GetPosition().x* PTM_RATIO>-screen->origin.x+screen->size.width+50||this->body->GetPosition().y<screen->origin.y* PTM_RATIO-50||this->body->GetPosition().y* PTM_RATIO>screen->origin.y+screen->size.height+50){
-						return true;
-						}
-		return false;
+			//CCLog("May bug here in offscreen when screen moves up/down");
+			if(this->body->GetPosition().x* PTM_RATIO<screen->origin.x-50||this->body->GetPosition().x* PTM_RATIO>screen->origin.x+screen->size.width+50||this->body->GetPosition().y* PTM_RATIO<screen->origin.y-50||this->body->GetPosition().y* PTM_RATIO>screen->origin.y+screen->size.height+50){
+				return true;
+			}
+			return false;
 		}
 
 		GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr )
@@ -29,13 +44,8 @@
 		GameObject *obj = new GameObject();
 		if (obj->sprite=CCSprite::createWithSpriteFrameName(pszSpriteFrameName))
 		{
-			obj->newtrail=0.05f;
-			_ccColor3B c =  {255,0,0};
-				obj->colour =c;
-						obj->colourmode=0;
-														obj->screen=scr;
-
-				return obj;
+			obj->init(scr);
+			return obj;
 		}
 		CC_SAFE_DELETE(obj);
 		return NULL;
@@ -46,11 +56,8 @@
 		GameObject *obj = new GameObject();
 		if (obj->sprite=CCSprite::create(pSpriteFrame))
 		{
-			obj->newtrail=0.05f;
-			_ccColor3B c =  {255,0,0};
-				obj->colour =c;
-						obj->colourmode=0;
-														obj->screen=scr;
+						obj->init(scr);
+
 
 				return obj;
 		}
@@ -62,13 +69,8 @@
 		{
 		GameObject *obj = new GameObject();
 		obj->sprite=pSprite;
-		obj->newtrail=0.05f;
-		_ccColor3B c =  {255,0,0};
-			obj->colour =c;
-			obj->colourmode=0;
-											obj->screen=scr;
-
-			return obj;
+		obj->init(scr);
+		return obj;
 	
 		}
 
@@ -141,15 +143,22 @@
 			this->newtrail-=dt;
 			if(this->newtrail<=0){
 				this->newtrail=0.05f;
+			}
 			GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame(),screen); 
 			trail->sprite->setPosition(ccp(this->sprite->getPositionX(), this->sprite->getPositionY()));
 			this->sprite->getParent()->addChild(trail->getSprite());
 			trail->sprite->setColor(nextColour());
-			}
 
-	
-
+			trail->createBox2dObject(this->body->GetWorld());
+			trail->body->SetType(b2_staticBody);
+			//get the existing filter
+			b2Filter filter = trail->body->GetFixtureList()->GetFilterData();
+			//make no collisions
+			filter.maskBits = 0;
+			//and set it back
+			trail->body->GetFixtureList()->SetFilterData(filter);
 		}
+				
 
 		void GameObject::update(float dt){
 

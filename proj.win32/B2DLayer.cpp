@@ -41,14 +41,15 @@ void B2DLayer::Debug(bool debug){
 
 
 void B2DLayer::update(float dt){
-	_secondCounter++;
+	//this will fuckup the game if the device doesnt run at exactly 60fps. check http://gafferongames.com/game-physics/fix-your-timestep/ for how to do it if we do need to, changed it back to normal dt
+	//_secondCounter++;
 	int32 velocityIterations = 8;
 	int32 positionIterations = 1;
-	float32 timeStep = 1.0f / 60.0f;
-	world->Step(timeStep, velocityIterations, positionIterations);
-	if(_secondCounter == 60){
-		_secondCounter = 0;
-	}
+	//float32 timeStep = 1.0f / 60.0f;
+	world->Step(dt, velocityIterations, positionIterations);
+	//if(_secondCounter == 60){
+	//	_secondCounter = 0;
+	//}
 }
 
 void B2DLayer::menuCloseCallback(CCObject* pSender)
