@@ -64,6 +64,7 @@ _stats =  Statistics();
 	CCAnimation *animation = CCAnimation::create(frames,0.2f);
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
 	_lastPos = _player->getSprite()->getPosition();
+	
 	//boss
 	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
 	_boss->getSprite()->setPosition(ccp(winSize.width * 0.9, winSize.height * 0.5));
