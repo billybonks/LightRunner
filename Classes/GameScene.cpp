@@ -98,22 +98,22 @@ _stats =  Statistics();
 void Game::update(float dt) {
 	_player->updateTrail(dt);
 	
-	//move screen
-	this->setPosition(ccp(-_player->getBody()->GetPosition().x*PTM_RATIO+winSize.width * 0.1,-_player->getBody()->GetPosition().y*PTM_RATIO+winSize.height * 0.3));
-	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width,this->getContentSize().height);
 	
+	//CCLog("%f",dt);
+
 	//boss antigravity:
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
+	
+	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
+	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	//acceleration
-	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
+	//if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
 		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
 	//whats these 2 lines for here? they happen anyway outside the if? delete both lines if im right?	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
 	//	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
-	}
+	//}
 
-	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
-	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	B2DLayer::update(dt);
 	_stats.IncrementDistance(_player->getSprite()->getPosition().x - _lastPos.x);
@@ -132,9 +132,8 @@ void Game::update(float dt) {
 	}
 	else{
 		spawnrate-=dt;
-		if((spawnrate<=0)&&(_boss->getSprite()->getPositionY()<winSize.height*0.1+0.5*winSize.height)){//err:doesn't account for change in players height on new platform
+		if(spawnrate<=0){//err:doesn't account for change in players height on new platform
 			GameObject* test = GameObject::retainedObjectWithSprite(Light::retainedLight(&screenBounds),&screenBounds);
-			//Platform  *test = new Platform(,&screenBounds);
 			test->getSprite()->setPosition(ccp(_boss->getSprite()->getPositionX()+50, _boss->getSprite()->getPositionY()));
 			this->addChild(test->getSprite());	
 			test->createBox2dObject(world);
@@ -167,6 +166,9 @@ void Game::CleanWorld(){
 	for(int i =0;i<objectsToClean.size();i++){
 		objectsToClean.at(i)->removeFromParentAndCleanup(); //err:not 100% sure this frees memory - test!
 	}
+	//move screen
+	this->setPosition(ccp(-_player->getBody()->GetPosition().x*PTM_RATIO+winSize.width * 0.1,-_player->getBody()->GetPosition().y*PTM_RATIO+winSize.height * 0.3));
+	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width,this->getContentSize().height);
 }
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
