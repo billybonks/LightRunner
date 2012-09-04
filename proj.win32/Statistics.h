@@ -26,7 +26,7 @@ public:
 private:
 	int _score;
 	int _multiplier;
-    float _velocity;
+	float _velocity;
 	float _distanceTraveld;
 	float _acceleration;
 	float _maxSpeed;

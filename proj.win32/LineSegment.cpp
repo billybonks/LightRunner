@@ -13,22 +13,25 @@
 		vertices[2].Set(width/2, height/2);
 		vertices[3].Set(-width/2, height/2);
 	}
-
-	LineSegment::LineSegment(b2Vec2 originPoints[],float maxHieght,float thickness,float width){
-		this->_maxHieght = maxHieght;
-		this->_thickness = thickness;
-		this->_width = width;
-		this->_steps =maxHieght/thickness;
+	//INPUT EXAMPLES 
+	//Inputs work in pixel values
+	//LineSegment segment(B2DLayer::world,start,10.0f,-0.5f,10.0f); NEVative Sloper
+	//LineSegment segment(B2DLayer::world,start,10.0f,0.5f,10.0f);	Positive Slope
+	//LineSegment segment(B2DLayer::world,start,10.0f,10.0f,10.0f); Square
+	//LineSegment segment(B2DLayer::world,start,5.0f,5.0f,10.0f); Rectangle
+	LineSegment::LineSegment(b2World *world,b2Vec2 startPosition){
+		startPosition.x = startPosition.x/PTM_RATIO;
+		startPosition.y = startPosition.y/PTM_RATIO;
+		int slopeModifier = 1;
 		this->_currentStep = 0;
-		_lastVerts[0] = originPoints[0];
-		_lastVerts[1] = originPoints[1];
-		_stepWidth = _width/_steps;
-		_inclinePerStep = _maxHieght/_steps;
+		this->_startWorldPosition = startPosition;
+		this->_currentStepStartPosition  = _startWorldPosition;
+		this->world = world;
 		//this->_lastVerts = originPoints;
 	}
 
 	b2Vec2 LineSegment::getLinearVelocity(){
-		return b2Vec2(_stepWidth,_inclinePerStep);
+				return b2Vec2();
 	}
 
 	b2Vec2 LineSegment::getLastVerticies(){
@@ -39,12 +42,13 @@
 		return 0.0f;
 	}
 
-	bool LineSegment::GenerateNextBody(b2Body* retBody){
-		_currentStep++;
-		b2Vec2 vertices[4];
-		GetVertsInclineSquare(vertices,_stepWidth,_thickness,_inclinePerStep);
-		//GenSquare(vertices,world,startPos);
-		//startPos.x += vertices[2].x+(vertices[2].x);
-		//startPos.y +=(inclinePerStep/2);
-		return true;
+	b2Vec2 LineSegment::GetGameWorldVerticies(int verticie){
+		return _GameWorldVerticies[verticie];
+	}
+
+	void LineSegment::SetPosition(b2Vec2 startPosition){
+		startPosition.x = startPosition.x/PTM_RATIO;
+		startPosition.y = startPosition.y/PTM_RATIO;
+		this->_startWorldPosition = startPosition;
+		this->_currentStepStartPosition  = _startWorldPosition;
 	}

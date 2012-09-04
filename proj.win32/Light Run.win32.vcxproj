@@ -154,7 +154,10 @@
     <ClInclude Include="B2dPlay.h" />
     <ClInclude Include="backgroundlayer.h" />
     <ClInclude Include="BrazierCurve.h" />
+    <ClInclude Include="ConnectableLineSegment.h" />
     <ClInclude Include="ContactListener.h" />
+    <ClInclude Include="ContinuousLineSegment.h" />
+    <ClInclude Include="InclineLineSegment.h" />
     <ClInclude Include="LineSegment.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Platform.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="scorelayer.h" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Statistics.h" />
+    <ClInclude Include="StraightLineSegment.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
@@ -176,12 +180,15 @@
     <ClCompile Include="BackgroundLayer.cpp" />
     <ClCompile Include="BrazierCurve.cpp" />
     <ClCompile Include="ContactListener.cpp" />
+    <ClCompile Include="ContinousLineSegment.cpp" />
+    <ClCompile Include="InclineLineSegment.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="ScoreLayer.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Statistics.cpp" />
+    <ClCompile Include="StraightLineSegment.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
