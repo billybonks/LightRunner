@@ -64,10 +64,8 @@ b2Vec2 StraightLineSegment::GetGameWorldVerticies(int verticie)
 
 void StraightLineSegment::InitilizeData(){
 	_startWorldPosition;
-	//LineSegment::_startWorldPosition.x = (_polygonVerticies[0].x*-1);
 	_currentStepStartPosition.x = LineSegment::_startWorldPosition.x;
 	_currentStepStartPosition.y = LineSegment::_startWorldPosition.y;
-	//LineSegment::_startWorldPosition.x = LineSegment::_startWorldPosition.x -((_polygonVerticies[0].x*-1)/_steps-1);
 	for(int i = 0;i<_steps; i++){
 		_polygonStartPos[i] =  LineSegment::_currentStepStartPosition;
 		if(i == 0){

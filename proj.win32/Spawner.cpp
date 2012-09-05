@@ -1,8 +1,15 @@
-/*
 #include "Spawner.h"
 
-Spawner::Spawner(Statistics stats){
-	i = 0;
+Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation){
+	_stats = stats;
+	_world = world;
+	float minDistance = (_stats->GetMaximumVelocity()*32)*5.0f;
+	float maxDistance = (_stats->GetMaximumVelocity()*32)*10.0f;
+	float distance = Random(minDistance,maxDistance);
+	int maxSegments =distance/100;
+	int segments = Random(1,maxSegments);
+	LineSegment* segment = NULL;
+	GenerateCompoundSegment(segment,distance,segments);
 }
 
 int Spawner::Random(int lowest, int highest){					  
@@ -10,45 +17,57 @@ int Spawner::Random(int lowest, int highest){
 	return lowest+int(range*rand()/(RAND_MAX + 1.0)); 
 }
 
+void Spawner::GenerateCompoundSegment(LineSegment* segment,float distance,int segments){
+	/*
+	Currently only spawning with 3 test OBJects
+	str8 line	1
+	Incline line positive	2
+	Incline Line Negative	3
+	*/
+	
+	float segmentDistance = 0;
+	float distanceRemeinder;
+	float maxDistancePerSegment = distance/segments;
+	float minDistancePerSegment = maxDistancePerSegment/2;
+	ContinuousLineSegment* currentSegment;
+	ContinuousLineSegment* lastSegment;
+	distanceRemeinder = maxDistancePerSegment;
+	for(int i = 1;i<=segments;i++){
+		int structType = Random(1,3);
+		if(i == segments){
+			segmentDistance = distanceRemeinder;
+		}else{
+			segmentDistance = Random(minDistancePerSegment,maxDistancePerSegment);
+		}
+		switch ( structType )
+		{
+		case 1:
+			currentSegment = new StraightLineSegment(_world,_initialSpawnLocation,distance,50,1);
+			break;
+		case 2:
+			currentSegment = new InclineLineSegment(_world,_initialSpawnLocation,distance,100,10);
+			break;	
+		case 3:
+			currentSegment = new InclineLineSegment(_world,_initialSpawnLocation,distance,100,-10);
+			break;	
+		}
+		if(i != 1){
+			lastSegment->SetChild(currentSegment,lastSegment);
+		}else{
+			segment =currentSegment;
+		}
+		lastSegment = currentSegment;
+	}
+}
+
 void Spawner::Spawn(CCLayer layer){
-	int lowest=1, highest=3;
-	int range=(highest-lowest)+1;
-	i = Random(1,4);
-	lowest = 100;highest = 300;
-	range=(highest-lowest)+1;
-	int distance = Random(100,300);
-	CCPoint newOrigin = this->_lastLight->_destination;
-	CCPoint newDestination;
-	int x,y;
-	//Gap
-	if(i == 1){
-		y= newOrigin.y;
-		x= newOrigin.x+ distance;
-	}
-	//incline
-	if(i == 2){
-		y= newOrigin.y+Random(50,100);
-		x= newOrigin.x+ distance;
-	}
-	//decline
-	if(i == 3){
-		y= newOrigin.y+(Random(50,100)*-1);
-		x= newOrigin.x+ distance;
-	}
-	//sameplane
-	if(i == 4){
-		y= newOrigin.y;
-		x= newOrigin.x+ distance;
-	}
-	newDestination =  ccp(x,y);
+
 	//_stats->GetVelocity();
-	this->_boss->SetTarget(newDestination);
 	//case gap decline incline same plane
 	//distance = min 5s run d= v/t
 	//spawn line origin = last destination
 	//set boss = _destination point 
 }
 
-	void SpawnLine();
+void SpawnLine();
 
-	*/

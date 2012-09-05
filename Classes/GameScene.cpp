@@ -4,7 +4,10 @@
 #include "b2debugDraw.h"
 #include "ContactListener.h"
 #include "Platform.h"
-
+#include "StraightLineSegment.h"
+#include "InclineLineSegment.h"
+#include "ContinuousLineSegment.h"
+#include "Spawner.h"
 using namespace cocos2d;
 
 CCScene* Game::scene()
@@ -50,7 +53,6 @@ bool Game::init()
 //Preping Vector
 platforms.reserve(10);
 //prep stats
-_stats =  Statistics();
 
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -92,7 +94,10 @@ _stats =  Statistics();
 	_floor->createBox2dObject(world);
 	_floor->getBody()->SetType(b2_kinematicBody);
 	_floor->SetCanBeOffScreen(true);
-
+				b2Vec2 start = b2Vec2::b2Vec2();
+			start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
+_stats =  Statistics();
+	Spawner* spawner = new Spawner(&_stats,world,start);
 	return true;
 }
 void Game::update(float dt) {
@@ -108,11 +113,9 @@ void Game::update(float dt) {
 	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	//acceleration
-	//if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
+	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
 		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
-	//whats these 2 lines for here? they happen anyway outside the if? delete both lines if im right?	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
-	//	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
-	//}
+	}
 
 
 	B2DLayer::update(dt);
@@ -121,11 +124,10 @@ void Game::update(float dt) {
 	_stats.SetVelocity(_player->getBody()->GetLinearVelocity().x);
 
 	CleanWorld();
-
 	if(move==false){
 		spawnrate+=dt;
-		if(spawnrate>=1){
-			spawnrate=0.5;
+		if(spawnrate>=10){
+			spawnrate=10;
 			//_boss->getBody()->ApplyLinearImpulse(b2Vec2(0.0f, 0.5f),_boss->getBody()->GetWorldCenter());
 			move=true;
 		}
@@ -134,7 +136,12 @@ void Game::update(float dt) {
 		spawnrate-=dt;
 		if(spawnrate<=0){//err:doesn't account for change in players height on new platform
 			GameObject* test = GameObject::retainedObjectWithSprite(Light::retainedLight(&screenBounds),&screenBounds);
-			test->getSprite()->setPosition(ccp(_boss->getSprite()->getPositionX()+50, _boss->getSprite()->getPositionY()));
+
+			//StraightLineSegment segment(B2DLayer::world,start,50.0f,10.0f,1);
+			b2Body* body = NULL;
+			//segment.InitilizeData();
+			//segment.GenerateBody(body);
+			/*test->getSprite()->setPosition(ccp(_boss->getSprite()->getPositionX()+50, _boss->getSprite()->getPositionY()));
 			this->addChild(test->getSprite());	
 			test->createBox2dObject(world);
 
@@ -142,7 +149,7 @@ void Game::update(float dt) {
 			body->SetType(b2_staticBody);
 			spawnrate=0;
 			platforms.push_back((GameObject*)test);
-			move=false;
+			move=false;*/
 		}
 	}
 }

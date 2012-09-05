@@ -1,23 +1,29 @@
-s
+
 
 #include "cocos2d.h"
 #include "GameObject.h"
 #include "Statistics.h"
 #include "Light.h"
+#include "LineSegment.h"
+#include "StraightLineSegment.h"
+#include "InclineLineSegment.h"
+#include "ContinuousLineSegment.h"
+#include <vector>
 using namespace cocos2d;
 
 class Spawner 
 {
 private:
-	int colourer;
+	vector<LineSegment*> segmentQueue;
+	b2World* _world;
 	Statistics* _stats;
-	Light* _lastLight;
-	GameObject* _boss;
-	int i;
+	b2Vec2 _initialSpawnLocation;
+	float currentStructureDistance;
 	void SpawnLine();
 public:
-	Spawner(Statistics stats);
+	Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation);
 	void Spawn(CCLayer layer);
 	int Random(int lowest, int highest);
+	void GenerateCompoundSegment(LineSegment* segment,float distance,int segments);
 };
 

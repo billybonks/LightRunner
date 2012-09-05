@@ -13,5 +13,6 @@ public:
 	InclineLineSegment(b2World *world,b2Vec2 startPosition,float width,float maxHieght,float thickness);
 	virtual b2Vec2 getLinearVelocity();
 	virtual void InitilizeData();
+	virtual void OffsetStartPosition();
 };
 #endif

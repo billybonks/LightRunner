@@ -22,10 +22,7 @@
 	}
 
 	void InclineLineSegment::InitilizeData(){
-		if(parent != NULL){
-			float x = LineSegment::_currentStepStartPosition.x+_width/2;
-			float y = LineSegment::_currentStepStartPosition.y-_height/2;
-		}
+		LineSegment::_currentStepStartPosition = this->_startWorldPosition; 
 		float widthPerStep = _width/_steps;
 		ContinuousLineSegment::GetVertsInclineSquare(_polygonVerticies,widthPerStep,_thickness,_inclinePerStep);
 		for(int i = 0;i<_steps; i++){
@@ -50,3 +47,8 @@
 			LineSegment::_currentStepStartPosition.y +=(_inclinePerStep/2);
 		}
 	}
+
+	void InclineLineSegment::OffsetStartPosition(){
+		this->_startWorldPosition.x = _startWorldPosition.x + _stepWidth/2;
+		this->_startWorldPosition.y = _startWorldPosition.y - _inclinePerStep/4;
+}
