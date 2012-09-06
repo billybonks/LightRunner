@@ -8,8 +8,8 @@ Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation){
 	float distance = Random(minDistance,maxDistance);
 	int maxSegments =distance/100;
 	int segments = Random(1,maxSegments);
-	LineSegment* segment = NULL;
-	GenerateCompoundSegment(segment,distance,segments);
+	LineSegment segment = GenerateCompoundSegment(distance,segments);
+	segmentQueue.push_back(segment);
 }
 
 int Spawner::Random(int lowest, int highest){					  
@@ -17,14 +17,14 @@ int Spawner::Random(int lowest, int highest){
 	return lowest+int(range*rand()/(RAND_MAX + 1.0)); 
 }
 
-void Spawner::GenerateCompoundSegment(LineSegment* segment,float distance,int segments){
+LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 	/*
 	Currently only spawning with 3 test OBJects
 	str8 line	1
 	Incline line positive	2
 	Incline Line Negative	3
 	*/
-	
+	LineSegment segment*;
 	float segmentDistance = 0;
 	float distanceRemeinder;
 	float maxDistancePerSegment = distance/segments;
@@ -70,4 +70,13 @@ void Spawner::Spawn(CCLayer layer){
 }
 
 void SpawnLine();
+
+void Spawner::update(){
+	LineSegment* segment = segmentQueue.front();
+	b2Body* body = NULL;
+	bool done = segment->GenerateNextBody(body);
+	if(done){
+		segmentQueue.clear();
+	}
+}
 

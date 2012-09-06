@@ -17,7 +17,7 @@ public:
 	virtual void SetParent(ContinuousLineSegment *segment);
 	virtual ContinuousLineSegment* GetChild();
 	virtual ContinuousLineSegment* GetParent();
-	virtual void OffsetStartPosition() = 0;
+	virtual void OffsetStartPosition();
 	virtual void InitilizeData();
 };
 

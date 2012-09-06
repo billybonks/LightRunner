@@ -45,3 +45,8 @@ void ContinuousLineSegment::InitilizeData()
 
 	childCast->OffsetStartPosition();
 }
+
+	void ContinuousLineSegment::OffsetStartPosition(){
+
+
+	}

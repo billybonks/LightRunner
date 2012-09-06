@@ -24,6 +24,7 @@ public:
 	Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation);
 	void Spawn(CCLayer layer);
 	int Random(int lowest, int highest);
-	void GenerateCompoundSegment(LineSegment* segment,float distance,int segments);
+	void GenerateCompoundSegment(float distance,int segments);
+	void update();
 };
 

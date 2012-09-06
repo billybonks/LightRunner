@@ -11,6 +11,7 @@
 #include "Light.h"
 #include "Statistics.h"
 #include "B2DLayer.h"
+#include "Spawner.h"
 #define PTM_RATIO 32
 
 
@@ -34,6 +35,7 @@ private:
 	CCRect screenBounds;
 	void setVelocity(b2Vec2 velocity);
 	CCPoint _lastPos;
+	Spawner* _spawner;
 public:
 	virtual void draw();
 	    LAYER_CREATE_FUNC(Game);

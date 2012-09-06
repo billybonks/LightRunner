@@ -7,7 +7,6 @@
 #include "StraightLineSegment.h"
 #include "InclineLineSegment.h"
 #include "ContinuousLineSegment.h"
-#include "Spawner.h"
 using namespace cocos2d;
 
 CCScene* Game::scene()
@@ -96,13 +95,13 @@ platforms.reserve(10);
 	_floor->SetCanBeOffScreen(true);
 				b2Vec2 start = b2Vec2::b2Vec2();
 			start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
-_stats =  Statistics();
-	Spawner* spawner = new Spawner(&_stats,world,start);
+	_stats =  Statistics();
+	this->_spawner = new Spawner(&_stats,world,start);
 	return true;
 }
 void Game::update(float dt) {
 	_player->updateTrail(dt);
-	
+	this->_spawner->update();
 	
 	//CCLog("%f",dt);
 

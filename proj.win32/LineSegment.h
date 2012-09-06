@@ -18,9 +18,9 @@ protected:
 	void GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline);
 	
 public:
-	virtual void LineSegment::GenerateBody(b2Body* retBody)= 0;
-	virtual void InitilizeData()= 0;
-	virtual bool GenerateNextBody(b2Body* retBody)= 0;
+	virtual void GenerateBody(b2Body* retBody);
+	virtual void InitilizeData();
+	virtual bool GenerateNextBody(b2Body* retBody);
 	LineSegment(b2World *world,b2Vec2 startPosition);
 	virtual b2Vec2 getLinearVelocity();
 	virtual b2Vec2 getLastVerticies();
