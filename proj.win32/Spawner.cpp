@@ -1,18 +1,21 @@
 #include "Spawner.h"
 
 Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation){
+	srand(time(0));
 	_stats = stats;
 	_world = world;
+	_initialSpawnLocation = initialSpawnLocation;
 	float minDistance = (_stats->GetMaximumVelocity()*32)*5.0f;
 	float maxDistance = (_stats->GetMaximumVelocity()*32)*10.0f;
 	float distance = Random(minDistance,maxDistance);
 	int maxSegments =distance/100;
 	int segments = Random(1,maxSegments);
 	LineSegment segment = GenerateCompoundSegment(distance,segments);
-	segmentQueue.push_back(segment);
+
 }
 
-int Spawner::Random(int lowest, int highest){					  
+int Spawner::Random(int lowest, int highest){
+	 
 	int range=(highest-lowest)+1;		    	
 	return lowest+int(range*rand()/(RAND_MAX + 1.0)); 
 }
@@ -24,7 +27,7 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 	Incline line positive	2
 	Incline Line Negative	3
 	*/
-	LineSegment segment*;
+	ContinuousLineSegment* segment;
 	float segmentDistance = 0;
 	float distanceRemeinder;
 	float maxDistancePerSegment = distance/segments;
@@ -42,23 +45,30 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 		switch ( structType )
 		{
 		case 1:
-			currentSegment = new StraightLineSegment(_world,_initialSpawnLocation,distance,50,1);
+			currentSegment = dynamic_cast<ContinuousLineSegment*>( new StraightLineSegment(_world,_initialSpawnLocation,distance,50,1));
 			break;
 		case 2:
-			currentSegment = new InclineLineSegment(_world,_initialSpawnLocation,distance,100,10);
+			currentSegment = dynamic_cast<ContinuousLineSegment*>(new InclineLineSegment(_world,_initialSpawnLocation,distance,100,10));
 			break;	
 		case 3:
-			currentSegment = new InclineLineSegment(_world,_initialSpawnLocation,distance,100,-10);
+			currentSegment = dynamic_cast<ContinuousLineSegment*>(new InclineLineSegment(_world,_initialSpawnLocation,distance,100,-10));
 			break;	
 		}
 		if(i != 1){
 			lastSegment->SetChild(currentSegment,lastSegment);
 		}else{
-			segment =currentSegment;
+			segment = currentSegment;
+			segment->InitilizeData();
 		}
 		lastSegment = currentSegment;
 	}
+	
+	LineSegment* retSegment = dynamic_cast<LineSegment*>(segment);
+	segmentQueue.push_back(retSegment);
+	
+	return *retSegment;
 }
+
 
 void Spawner::Spawn(CCLayer layer){
 
@@ -75,8 +85,8 @@ void Spawner::update(){
 	LineSegment* segment = segmentQueue.front();
 	b2Body* body = NULL;
 	bool done = segment->GenerateNextBody(body);
-	if(done){
-		segmentQueue.clear();
-	}
+	//if(done){
+	//	segmentQueue.clear();
+	//}
 }
 

@@ -109,7 +109,7 @@ void Game::update(float dt) {
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
 	
 	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
-	_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
+	//_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	//acceleration
 	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){

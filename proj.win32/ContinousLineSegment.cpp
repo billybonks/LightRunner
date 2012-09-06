@@ -10,9 +10,9 @@ ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition
 
 void ContinuousLineSegment::SetChild(ContinuousLineSegment *child,ContinuousLineSegment *parent){
 	this->child = child;
-	this->parent = parent;
+	child->SetParent(parent);
 	ContinuousLineSegment::InitilizeData();
-		child->InitilizeData();
+	child->InitilizeData();
 }
 
 void ContinuousLineSegment::SetParent(ContinuousLineSegment *segment){
@@ -46,7 +46,7 @@ void ContinuousLineSegment::InitilizeData()
 	childCast->OffsetStartPosition();
 }
 
-	void ContinuousLineSegment::OffsetStartPosition(){
+void ContinuousLineSegment::OffsetStartPosition(){
 
 
-	}
+}
