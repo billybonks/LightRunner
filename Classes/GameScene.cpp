@@ -52,7 +52,8 @@ bool Game::init()
 //Preping Vector
 platforms.reserve(10);
 //prep stats
-
+_scale = 0.5f;
+this->setScale(_scale);
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png",&screenBounds);
@@ -174,7 +175,7 @@ void Game::CleanWorld(){
 		objectsToClean.at(i)->removeFromParentAndCleanup(); //err:not 100% sure this frees memory - test!
 	}
 	//move screen
-	this->setPosition(ccp(-_player->getBody()->GetPosition().x*PTM_RATIO+winSize.width * 0.1,-_player->getBody()->GetPosition().y*PTM_RATIO+winSize.height * 0.3));
+	this->setPosition(ccp((-_player->getBody()->GetPosition().x*PTM_RATIO+winSize.width * 0.1)*_scale,(-_player->getBody()->GetPosition().y*PTM_RATIO+winSize.height * 0.3)*_scale));
 	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width,this->getContentSize().height);
 }
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)

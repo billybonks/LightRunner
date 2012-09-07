@@ -14,12 +14,13 @@ using namespace cocos2d;
 class Spawner 
 {
 private:
-	vector<LineSegment*> segmentQueue;
+	LineSegment* segmentQueue;
 	b2World* _world;
 	Statistics* _stats;
 	b2Vec2 _initialSpawnLocation;
 	float currentStructureDistance;
 	void SpawnLine();
+	int _counter;
 public:
 	Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation);
 	void Spawn(CCLayer layer);

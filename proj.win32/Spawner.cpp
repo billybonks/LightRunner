@@ -11,6 +11,8 @@ Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation){
 	int maxSegments =distance/200;
 	int segments = Random(1,maxSegments);
 	LineSegment segment = GenerateCompoundSegment(distance,segments);
+	_counter =0;
+		// segment = GenerateCompoundSegment(distance,segments);
 }
 
 int Spawner::Random(int lowest, int highest){
@@ -45,7 +47,7 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 		switch ( structType )
 		{
 		case 1:
-			currentSegment = dynamic_cast<ContinuousLineSegment*>( new StraightLineSegment(_world,_initialSpawnLocation,segmentDistance,50));
+			currentSegment = dynamic_cast<ContinuousLineSegment*>(new StraightLineSegment(_world,_initialSpawnLocation,segmentDistance,50));
 			break;
 		case 2:
 			currentSegment = dynamic_cast<ContinuousLineSegment*>(new InclineLineSegment(_world,_initialSpawnLocation,segmentDistance,100,10));
@@ -73,14 +75,18 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 			lastSegment->SetChild(currentSegment,lastSegment);
 		}else{
 			segment = currentSegment;
+			//segment->InitilizeData();
+			segment->OffsetStartPosition();
 			segment->InitilizeData();
 		}
 		lastSegment = currentSegment;
 	}
-	
+	b2Vec2 lastPos = lastSegment->GetPosition();
+	float offset = lastSegment->GetWidth()/2;
+	_initialSpawnLocation.x = (lastPos.x)+offset;
+	_initialSpawnLocation.y = (lastPos.y);
 	LineSegment* retSegment = dynamic_cast<LineSegment*>(segment);
-	segmentQueue.push_back(retSegment);
-	
+	segmentQueue = retSegment;
 	return *retSegment;
 }
 
@@ -97,11 +103,20 @@ void Spawner::Spawn(CCLayer layer){
 void SpawnLine();
 
 void Spawner::update(){
-	LineSegment* segment = segmentQueue.front();
+if(segmentQueue != NULL){
 	b2Body* body = NULL;
-	bool done = segment->GenerateNextBody(body);
-	//if(done){
-	//	segmentQueue.clear();
-	//}
+	bool done = segmentQueue->GenerateNextBody(body);
+	segmentQueue = NULL;
+}
+_counter++;
+if(_counter== 60){
+	float minDistance = (_stats->GetMaximumVelocity()*32)*10.0f;
+	float maxDistance = (_stats->GetMaximumVelocity()*32)*20.0f;
+	float distance = Random(minDistance,maxDistance);
+	int maxSegments =distance/200;
+	int segments = Random(1,maxSegments);
+	LineSegment segment = GenerateCompoundSegment(distance,segments);
+	_counter =0;
+}
 }
 

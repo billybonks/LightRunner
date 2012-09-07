@@ -36,6 +36,7 @@ private:
 	void setVelocity(b2Vec2 velocity);
 	CCPoint _lastPos;
 	Spawner* _spawner;
+	float _scale;
 public:
 	virtual void draw();
 	    LAYER_CREATE_FUNC(Game);

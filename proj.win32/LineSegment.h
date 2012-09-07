@@ -7,6 +7,8 @@
 class LineSegment{
 private:
 protected:
+	float _width;
+	float _height;
 	b2Vec2 _lastVerts[2];
 	b2Vec2 _startWorldPosition;
 	b2World *world;
@@ -24,5 +26,7 @@ public:
 	virtual float getIncline();
 	virtual b2Vec2 GetGameWorldVerticies(int verticie);
 	void SetPosition(b2Vec2 _startWorldPosition);
+	b2Vec2 GetPosition();
+	float GetWidth();
 };
 #endif

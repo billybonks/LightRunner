@@ -6,8 +6,7 @@
 class StraightLineSegment : public ContinuousLineSegment{
 private:
 protected:
-		float _width;
-		float _height;
+
 		b2Vec2 _polygonStartPos;
 		b2Vec2 _polygonVerticies[4];
 		///Only use if you are going to init steps and polugonStartPos yourself

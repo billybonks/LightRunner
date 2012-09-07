@@ -61,3 +61,14 @@ void LineSegment::InitilizeData(){
 bool LineSegment::GenerateNextBody(b2Body* retBody){
 	return false;
 }
+
+b2Vec2 LineSegment::GetPosition(){
+	b2Vec2 *ret = new b2Vec2( _startWorldPosition);
+	ret->x = ret->x*32;
+	ret->y = ret->y*32;
+	return *ret;
+}
+
+float LineSegment::GetWidth(){
+	return this->_width*32;
+}
