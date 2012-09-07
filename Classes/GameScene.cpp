@@ -79,6 +79,7 @@ platforms.reserve(10);
 	this->scheduleUpdate();
 	move=true;
 	spawnrate=3;
+	//Debug(false);
 	//get the existing filter
   b2Filter filter = _boss->getBody()->GetFixtureList()->GetFilterData();
   //make no collisions

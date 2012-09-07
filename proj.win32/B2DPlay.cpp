@@ -31,13 +31,13 @@ void B2dPlay::lineSegmentTest(){
 	b2Vec2 start = b2Vec2::b2Vec2();
 	start.Set(120,100);
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	StraightLineSegment segment(B2DLayer::world,start,120.0f,10.0f,2);
+	StraightLineSegment segment(B2DLayer::world,start,120.0f,10.0f);
 	// InclineLineSegment segment(B2DLayer::world,start,120.0f,360.0f,30.0f);
 	segment.InitilizeData();
 	segment.GetChild();
-	segment.SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f,2),&segment);
+	segment.SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),&segment);
 	ContinuousLineSegment* child = segment.GetChild();
-	child->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,10),child);
+	child->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,-10),child);
 	segment.GenerateBody(body);
 	// LineSegment segment(B2DLayer::world,start,10.0f,10.0f,240.0f);
 

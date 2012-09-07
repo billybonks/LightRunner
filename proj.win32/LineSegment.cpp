@@ -2,9 +2,9 @@
 
 void LineSegment::GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline){
 	vertices[0].Set(-width/2, -height/2);
-	vertices[1].Set(width/2, (-height/2)+(incline/2));
-	vertices[2].Set(width/2, (height/2)+(incline/2));
-	vertices[3].Set(-width/2, height/2);
+	vertices[1].Set(width/2, (height/2));
+	vertices[2].Set(vertices[1].x, vertices[1].y+(incline/2));
+	vertices[3].Set(vertices[0].x, vertices[0].y+(incline/2));
 }
 
 void LineSegment::GetVertsSquare(b2Vec2 vertices[],float width,float height){
@@ -23,9 +23,7 @@ LineSegment::LineSegment(b2World *world,b2Vec2 startPosition){
 	startPosition.x = startPosition.x/PTM_RATIO;
 	startPosition.y = startPosition.y/PTM_RATIO;
 	int slopeModifier = 1;
-	this->_currentStep = 0;
 	this->_startWorldPosition = startPosition;
-	this->_currentStepStartPosition  = _startWorldPosition;
 	this->world = world;
 	//this->_lastVerts = originPoints;
 }
@@ -50,7 +48,6 @@ void LineSegment::SetPosition(b2Vec2 startPosition){
 	startPosition.x = startPosition.x/PTM_RATIO;
 	startPosition.y = startPosition.y/PTM_RATIO;
 	this->_startWorldPosition = startPosition;
-	this->_currentStepStartPosition  = _startWorldPosition;
 }
 
 void LineSegment::GenerateBody(b2Body* retBody){

@@ -7,11 +7,8 @@
 class LineSegment{
 private:
 protected:
-	int _steps;
-	int _currentStep;
 	b2Vec2 _lastVerts[2];
 	b2Vec2 _startWorldPosition;
-	b2Vec2 _currentStepStartPosition;
 	b2World *world;
 	b2Vec2 _GameWorldVerticies[4];
 	void GetVertsSquare(b2Vec2 vertices[],float width,float height);

@@ -11,7 +11,6 @@ Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation){
 	int maxSegments =distance/200;
 	int segments = Random(1,maxSegments);
 	LineSegment segment = GenerateCompoundSegment(distance,segments);
-
 }
 
 int Spawner::Random(int lowest, int highest){
@@ -46,7 +45,7 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 		switch ( structType )
 		{
 		case 1:
-			currentSegment = dynamic_cast<ContinuousLineSegment*>( new StraightLineSegment(_world,_initialSpawnLocation,segmentDistance,50,1));
+			currentSegment = dynamic_cast<ContinuousLineSegment*>( new StraightLineSegment(_world,_initialSpawnLocation,segmentDistance,50));
 			break;
 		case 2:
 			currentSegment = dynamic_cast<ContinuousLineSegment*>(new InclineLineSegment(_world,_initialSpawnLocation,segmentDistance,100,10));
