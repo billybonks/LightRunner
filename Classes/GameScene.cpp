@@ -52,7 +52,7 @@ bool Game::init()
 //Preping Vector
 platforms.reserve(10);
 //prep stats
-_scale = 0.5f;
+_scale = 1.0f;
 this->setScale(_scale);
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 

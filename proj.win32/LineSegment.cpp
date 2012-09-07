@@ -72,3 +72,7 @@ b2Vec2 LineSegment::GetPosition(){
 float LineSegment::GetWidth(){
 	return this->_width*32;
 }
+
+float LineSegment::GetHeight(){
+	return _height*32;
+}

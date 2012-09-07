@@ -28,6 +28,7 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 	Incline line positive	2
 	Incline Line Negative	3
 	*/
+	int yOffsetModifier =1;
 	ContinuousLineSegment* segment;
 	float segmentDistance = 0;
 	float distanceRemeinder;
@@ -44,6 +45,7 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 			segmentDistance = Random(minDistancePerSegment,maxDistancePerSegment);
 			//distanceRemeinder = segmentDistance - maxDistancePerSegment;
 		}
+		//structType = 3;
 		switch ( structType )
 		{
 		case 1:
@@ -83,8 +85,9 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 	}
 	b2Vec2 lastPos = lastSegment->GetPosition();
 	float offset = lastSegment->GetWidth()/2;
+	float yoffset = lastSegment->GetHeight()/2;
 	_initialSpawnLocation.x = (lastPos.x)+offset;
-	_initialSpawnLocation.y = (lastPos.y);
+	_initialSpawnLocation.y = (lastPos.y)+yoffset;
 	LineSegment* retSegment = dynamic_cast<LineSegment*>(segment);
 	segmentQueue = retSegment;
 	return *retSegment;

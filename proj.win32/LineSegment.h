@@ -28,5 +28,6 @@ public:
 	void SetPosition(b2Vec2 _startWorldPosition);
 	b2Vec2 GetPosition();
 	float GetWidth();
+	float GetHeight();
 };
 #endif
