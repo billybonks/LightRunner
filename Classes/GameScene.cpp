@@ -46,14 +46,14 @@ bool Game::init()
 	this->addChild(_batchNode);
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("runner.plist");
  //END
-//setting ContactListner
-//ContactListener listener = new ContactListener();
-//world->SetContactListener(listener);
-//Preping Vector
-platforms.reserve(10);
-//prep stats
-_scale = 1.0f;
-this->setScale(_scale);
+	//setting ContactListner
+	//ContactListener listener = new ContactListener();
+	//world->SetContactListener(listener);
+	//Preping Vector
+	platforms.reserve(10);
+	//prep stats
+	_scale = 0.01f;
+	this->setScale(_scale);
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png",&screenBounds);
@@ -161,7 +161,7 @@ void Game::CleanWorld(){
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
 		if (b->GetUserData() != NULL) {
 			GameObject *myActor = (GameObject*)b->GetUserData();
-			if(myActor->isOffScreen()&&!myActor->canBeOffScreen()){
+			if(myActor->isOffScreen(_scale)&&!myActor->canBeOffScreen()){
 					objectsToClean.push_back(myActor);	
 			}
 			else {
