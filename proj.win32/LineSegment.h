@@ -21,6 +21,7 @@ public:
 	virtual void InitilizeData();
 	virtual bool GenerateNextBody(b2Body* retBody);
 	LineSegment(b2World *world,b2Vec2 startPosition);
+	LineSegment(b2World *world,b2Vec2 startPosition,float _width, float _height);
 	virtual b2Vec2 getLinearVelocity();
 	virtual b2Vec2 getLastVerticies();
 	virtual float getIncline();
