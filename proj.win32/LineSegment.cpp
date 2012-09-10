@@ -20,12 +20,19 @@ void LineSegment::GetVertsSquare(b2Vec2 vertices[],float width,float height){
 //LineSegment segment(B2DLayer::world,start,10.0f,10.0f,10.0f); Square
 //LineSegment segment(B2DLayer::world,start,5.0f,5.0f,10.0f); Rectangle
 LineSegment::LineSegment(b2World *world,b2Vec2 startPosition){
+	this->_startWorldPosition = startPosition;
 	startPosition.x = startPosition.x/PTM_RATIO;
 	startPosition.y = startPosition.y/PTM_RATIO;
-	int slopeModifier = 1;
-	this->_startWorldPosition = startPosition;
+	this->_startWorldPosition.x = startPosition.x/PTM_RATIO;
+	this->_startWorldPosition.y = startPosition.y/PTM_RATIO;
 	this->world = world;
 	//this->_lastVerts = originPoints;
+}
+
+LineSegment::LineSegment(b2World *world,b2Vec2 startPosition,float width, float height){
+	LineSegment(world,startPosition);
+	this->_width = width/PTM_RATIO;
+	this->_height = height/PTM_RATIO;
 }
 
 b2Vec2 LineSegment::getLinearVelocity(){
@@ -50,7 +57,7 @@ void LineSegment::SetPosition(b2Vec2 startPosition){
 	this->_startWorldPosition = startPosition;
 }
 
-void LineSegment::GenerateBody(b2Body* retBody){
+void LineSegment::GenerateBody(){
 
 }
 
@@ -58,7 +65,7 @@ void LineSegment::InitilizeData(){
 
 }
 
-bool LineSegment::GenerateNextBody(b2Body* retBody){
+bool LineSegment::GenerateNextBody(){
 	return false;
 }
 

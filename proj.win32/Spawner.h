@@ -5,9 +5,6 @@
 #include "Statistics.h"
 #include "Light.h"
 #include "LineSegment.h"
-#include "StraightLineSegment.h"
-#include "InclineLineSegment.h"
-#include "ContinuousLineSegment.h"
 #include <vector>
 using namespace cocos2d;
 

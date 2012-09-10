@@ -107,8 +107,7 @@ void SpawnLine();
 
 void Spawner::update(){
 if(segmentQueue != NULL){
-	b2Body* body = NULL;
-	bool done = segmentQueue->GenerateNextBody(body);
+	bool done = segmentQueue->GenerateNextBody();
 	segmentQueue = NULL;
 }
 _counter++;

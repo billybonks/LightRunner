@@ -3,10 +3,6 @@
 #include "cocos2d.h"
 #include "b2debugDraw.h"
 #include "ContactListener.h"
-#include "Platform.h"
-#include "StraightLineSegment.h"
-#include "InclineLineSegment.h"
-#include "ContinuousLineSegment.h"
 using namespace cocos2d;
 
 CCScene* Game::scene()

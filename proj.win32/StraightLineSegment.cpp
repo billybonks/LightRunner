@@ -1,38 +1,35 @@
-#include "StraightLineSegment.h"
+#include "LineSegment.h"
 
 StraightLineSegment::StraightLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
-	:ContinuousLineSegment(world,startPosition)
+	:ContinuousLineSegment(world,startPosition,width,height)
 {
-	this->_width = width/PTM_RATIO;
-	this->_height = height/PTM_RATIO;
-	this->_startWorldPosition.x = startPosition.x/32;
-	this->_startWorldPosition.y = startPosition.y/32;
+
 }
 
-void StraightLineSegment::GenerateBody(b2Body* retBody)
+void StraightLineSegment::GenerateBody()
 {
-	while(this->GenerateNextBody(retBody)){
+	while(this->GenerateNextBody()){
 		//Do Something
 	}
 }
 
 
-bool StraightLineSegment::GenerateNextBody(b2Body* retBody)
+bool StraightLineSegment::GenerateNextBody()
 { 
 	_startWorldPosition;
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
 	bodyDef.position.Set(_startWorldPosition.x,_startWorldPosition.y);
-	retBody =world->CreateBody(&bodyDef);
+	body =world->CreateBody(&bodyDef);
 	b2FixtureDef* fixture = new b2FixtureDef();
 	b2PolygonShape polygon;
 	polygon.Set(_polygonVerticies, 4);
 	fixture->shape = &polygon;
 	fixture->density = 1.0f;
 	fixture->friction = 0;
-	retBody->CreateFixture(fixture);
+	body->CreateFixture(fixture);
 	if(child != NULL){
-		if(child->GenerateNextBody(retBody)){
+		if(child->GenerateNextBody()){
 			return true;
 		}else{
 			return false;
@@ -42,7 +39,7 @@ bool StraightLineSegment::GenerateNextBody(b2Body* retBody)
 	return false;
 }
 
-b2Vec2 StraightLineSegment::GetGameWorldVerticies(int verticie)
+b2Vec2* StraightLineSegment::GetGameWorldVerticies(int verticie)
 { 
 	return _GameWorldVerticies[verticie];
 }
@@ -55,16 +52,16 @@ void StraightLineSegment::InitilizeData(){
 	_startWorldPosition.y;
 	y = LineSegment::_startWorldPosition.y+_polygonVerticies[0].y;
 	x = LineSegment::_startWorldPosition.x+_polygonVerticies[0].x;
-	LineSegment::_GameWorldVerticies[0] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+	LineSegment::_GameWorldVerticies[0] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 	y = LineSegment::_startWorldPosition.y+_polygonVerticies[3].y;
 	x = LineSegment::_startWorldPosition.x+_polygonVerticies[3].x;
-	LineSegment::_GameWorldVerticies[3] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+	LineSegment::_GameWorldVerticies[3] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 	y = LineSegment::_startWorldPosition.y+_polygonVerticies[1].y;
 	x = LineSegment::_startWorldPosition.x+_polygonVerticies[1].x;
-	LineSegment::_GameWorldVerticies[1] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+	LineSegment::_GameWorldVerticies[1] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 	y = LineSegment::_startWorldPosition.y+_polygonVerticies[2].y;
 	x = LineSegment::_startWorldPosition.x+_polygonVerticies[2].x;
-	LineSegment::_GameWorldVerticies[2] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+	LineSegment::_GameWorldVerticies[2] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 	_GameWorldVerticies;
 }
 

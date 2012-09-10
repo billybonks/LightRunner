@@ -1,8 +1,5 @@
 #include "B2dPlay.h" 
 #include "LineSegment.h"
-#include "StraightLineSegment.h"
-#include "InclineLineSegment.h"
-#include "ContinuousLineSegment.h"
 
 void B2dPlay::draw(){
 	B2DLayer::draw();
@@ -38,7 +35,7 @@ void B2dPlay::lineSegmentTest(){
 	segment.SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),&segment);
 	ContinuousLineSegment* child = segment.GetChild();
 	child->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,-10),child);
-	segment.GenerateBody(body);
+	segment.GenerateBody();
 	// LineSegment segment(B2DLayer::world,start,10.0f,10.0f,240.0f);
 
 	//LineSegment segment(B2DLayer::world,start,120.0f,15.0f,80.0f);

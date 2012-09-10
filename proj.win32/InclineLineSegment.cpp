@@ -1,4 +1,4 @@
-#include "InclineLineSegment.h"
+#include "LineSegment.h"
 
 	InclineLineSegment::InclineLineSegment(b2World *world,b2Vec2 startPosition,float width,float maxHeight,float thickness)
 		:StraightLineSegment(world,startPosition,width,maxHeight)

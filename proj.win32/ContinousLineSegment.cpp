@@ -1,11 +1,16 @@
 
-#include "ContinuousLineSegment.h"
+#include "LineSegment.h"
 
 ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition)
 	:LineSegment(world,startPosition)
 {
 	parent = NULL;
 	child = NULL;
+}
+
+ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition,float width, float height):LineSegment(world,startPosition,width,height)
+{
+
 }
 
 void ContinuousLineSegment::SetChild(ContinuousLineSegment *child,ContinuousLineSegment *parent){

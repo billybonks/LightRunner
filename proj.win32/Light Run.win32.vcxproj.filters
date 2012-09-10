@@ -59,29 +59,8 @@
     <ClInclude Include="main.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Light.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Player.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\TrailedCCSprite.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameObject.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameScene.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="b2debugDraw.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="Spawner.h">
-      <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="Statistics.h">
       <Filter>include</Filter>
@@ -95,32 +74,35 @@
     <ClInclude Include="scorelayer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="B2DLayer.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="B2dPlay.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="BrazierCurve.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="LineSegment.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="ConnectableLineSegment.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="ContinuousLineSegment.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="StraightLineSegment.h">
-      <Filter>source</Filter>
+    <ClInclude Include="..\Classes\Player.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="InclineLineSegment.h">
-      <Filter>source</Filter>
+    <ClInclude Include="..\Classes\TrailedCCSprite.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Spawner.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Light.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameScene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameObject.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="B2DLayer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -169,12 +151,6 @@
     <ClCompile Include="B2DPlay.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="BrazierCurve.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="LineSegment.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -185,6 +161,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="InclineLineSegment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="EdgeLineSegment.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
