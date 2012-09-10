@@ -65,7 +65,7 @@ public:
 	StraightLineSegment(b2World *world,b2Vec2 startPosition,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
-	virtual b2Vec2 GetGameWorldVerticies(int verticie);
+	virtual b2Vec2* GetGameWorldVerticies(int verticie);
 	virtual void InitilizeData();
 	virtual void OffsetStartPosition();
 };
@@ -78,7 +78,6 @@ public:
 	EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
-	virtual b2Vec2 GetGameWorldVerticies(int verticie);
 	virtual void InitilizeData();
 	virtual void OffsetStartPosition();
 };

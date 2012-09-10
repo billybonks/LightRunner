@@ -10,7 +10,8 @@ ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition
 
 ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition,float width, float height):LineSegment(world,startPosition,width,height)
 {
-
+	parent = NULL;
+	child = NULL;
 }
 
 void ContinuousLineSegment::SetChild(ContinuousLineSegment *child,ContinuousLineSegment *parent){
@@ -45,7 +46,7 @@ void ContinuousLineSegment::GetVertsSquare(b2Vec2 vertices[],float width,float h
 
 void ContinuousLineSegment::InitilizeData()
 {
-	child->SetPosition(LineSegment::_GameWorldVerticies[2]);
+	child->SetPosition(*(new b2Vec2(*this->_GameWorldVerticies[2])));
 	ContinuousLineSegment* childCast = (ContinuousLineSegment*)child;
 
 	childCast->OffsetStartPosition();

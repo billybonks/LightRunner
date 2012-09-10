@@ -22,16 +22,16 @@
 		float x,y;
 		y = LineSegment::_startWorldPosition.y+_polygonVerticies[0].y;
 		x = LineSegment::_startWorldPosition.x+_polygonVerticies[0].x;
-		LineSegment::_GameWorldVerticies[0] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+		LineSegment::_GameWorldVerticies[0] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 		y = LineSegment::_startWorldPosition.y+_polygonVerticies[3].y;
 		x = LineSegment::_startWorldPosition.x+_polygonVerticies[3].x;
-		LineSegment::_GameWorldVerticies[3] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+		LineSegment::_GameWorldVerticies[3] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 		y = LineSegment::_startWorldPosition.y+_polygonVerticies[1].y;
 		x = LineSegment::_startWorldPosition.x+_polygonVerticies[1].x;
-		LineSegment::_GameWorldVerticies[1] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+		LineSegment::_GameWorldVerticies[1] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 		y = LineSegment::_startWorldPosition.y+_polygonVerticies[2].y;
 		x = LineSegment::_startWorldPosition.x+_polygonVerticies[2].x;
-		LineSegment::_GameWorldVerticies[2] =b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+		LineSegment::_GameWorldVerticies[2] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 		_GameWorldVerticies;
 	}
 

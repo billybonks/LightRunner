@@ -29,14 +29,18 @@ void B2dPlay::lineSegmentTest(){
 	start.Set(120,100);
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 	StraightLineSegment segment(B2DLayer::world,start,120.0f,10.0f);
+	//segment.GenerateNextBody();
+	EdgeLineSegment* edge = new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),100,100);
+	edge->InitilizeData();
+	edge->GenerateNextBody();
 	// InclineLineSegment segment(B2DLayer::world,start,120.0f,360.0f,30.0f);
-	segment.InitilizeData();
-	segment.GetChild();
-	segment.SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),&segment);
-	ContinuousLineSegment* child = segment.GetChild();
-	child->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,-10),child);
-	segment.GenerateBody();
-	// LineSegment segment(B2DLayer::world,start,10.0f,10.0f,240.0f);
+	//segment.InitilizeData();
+	//segment.GetChild();
+	//segment.SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),&segment);
+	//ContinuousLineSegment* child = segment.GetChild();
+	//child->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,-10),child);
+	//segment.GenerateBody();
+	//// LineSegment segment(B2DLayer::world,start,10.0f,10.0f,240.0f);
 
 	//LineSegment segment(B2DLayer::world,start,120.0f,15.0f,80.0f);
 
