@@ -31,9 +31,20 @@
 			this->CanBeOffScreen=false;
 		}
 
-		bool GameObject::isOffScreen(){//err: need to implement properly for y axis maybe
+		bool GameObject::isOffScreen(float scale){//err: need to implement properly for y axis maybe
 			//CCLog("May bug here in offscreen when screen moves up/down");
-			if(this->body->GetPosition().x* PTM_RATIO<screen->origin.x-50||this->body->GetPosition().x* PTM_RATIO>screen->origin.x+screen->size.width+50||this->body->GetPosition().y* PTM_RATIO<screen->origin.y-50||this->body->GetPosition().y* PTM_RATIO>screen->origin.y+screen->size.height+50){
+			float x =  this->body->GetPosition().x* PTM_RATIO;
+			float y =  this->body->GetPosition().y* PTM_RATIO;
+			float top = screen->origin.y-50;
+			float left = screen->origin.x-50;
+			float right = screen->origin.x+screen->size.width+50;
+			float bottem = screen->origin.y+screen->size.height+50;
+			top = top / scale;
+			left = left / scale;
+			right = right / scale;
+			bottem = bottem / scale;
+			//float pos1 = <screen->origin.x-50;
+			if(x<left||x>right||y<top||y>right){
 				return true;
 			}
 			return false;

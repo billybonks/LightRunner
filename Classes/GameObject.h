@@ -13,7 +13,6 @@ public:
 	b2Body* getBody();
 	virtual void createBox2dObject(b2World* world);
 	CCPoint _target;
-	//used so i can easily identify a gameObject in the world
 	string id;
 	GameObject();
 	static GameObject* retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr);
@@ -21,7 +20,7 @@ public:
 	static GameObject* retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr );
 	void updateTrail(float dt);
 	bool canBeOffScreen();
-	bool isOffScreen();
+	virtual bool isOffScreen(float scale);
 	virtual void removeFromParentAndCleanup();
 	void update(float dt);
 	void SetPosition(CCPoint position);
