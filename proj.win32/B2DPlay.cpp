@@ -30,9 +30,22 @@ void B2dPlay::lineSegmentTest(){
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 	StraightLineSegment segment(B2DLayer::world,start,120.0f,10.0f);
 	//segment.GenerateNextBody();
-	EdgeLineSegment* edge = new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),100,100);
+	ContinuousLineSegment* child;
+	EdgeLineSegment* edge = new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),0,100);
 	edge->InitilizeData();
+	edge->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),100,-0),edge);
+
+	child = edge->GetChild();
+	child->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),child);
+	child = child->GetChild();
+	child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),0,100),child);
+	b2Vec2* vec = child->GetGameWorldVerticies(2);
+	vec->x += 50;
+	vec->y += 20;
+	EdgeLineSegment* edge2 = new EdgeLineSegment(world,*vec,0,100);
 	edge->GenerateNextBody();
+	edge2->InitilizeData();
+	edge2->GenerateNextBody();
 	// InclineLineSegment segment(B2DLayer::world,start,120.0f,360.0f,30.0f);
 	//segment.InitilizeData();
 	//segment.GetChild();
