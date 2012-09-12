@@ -35,8 +35,9 @@
 		_GameWorldVerticies;
 	}
 
-	void InclineLineSegment::OffsetStartPosition(){
+	void InclineLineSegment::OffsetStartPosition( int attachementVerticie,LineSegment* target){
 		this->_startWorldPosition.x = _startWorldPosition.x + _width/2;
+
 		this->_startWorldPosition.y = _startWorldPosition.y + (_height)/2;
 		this->_startWorldPosition.y = _startWorldPosition.y -_thickness/2;
 }

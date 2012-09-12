@@ -37,7 +37,7 @@ public:
 
 class ContinuousLineSegment :public  LineSegment{
 private:
-
+	int _attachmentVerticie;
 protected:
 	LineSegment *child;
 	LineSegment *parent;
@@ -46,11 +46,11 @@ protected:
 public:
 	ContinuousLineSegment(b2World *world,b2Vec2 startPosition);
 	ContinuousLineSegment(b2World *world,b2Vec2 startPosition,float _width, float _height);
-	virtual void SetChild(ContinuousLineSegment *child,ContinuousLineSegment *parent);
-	virtual void SetParent(ContinuousLineSegment *segment);
+    void SetChild(ContinuousLineSegment *childint ,int attachementVerticie);
+    void SetParent(ContinuousLineSegment *segment);
 	virtual ContinuousLineSegment* GetChild();
 	virtual ContinuousLineSegment* GetParent();
-	virtual void OffsetStartPosition();
+	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
 	virtual void InitilizeData();
 };
 
@@ -67,7 +67,7 @@ public:
 	virtual bool GenerateNextBody();
 	virtual b2Vec2* GetGameWorldVerticies(int verticie);
 	virtual void InitilizeData();
-	virtual void OffsetStartPosition();
+	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
 };
 
 class EdgeLineSegment : public ContinuousLineSegment{
@@ -79,7 +79,7 @@ public:
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual void InitilizeData();
-	virtual void OffsetStartPosition();
+	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
 };
 
 class InclineLineSegment : public StraightLineSegment{
@@ -90,10 +90,18 @@ public:
 	InclineLineSegment(b2World *world,b2Vec2 startPosition,float width,float maxHieght,float thickness);
 	virtual b2Vec2 getLinearVelocity();
 	virtual void InitilizeData();
-	virtual void OffsetStartPosition();
+	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
 };
 
-
+class GapSegment : public EdgeLineSegment{
+private:
+protected:
+	float _thickness;
+public:
+	GapSegment(b2World *world,b2Vec2 startPosition,float width,float height);
+	virtual void GenerateBody();
+	virtual bool GenerateNextBody();
+};
 
 
 #endif

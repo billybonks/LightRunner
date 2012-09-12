@@ -65,7 +65,7 @@ void StraightLineSegment::InitilizeData(){
 	_GameWorldVerticies;
 }
 
-void StraightLineSegment::OffsetStartPosition(){
+void StraightLineSegment::OffsetStartPosition( int attachementVerticie,LineSegment* target){
 	this->_startWorldPosition.x = _startWorldPosition.x + _width/2;
 	this->_startWorldPosition.y = _startWorldPosition.y - _height/2;
 }

@@ -94,12 +94,12 @@ bool Game::init()
 				b2Vec2 start = b2Vec2::b2Vec2();
 			start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
 	_stats =  Statistics();
-	this->_spawner = new Spawner(&_stats,world,start);
+	this->_spawner;// = new Spawner(&_stats,world,start);
 	return true;
 }
 void Game::update(float dt) {
 	_player->updateTrail(dt);
-	this->_spawner->update();
+//	this->_spawner->update();
 	
 	//CCLog("%f",dt);
 

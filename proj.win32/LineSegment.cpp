@@ -68,17 +68,17 @@ bool LineSegment::GenerateNextBody(){
 
 b2Vec2 LineSegment::GetPosition(){
 	b2Vec2 *ret = new b2Vec2( _startWorldPosition);
-	ret->x = ret->x*32;
-	ret->y = ret->y*32;
+	ret->x = ret->x*PTM_RATIO;
+	ret->y = ret->y*PTM_RATIO;
 	return *ret;
 }
 
 float LineSegment::GetWidth(){
-	return this->_width*32;
+	return this->_width*PTM_RATIO;
 }
 
 float LineSegment::GetHeight(){
-	return _height*32;
+	return _height*PTM_RATIO;
 }
 
 bool LineSegment::isOffScreen(float scale){

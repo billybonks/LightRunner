@@ -175,6 +175,7 @@
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="ContinousLineSegment.cpp" />
     <ClCompile Include="EdgeLineSegment.cpp" />
+    <ClCompile Include="GapSegment.cpp" />
     <ClCompile Include="InclineLineSegment.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />

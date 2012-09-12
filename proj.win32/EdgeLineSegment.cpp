@@ -11,6 +11,8 @@ void EdgeLineSegment::GenerateBody()
 
 }
 
+//hello
+///JOOOOOOOOOOOOOOOO
 bool EdgeLineSegment::GenerateNextBody()
 {
 	_startWorldPosition;
@@ -31,7 +33,7 @@ bool EdgeLineSegment::GenerateNextBody()
 		}else{
 			return false;
 		}
-	return false;
+		return false;
 	}
 	return false;
 	return true;
@@ -40,24 +42,22 @@ bool EdgeLineSegment::GenerateNextBody()
 
 void EdgeLineSegment::InitilizeData()
 {
-	_verts[0] = new b2Vec2(0.0f,0.0f);
-	_verts[1] = new b2Vec2(_width,_height);
+	float w = _width/2;
+	float h = _height/2;
+	_verts[0] = new b2Vec2(-w,-h);
+	_verts[1] = new b2Vec2(w,h);
 	float x,y;
 	x = _startWorldPosition.x;
 	y = _startWorldPosition.y;
-	LineSegment::_GameWorldVerticies[0] = new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
-	x = _startWorldPosition.x+_width;
-	y = _startWorldPosition.y;
-	LineSegment::_GameWorldVerticies[1] = new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
-	x = _startWorldPosition.x+_width;
-	y = _startWorldPosition.y+_height;
-	LineSegment::_GameWorldVerticies[2] =  new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
-	x = _startWorldPosition.x;
-	y = _startWorldPosition.y+_height;
-	LineSegment::_GameWorldVerticies[3] =  new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
+	LineSegment::_GameWorldVerticies[0] = new b2Vec2((x-w)*PTM_RATIO,(y-h)*PTM_RATIO);
+	LineSegment::_GameWorldVerticies[1] = new b2Vec2((x+w)*PTM_RATIO,(y+h)*PTM_RATIO);
+	LineSegment::_GameWorldVerticies[2] =  _GameWorldVerticies[1];
+	LineSegment::_GameWorldVerticies[3] =  _GameWorldVerticies[0];
 }
 
-void EdgeLineSegment::OffsetStartPosition()
+void EdgeLineSegment::OffsetStartPosition( int attachementVerticie,LineSegment* target)
 {
-
+	float rentWidth = target->GetWidth()/PTM_RATIO;
+	this->_startWorldPosition.x = _startWorldPosition.x + _width/2;
+	this->_startWorldPosition.y = _startWorldPosition.y +( _height/2);
 }

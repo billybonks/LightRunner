@@ -74,11 +74,11 @@ LineSegment Spawner::GenerateCompoundSegment(float distance,int segments){
 			break;
 		}
 		if(i != 1){
-			lastSegment->SetChild(currentSegment,lastSegment);
+			lastSegment->SetChild(currentSegment,2);
 		}else{
 			segment = currentSegment;
 			//segment->InitilizeData();
-			segment->OffsetStartPosition();
+			segment->OffsetStartPosition(2,segmentQueue);
 			segment->InitilizeData();
 		}
 		lastSegment = currentSegment;

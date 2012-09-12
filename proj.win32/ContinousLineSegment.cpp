@@ -14,9 +14,10 @@ ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition
 	child = NULL;
 }
 
-void ContinuousLineSegment::SetChild(ContinuousLineSegment *child,ContinuousLineSegment *parent){
+void ContinuousLineSegment::SetChild(ContinuousLineSegment *child,int attachementVerticie){
+	_attachmentVerticie = attachementVerticie;
 	this->child = child;
-	child->SetParent(parent);
+	child->SetParent(this);
 	ContinuousLineSegment::InitilizeData();
 	child->InitilizeData();
 }
@@ -46,13 +47,13 @@ void ContinuousLineSegment::GetVertsSquare(b2Vec2 vertices[],float width,float h
 
 void ContinuousLineSegment::InitilizeData()
 {
-	child->SetPosition(*(new b2Vec2(*this->_GameWorldVerticies[2])));
+	child->SetPosition(*(new b2Vec2(*this->_GameWorldVerticies[_attachmentVerticie])));
 	ContinuousLineSegment* childCast = (ContinuousLineSegment*)child;
-
-	childCast->OffsetStartPosition();
+	childCast->OffsetStartPosition(_attachmentVerticie,this);
 }
 
-void ContinuousLineSegment::OffsetStartPosition(){
+void ContinuousLineSegment::OffsetStartPosition( int attachementVerticie,LineSegment* target )
+{
 
 
 }
