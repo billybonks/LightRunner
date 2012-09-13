@@ -4,6 +4,9 @@ GapSegment::GapSegment(b2World *world,b2Vec2 startPosition,float width,float hei
 
 }
 
+GapSegment::GapSegment(b2World *world,float width,float height):EdgeLineSegment(world,width,height){
+
+}
 void GapSegment::GenerateBody(){
 
 }

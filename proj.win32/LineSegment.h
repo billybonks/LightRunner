@@ -24,6 +24,7 @@ public:
 	virtual bool GenerateNextBody();
 	LineSegment(b2World *world,b2Vec2 startPosition);
 	LineSegment(b2World *world,b2Vec2 startPosition,float _width, float _height);
+	LineSegment(b2World *world,float _width, float _height);
 	virtual b2Vec2 getLinearVelocity();
 	virtual b2Vec2 getLastVerticies();
 	virtual float getIncline();
@@ -37,7 +38,8 @@ public:
 
 class ContinuousLineSegment :public  LineSegment{
 private:
-	int _attachmentVerticie;
+	int _targetAttachmentVerticie;
+	int _sourceAttachmentVerticie;
 protected:
 	LineSegment *child;
 	LineSegment *parent;
@@ -46,11 +48,12 @@ protected:
 public:
 	ContinuousLineSegment(b2World *world,b2Vec2 startPosition);
 	ContinuousLineSegment(b2World *world,b2Vec2 startPosition,float _width, float _height);
-    void SetChild(ContinuousLineSegment *childint ,int attachementVerticie);
+	ContinuousLineSegment(b2World *world,float _width, float _height);
+    void SetChild(ContinuousLineSegment *child,int sourceAttachementVerticie,int targetAttachementVerticie);
     void SetParent(ContinuousLineSegment *segment);
 	virtual ContinuousLineSegment* GetChild();
 	virtual ContinuousLineSegment* GetParent();
-	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
+	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
 	virtual void InitilizeData();
 };
 
@@ -63,11 +66,12 @@ protected:
 		///Only use if you are going to init steps and polugonStartPos yourself
 public:
 	StraightLineSegment(b2World *world,b2Vec2 startPosition,float width,float height);
+	StraightLineSegment(b2World *world,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual b2Vec2* GetGameWorldVerticies(int verticie);
 	virtual void InitilizeData();
-	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
+	virtual void  OffsetStartPosition(int targetAttachementVerticie,int sourceAttachementVerticie,LineSegment* target);
 };
 
 class EdgeLineSegment : public ContinuousLineSegment{
@@ -76,10 +80,11 @@ protected:
 	b2Vec2* _verts[2];
 public:
 	EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width,float height);
+	EdgeLineSegment(b2World *world,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual void InitilizeData();
-	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
+	virtual void OffsetStartPosition( int targetAttachementVerticie,int sourceAttachementVerticie,LineSegment* target);
 };
 
 class InclineLineSegment : public StraightLineSegment{
@@ -88,9 +93,10 @@ protected:
 	float _thickness;
 public:
 	InclineLineSegment(b2World *world,b2Vec2 startPosition,float width,float maxHieght,float thickness);
+	InclineLineSegment(b2World *world,float width,float maxHieght,float thickness);
 	virtual b2Vec2 getLinearVelocity();
 	virtual void InitilizeData();
-	virtual void OffsetStartPosition(int attachementVerticie,LineSegment* target);
+	virtual void  OffsetStartPosition(int targetAttachementVerticie,int sourceAttachementVerticie,LineSegment* target);
 };
 
 class GapSegment : public EdgeLineSegment{
@@ -99,8 +105,10 @@ protected:
 	float _thickness;
 public:
 	GapSegment(b2World *world,b2Vec2 startPosition,float width,float height);
+	GapSegment(b2World *world,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
+	
 };
 
 

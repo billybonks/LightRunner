@@ -3,7 +3,18 @@
 EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
 	:ContinuousLineSegment(world,startPosition,width,height)
 {
+	float w = _width/2;
+	float h = _height/2;
+	_verts[0] = new b2Vec2(-w,-h);
+	_verts[1] = new b2Vec2(w,h);
+}
 
+EdgeLineSegment::EdgeLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height)
+{
+	float w = _width/2;
+	float h = _height/2;
+	_verts[0] = new b2Vec2(-w,-h);
+	_verts[1] = new b2Vec2(w,h);
 }
 
 void EdgeLineSegment::GenerateBody()
@@ -42,10 +53,6 @@ bool EdgeLineSegment::GenerateNextBody()
 
 void EdgeLineSegment::InitilizeData()
 {
-	float w = _width/2;
-	float h = _height/2;
-	_verts[0] = new b2Vec2(-w,-h);
-	_verts[1] = new b2Vec2(w,h);
 	float x,y;
 	x = _startWorldPosition.x;
 	y = _startWorldPosition.y;
@@ -55,9 +62,11 @@ void EdgeLineSegment::InitilizeData()
 	LineSegment::_GameWorldVerticies[3] =  _GameWorldVerticies[0];
 }
 
-void EdgeLineSegment::OffsetStartPosition( int attachementVerticie,LineSegment* target)
+void EdgeLineSegment::OffsetStartPosition( int targetAttachementVerticie,int sourceAttachementVerticie,LineSegment* target)
 {
 	float rentWidth = target->GetWidth()/PTM_RATIO;
 	this->_startWorldPosition.x = _startWorldPosition.x + _width/2;
 	this->_startWorldPosition.y = _startWorldPosition.y +( _height/2);
 }
+
+//int targetAttachementVerticie

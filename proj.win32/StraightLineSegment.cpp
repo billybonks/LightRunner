@@ -3,7 +3,11 @@
 StraightLineSegment::StraightLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
 	:ContinuousLineSegment(world,startPosition,width,height)
 {
+	ContinuousLineSegment::GetVertsSquare(_polygonVerticies,_width,_height);
+}
 
+StraightLineSegment::StraightLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height){
+	ContinuousLineSegment::GetVertsSquare(_polygonVerticies,_width,_height);
 }
 
 void StraightLineSegment::GenerateBody()
@@ -45,11 +49,7 @@ b2Vec2* StraightLineSegment::GetGameWorldVerticies(int verticie)
 }
 
 void StraightLineSegment::InitilizeData(){
-	_startWorldPosition;
 	float y,x;
-	ContinuousLineSegment::GetVertsSquare(_polygonVerticies,_width,_height);
-	_startWorldPosition.x;
-	_startWorldPosition.y;
 	y = LineSegment::_startWorldPosition.y+_polygonVerticies[0].y;
 	x = LineSegment::_startWorldPosition.x+_polygonVerticies[0].x;
 	LineSegment::_GameWorldVerticies[0] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
@@ -62,10 +62,9 @@ void StraightLineSegment::InitilizeData(){
 	y = LineSegment::_startWorldPosition.y+_polygonVerticies[2].y;
 	x = LineSegment::_startWorldPosition.x+_polygonVerticies[2].x;
 	LineSegment::_GameWorldVerticies[2] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
-	_GameWorldVerticies;
 }
 
-void StraightLineSegment::OffsetStartPosition( int attachementVerticie,LineSegment* target){
-	this->_startWorldPosition.x = _startWorldPosition.x + _width/2;
-	this->_startWorldPosition.y = _startWorldPosition.y - _height/2;
+void StraightLineSegment::OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target ){
+	//this->_startWorldPosition.x = _startWorldPosition.x + _width/2;
+	//this->_startWorldPosition.y = _startWorldPosition.y - _height/2;
 }

@@ -25,6 +25,12 @@ LineSegment::LineSegment(b2World *world,b2Vec2 startPosition){
 	//this->_lastVerts = originPoints;
 }
 
+LineSegment::LineSegment(b2World *world,float width, float height){
+		this->_width = width/PTM_RATIO;
+	this->_height = height/PTM_RATIO;
+	this->world = world;
+}
+
 LineSegment::LineSegment(b2World *world,b2Vec2 startPosition,float width, float height){
 	this->_width = width/PTM_RATIO;
 	this->_height = height/PTM_RATIO;

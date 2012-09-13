@@ -1,5 +1,8 @@
 #include "LineSegment.h"
 
+InclineLineSegment::InclineLineSegment(b2World *world,float width,float maxHieght,float thickness):StraightLineSegment(world,width,maxHieght){
+
+}
 	InclineLineSegment::InclineLineSegment(b2World *world,b2Vec2 startPosition,float width,float maxHeight,float thickness)
 		:StraightLineSegment(world,startPosition,width,maxHeight)
 	{
@@ -10,7 +13,7 @@
 		}
 		this->_thickness = slopeModifier*thickness;
 		this->_height = (slopeModifier*maxHeight)/32;
-		
+		ContinuousLineSegment::GetVertsInclineSquare(_polygonVerticies,_width,_height,_thickness);
 	}
 
 	b2Vec2 InclineLineSegment::getLinearVelocity(){
@@ -18,7 +21,6 @@
 	}
 
 	void InclineLineSegment::InitilizeData(){
-		ContinuousLineSegment::GetVertsInclineSquare(_polygonVerticies,_width,_height,_thickness);
 		float x,y;
 		y = LineSegment::_startWorldPosition.y+_polygonVerticies[0].y;
 		x = LineSegment::_startWorldPosition.x+_polygonVerticies[0].x;
@@ -32,10 +34,9 @@
 		y = LineSegment::_startWorldPosition.y+_polygonVerticies[2].y;
 		x = LineSegment::_startWorldPosition.x+_polygonVerticies[2].x;
 		LineSegment::_GameWorldVerticies[2] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
-		_GameWorldVerticies;
 	}
 
-	void InclineLineSegment::OffsetStartPosition( int attachementVerticie,LineSegment* target){
+	void InclineLineSegment::OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target ){
 		this->_startWorldPosition.x = _startWorldPosition.x + _width/2;
 
 		this->_startWorldPosition.y = _startWorldPosition.y + (_height)/2;
