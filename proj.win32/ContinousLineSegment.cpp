@@ -22,6 +22,7 @@ ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition
 void ContinuousLineSegment::SetChild(ContinuousLineSegment *child,int sourceAttachementVerticie,int targetAttachementVerticie){
 	_targetAttachmentVerticie = targetAttachementVerticie;
 	_sourceAttachmentVerticie = sourceAttachementVerticie;
+	
 	this->child = child;
 	child->SetParent(this);
 	child->OffsetStartPosition(_targetAttachmentVerticie,_sourceAttachmentVerticie,this);
@@ -59,8 +60,3 @@ void ContinuousLineSegment::InitilizeData()
 //	childCast->OffsetStartPosition(,_attachmentVerticie);
 }
 
-void ContinuousLineSegment::OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target )
-{
-
-
-}

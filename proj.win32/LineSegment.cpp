@@ -103,3 +103,13 @@ bool LineSegment::isOffScreen(float scale){
 	}
 	return false;
 }
+
+void LineSegment::OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target )
+{
+	b2Vec2 sourceVert = this->_polygonVerticies[sourceAttachementVerticie];
+	b2Vec2* targetVert = target->GetGameWorldVerticies(targetAttachementVerticie);
+	this->_startWorldPosition.x = targetVert->x/PTM_RATIO;
+	this->_startWorldPosition.y = targetVert->y/PTM_RATIO;
+	this->_startWorldPosition.x -= sourceVert.x;
+	this->_startWorldPosition.y -= sourceVert.y;
+}

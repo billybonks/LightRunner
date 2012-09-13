@@ -34,7 +34,17 @@ void B2dPlay::lineSegmentTest(){
 	EdgeLineSegment* edge = new EdgeLineSegment(world,b2Vec2(50.0f,100.0f),0,100);
 	edge->InitilizeData();
 	//edge->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,5),2);
-//	edge->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),2);
+	StraightLineSegment* square = new StraightLineSegment(B2DLayer::world,120.0f,50.0f);
+	edge->SetChild(square,0,1);
+	edge->GenerateNextBody();
+	InclineLineSegment* rhombus = new InclineLineSegment(B2DLayer::world,120.0f,50.0f,-10);
+	rhombus->OffsetStartPosition(1,0,square);
+	rhombus->InitilizeData();
+	EdgeLineSegment* rohmbusedge = new EdgeLineSegment(world,100,100);
+	EdgeLineSegment* edge2 = new EdgeLineSegment(world,0,100);
+	rhombus->SetChild(rohmbusedge,0,1);
+	rohmbusedge->SetChild(edge2,1,1);
+	rhombus->GenerateBody();
 	//child = edge->GetChild();
 	////child->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),2);
 	//child->SetChild(new EdgeLineSegment(world,b2Vec2(50.0f,100.0f),100,40),2);
@@ -43,19 +53,19 @@ void B2dPlay::lineSegmentTest(){
 	//child = child->GetChild();
 	////child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),100,-100),1);
 	//child->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),2);
-	//edge->GenerateNextBody();
+	
 	//child = edge->GetChild();
 	//child->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),2);
 	//child = child->GetChild();
 	//child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),0,50),2);
 	//child = child->GetChild();
 	//child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),200,0),1);
-	b2Vec2* vec = child->GetGameWorldVerticies(2);
-	vec->x += 50;
-	vec->y += 20;
-	EdgeLineSegment* edge2 = new EdgeLineSegment(world,*vec,0,100);
-	
-	edge2->InitilizeData();
+	//b2Vec2* vec = child->GetGameWorldVerticies(2);
+	//vec->x += 50;
+	//vec->y += 20;
+	//EdgeLineSegment* edge2 = new EdgeLineSegment(world,*vec,0,100);
+	//
+	//edge2->InitilizeData();
 	//edge2->GenerateNextBody();
 	// InclineLineSegment segment(B2DLayer::world,start,120.0f,360.0f,30.0f);
 	//segment.InitilizeData();

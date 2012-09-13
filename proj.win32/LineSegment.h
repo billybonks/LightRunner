@@ -9,9 +9,10 @@
 class LineSegment : public GameObject{
 private:
 protected:
+	b2Vec2* _polygonVerticies;
 	float _width;
 	float _height;
-	b2Vec2 _lastVerts[2];
+	//b2Vec2 _lastVerts[2];
 	b2Vec2 _startWorldPosition;
 	b2World *world;
 	b2Vec2 *_GameWorldVerticies[4];
@@ -34,6 +35,7 @@ public:
 	b2Vec2 GetPosition();
 	float GetWidth();
 	float GetHeight();
+	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
 };
 
 class ContinuousLineSegment :public  LineSegment{
@@ -49,11 +51,10 @@ public:
 	ContinuousLineSegment(b2World *world,b2Vec2 startPosition);
 	ContinuousLineSegment(b2World *world,b2Vec2 startPosition,float _width, float _height);
 	ContinuousLineSegment(b2World *world,float _width, float _height);
-    void SetChild(ContinuousLineSegment *child,int sourceAttachementVerticie,int targetAttachementVerticie);
-    void SetParent(ContinuousLineSegment *segment);
+	void SetChild(ContinuousLineSegment *child,int sourceAttachementVerticie,int targetAttachementVerticie);
+	void SetParent(ContinuousLineSegment *segment);
 	virtual ContinuousLineSegment* GetChild();
 	virtual ContinuousLineSegment* GetParent();
-	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
 	virtual void InitilizeData();
 };
 
@@ -62,7 +63,6 @@ private:
 protected:
 
 		b2Vec2 _polygonStartPos;
-		b2Vec2 _polygonVerticies[4];
 		///Only use if you are going to init steps and polugonStartPos yourself
 public:
 	StraightLineSegment(b2World *world,b2Vec2 startPosition,float width,float height);
@@ -84,7 +84,6 @@ public:
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual void InitilizeData();
-	virtual void OffsetStartPosition( int targetAttachementVerticie,int sourceAttachementVerticie,LineSegment* target);
 };
 
 class InclineLineSegment : public StraightLineSegment{
@@ -93,10 +92,9 @@ protected:
 	float _thickness;
 public:
 	InclineLineSegment(b2World *world,b2Vec2 startPosition,float width,float maxHieght,float thickness);
-	InclineLineSegment(b2World *world,float width,float maxHieght,float thickness);
+	InclineLineSegment(b2World *world,float width,float maxHeight,float thickness);
 	virtual b2Vec2 getLinearVelocity();
 	virtual void InitilizeData();
-	virtual void  OffsetStartPosition(int targetAttachementVerticie,int sourceAttachementVerticie,LineSegment* target);
 };
 
 class GapSegment : public EdgeLineSegment{
