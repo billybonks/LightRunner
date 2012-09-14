@@ -16,9 +16,7 @@ StraightLineSegment::StraightLineSegment(b2World *world,float width,float height
 
 void StraightLineSegment::GenerateBody()
 {
-	while(this->GenerateNextBody()){
-		//Do Something
-	}
+
 }
 
 
@@ -68,11 +66,10 @@ void StraightLineSegment::InitilizeData(){
 	LineSegment::_GameWorldVerticies[2] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 }
 
-void StraightLineSegment::OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target ){
-	b2Vec2 sourceVert = this->_polygonVerticies[sourceAttachementVerticie];
-	b2Vec2* targetVert = target->GetGameWorldVerticies(targetAttachementVerticie);
-	this->_startWorldPosition.x = targetVert->x/PTM_RATIO;
-	this->_startWorldPosition.y = targetVert->y/PTM_RATIO;
-	this->_startWorldPosition.x -= sourceVert.x;
-	this->_startWorldPosition.y -= sourceVert.y;
+
+float StraightLineSegment::CalculateDistance(){
+	if(this->_sourceAttachmentVerticie == 0||this->_sourceAttachmentVerticie == 3){
+		return this->GetWidth();
+	}
+	return this->GetWidth()*-1;
 }

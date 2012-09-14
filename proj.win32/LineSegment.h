@@ -36,13 +36,15 @@ public:
 	float GetWidth();
 	float GetHeight();
 	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
+	virtual float CalculateDistance();
 };
 
 class ContinuousLineSegment :public  LineSegment{
 private:
+
+protected:
 	int _targetAttachmentVerticie;
 	int _sourceAttachmentVerticie;
-protected:
 	LineSegment *child;
 	LineSegment *parent;
 	void GetVertsSquare(b2Vec2 vertices[],float width,float height);
@@ -56,6 +58,7 @@ public:
 	virtual ContinuousLineSegment* GetChild();
 	virtual ContinuousLineSegment* GetParent();
 	virtual void InitilizeData();
+	virtual bool GenerateNextBody();
 };
 
 class StraightLineSegment : public ContinuousLineSegment{
@@ -71,7 +74,7 @@ public:
 	virtual bool GenerateNextBody();
 	virtual b2Vec2* GetGameWorldVerticies(int verticie);
 	virtual void InitilizeData();
-	virtual void  OffsetStartPosition(int targetAttachementVerticie,int sourceAttachementVerticie,LineSegment* target);
+	virtual float CalculateDistance();
 };
 
 class EdgeLineSegment : public ContinuousLineSegment{
@@ -84,6 +87,7 @@ public:
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual void InitilizeData();
+		virtual float CalculateDistance();
 };
 
 class InclineLineSegment : public StraightLineSegment{

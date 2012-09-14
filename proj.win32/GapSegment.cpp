@@ -12,6 +12,5 @@ void GapSegment::GenerateBody(){
 }
 
 bool GapSegment::GenerateNextBody(){
-
-	return false;
+	return ContinuousLineSegment::GenerateNextBody();
 }

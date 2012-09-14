@@ -4,6 +4,7 @@
 ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition)
 	:LineSegment(world,startPosition)
 {
+	 _sourceAttachmentVerticie = 0;
 	parent = NULL;
 	child = NULL;
 }
@@ -11,10 +12,12 @@ ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition
 ContinuousLineSegment::ContinuousLineSegment(b2World *world,float width, float height):LineSegment(world,width,height){
 	parent = NULL;
 	child = NULL;
+	 _sourceAttachmentVerticie = 0;
 }
 
 ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition,float width, float height):LineSegment(world,startPosition,width,height)
 {
+	 _sourceAttachmentVerticie = 0;
 	parent = NULL;
 	child = NULL;
 }
@@ -22,7 +25,7 @@ ContinuousLineSegment::ContinuousLineSegment(b2World *world,b2Vec2 startPosition
 void ContinuousLineSegment::SetChild(ContinuousLineSegment *child,int sourceAttachementVerticie,int targetAttachementVerticie){
 	_targetAttachmentVerticie = targetAttachementVerticie;
 	_sourceAttachmentVerticie = sourceAttachementVerticie;
-	
+
 	this->child = child;
 	child->SetParent(this);
 	child->OffsetStartPosition(_targetAttachmentVerticie,_sourceAttachmentVerticie,this);
@@ -57,6 +60,16 @@ void ContinuousLineSegment::InitilizeData()
 {
 	child->SetPosition(*(new b2Vec2(*this->_GameWorldVerticies[_targetAttachmentVerticie])));
 	ContinuousLineSegment* childCast = (ContinuousLineSegment*)child;
-//	childCast->OffsetStartPosition(,_attachmentVerticie);
+	//	childCast->OffsetStartPosition(,_attachmentVerticie);
 }
 
+bool ContinuousLineSegment::GenerateNextBody(){
+	if(child != NULL){
+		if(child->GenerateNextBody()){
+			return true;
+		}else{
+			return false;
+		}
+		return false;
+	}
+}

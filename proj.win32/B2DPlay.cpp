@@ -40,7 +40,7 @@ void B2dPlay::lineSegmentTest(){
 	InclineLineSegment* rhombus = new InclineLineSegment(B2DLayer::world,120.0f,50.0f,-10);
 	rhombus->OffsetStartPosition(1,0,square);
 	rhombus->InitilizeData();
-	EdgeLineSegment* rohmbusedge = new EdgeLineSegment(world,100,100);
+	GapSegment* rohmbusedge = new GapSegment(world,100,100);
 	EdgeLineSegment* edge2 = new EdgeLineSegment(world,0,100);
 	rhombus->SetChild(rohmbusedge,0,1);
 	rohmbusedge->SetChild(edge2,1,1);

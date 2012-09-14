@@ -42,16 +42,7 @@ bool EdgeLineSegment::GenerateNextBody()
 	fixture->density = 1.0f;
 	fixture->friction = 0;
 	body->CreateFixture(fixture);
-	if(child != NULL){
-		if(child->GenerateNextBody()){
-			return true;
-		}else{
-			return false;
-		}
-		return false;
-	}
-	return false;
-	return true;
+	return ContinuousLineSegment::GenerateNextBody();
 }
 
 
@@ -68,4 +59,9 @@ void EdgeLineSegment::InitilizeData()
 	LineSegment::_GameWorldVerticies[3] =  _GameWorldVerticies[0];
 }
 
-//int targetAttachementVerticie
+float EdgeLineSegment::CalculateDistance(){
+	if(this->_sourceAttachmentVerticie == 0||this->_sourceAttachmentVerticie == 3){
+		return this->GetWidth();
+	}
+	return this->GetWidth()*-1;
+}

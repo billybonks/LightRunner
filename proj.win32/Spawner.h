@@ -11,18 +11,16 @@ using namespace cocos2d;
 class Spawner 
 {
 private:
-	LineSegment* segmentQueue;
+	vector<LineSegment*> segmentQueue;
 	b2World* _world;
 	Statistics* _stats;
 	b2Vec2 _initialSpawnLocation;
-	float currentStructureDistance;
-	void SpawnLine();
+	LineSegment* _lastSegment;
 	int _counter;
 public:
 	Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation);
-	void Spawn(CCLayer layer);
 	int Random(int lowest, int highest);
-	LineSegment GenerateCompoundSegment(float distance,int segments);
+	LineSegment GenerateCompoundSegment();
 	void update();
 };
 

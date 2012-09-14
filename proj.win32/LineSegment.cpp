@@ -113,3 +113,7 @@ void LineSegment::OffsetStartPosition( int targetAttachementVerticie, int source
 	this->_startWorldPosition.x -= sourceVert.x;
 	this->_startWorldPosition.y -= sourceVert.y;
 }
+
+float LineSegment::CalculateDistance(){
+	return 0;
+}
