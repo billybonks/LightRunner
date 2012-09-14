@@ -1,16 +1,18 @@
 #include "Spawner.h"
 
-Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation){
+Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* player){
 	srand(time(0));
 	_stats = stats;
 	_world = world;
+	_player = player;
 	_initialSpawnLocation = initialSpawnLocation;
-	b2Vec2* startPos = new b2Vec2(400,100);
+	b2Vec2* startPos = new b2Vec2(800,100);
 	LineSegment* segment = dynamic_cast<LineSegment*>(new EdgeLineSegment (_world,*startPos,800,0));
 	segment->InitilizeData();
 	segmentQueue.push_back(segment);
 	segment->GenerateNextBody();
-	_lastSegment = segment;
+	_currentSegment = segment;
+	indexMarker =0;
 }
 
 int Spawner::Random(int lowest, int highest){
@@ -82,7 +84,8 @@ LineSegment Spawner::GenerateCompoundSegment(){
 	segment->InitilizeData();
 	LineSegment* ret =  dynamic_cast<LineSegment*>(segment);
 	segmentQueue.push_back(segment);
-	_lastSegment = segment;
+	_lastSegment = _currentSegment;
+	_currentSegment = segment;
 	//b2Vec2* vert = _lastSegment->GetGameWorldVerticies(0);
 	return *ret;
 }
@@ -90,17 +93,28 @@ LineSegment Spawner::GenerateCompoundSegment(){
 void Spawner::update(){
 	float x;
 	float spawnX;
-	float distanace = _lastSegment->CalculateDistance();
+	float distanace = _currentSegment->CalculateDistance();
 	if(distanace>0){
-		 x =_lastSegment->GetGameWorldVerticies(0)->x;
+		 x =_currentSegment->GetGameWorldVerticies(0)->x;
 	}else{
-		 x =_lastSegment->GetGameWorldVerticies(1)->x;
+		 x =_currentSegment->GetGameWorldVerticies(1)->x;
 	}
 	spawnX = distanace/4+x;
 	if(_stats->GetDistanceTraveled()>spawnX){
 		GenerateCompoundSegment();
 		segmentQueue.back()->GenerateNextBody();
-		
+	}
+	float traveld = _stats->GetDistanceTraveled();
+	distanace = _lastSegment->CalculateDistance();
+	float distancer = distanace+x;
+	if(distancer<=traveld){
+		indexMarker++;
 	}
 }
+
+LineSegment* Spawner::GetCurrentPlatform(){
+	return segmentQueue.at(indexMarker);
+}
+
+
 

@@ -73,3 +73,8 @@ float StraightLineSegment::CalculateDistance(){
 	}
 	return this->GetWidth()*-1;
 }
+
+float StraightLineSegment::GetYForX(float x){
+	return 0;
+}
+

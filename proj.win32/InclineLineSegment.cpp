@@ -49,3 +49,8 @@
 		x = LineSegment::_startWorldPosition.x+_polygonVerticies[2].x;
 		LineSegment::_GameWorldVerticies[2] =new b2Vec2((x)*PTM_RATIO,(y)*PTM_RATIO);
 	}
+
+float InclineLineSegment::GetYForX(float x){
+	return 0;
+}
+

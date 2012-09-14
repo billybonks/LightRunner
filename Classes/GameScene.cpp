@@ -48,7 +48,7 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 0.3f;
+	_scale = 1.0f;
 	this->setScale(_scale);
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -94,13 +94,18 @@ bool Game::init()
 				b2Vec2 start = b2Vec2::b2Vec2();
 			start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
 	_stats =  Statistics();
-	this->_spawner = new Spawner(&_stats,world,start);
+	this->_spawner = new Spawner(&_stats,world,start,_player);
 	return true;
 }
 void Game::update(float dt) {
 	_player->updateTrail(dt);
 	this->_spawner->update();
-	
+	LineSegment* segement = _spawner->GetCurrentPlatform();
+	b2Vec2 playerPos = _player->getBody()->GetPosition();
+	playerPos.x = playerPos.x *PTM_RATIO;
+	playerPos.y = playerPos.y *PTM_RATIO;
+	float y = segement->GetYForX(playerPos.x);
+	float difInY = playerPos.y -y;
 	//CCLog("%f",dt);
 
 	//boss antigravity:

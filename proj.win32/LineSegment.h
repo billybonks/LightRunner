@@ -37,6 +37,7 @@ public:
 	float GetHeight();
 	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
 	virtual float CalculateDistance();
+	virtual float GetYForX(float x);
 };
 
 class ContinuousLineSegment :public  LineSegment{
@@ -75,6 +76,7 @@ public:
 	virtual b2Vec2* GetGameWorldVerticies(int verticie);
 	virtual void InitilizeData();
 	virtual float CalculateDistance();
+	virtual float GetYForX(float x);
 };
 
 class EdgeLineSegment : public ContinuousLineSegment{
@@ -87,7 +89,8 @@ public:
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual void InitilizeData();
-		virtual float CalculateDistance();
+	virtual float CalculateDistance();
+	virtual float GetYForX(float x);
 };
 
 class InclineLineSegment : public StraightLineSegment{
@@ -99,6 +102,7 @@ public:
 	InclineLineSegment(b2World *world,float width,float maxHeight,float thickness);
 	virtual b2Vec2 getLinearVelocity();
 	virtual void InitilizeData();
+	virtual float GetYForX(float x);
 };
 
 class GapSegment : public EdgeLineSegment{
@@ -110,7 +114,6 @@ public:
 	GapSegment(b2World *world,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
-	
 };
 
 

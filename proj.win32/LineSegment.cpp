@@ -117,3 +117,7 @@ void LineSegment::OffsetStartPosition( int targetAttachementVerticie, int source
 float LineSegment::CalculateDistance(){
 	return 0;
 }
+
+float LineSegment::GetYForX(float x){
+	return 0;
+}
