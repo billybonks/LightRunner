@@ -12,6 +12,7 @@ Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,Ga
 	segmentQueue.push_back(segment);
 	segment->GenerateNextBody();
 	_currentSegment = segment;
+	_lastSegment = segment;
 	indexMarker =0;
 }
 
@@ -104,12 +105,7 @@ void Spawner::update(){
 		GenerateCompoundSegment();
 		segmentQueue.back()->GenerateNextBody();
 	}
-	float traveld = _stats->GetDistanceTraveled();
-	distanace = _lastSegment->CalculateDistance();
-	float distancer = distanace+x;
-	if(distancer<=traveld){
-		indexMarker++;
-	}
+
 }
 
 LineSegment* Spawner::GetCurrentPlatform(){
