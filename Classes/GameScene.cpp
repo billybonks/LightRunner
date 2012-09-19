@@ -26,6 +26,7 @@ CCScene* Game::scene()
 	return scene;
 }
 void Game::draw(){
+
 	B2DLayer::draw();
 }
 // on "init" you need to initialize your instance
@@ -48,8 +49,11 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
+		this->setAnchorPoint(ccp(0.0f,0.0f));
+
 	_scale = 1.0f;
 	this->setScale(_scale);
+
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png",&screenBounds);
@@ -168,7 +172,9 @@ void Game::CleanWorld(){
 			else {
 			//Synchronize the AtlasSprites position and rotation with the corresponding body
 				myActor->getSprite()->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
+				myActor->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
 				myActor->getSprite()->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
+				myActor->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
 			}
 		}	
 	}
@@ -176,8 +182,9 @@ void Game::CleanWorld(){
 		objectsToClean.at(i)->removeFromParentAndCleanup(); //err:not 100% sure this frees memory - test!
 	}
 	//move screen
-	this->setPosition(ccp((-_player->getBody()->GetPosition().x*PTM_RATIO+winSize.width * 0.1)*_scale,(-_player->getBody()->GetPosition().y*PTM_RATIO+winSize.height * 0.3)*_scale));
-	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width,this->getContentSize().height);
+	this->setPosition(ccp((-_player->getBody()->GetPosition().x*PTM_RATIO*_scale+(winSize.width*0.1f)),(-_player->getBody()->GetPosition().y*PTM_RATIO*_scale+(winSize.height*0.5f))));
+	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width/_scale,this->getContentSize().height/_scale);
+	
 }
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {

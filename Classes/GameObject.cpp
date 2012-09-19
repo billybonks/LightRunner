@@ -33,21 +33,18 @@
 
 		bool GameObject::isOffScreen(float scale){//err: need to implement properly for y axis maybe
 			//CCLog("May bug here in offscreen when screen moves up/down");
-			float x =  this->body->GetPosition().x* PTM_RATIO;
-			float y =  this->body->GetPosition().y* PTM_RATIO;
-			float top = screen->origin.y-50;
-			float left = screen->origin.x-50;
-			float right = screen->origin.x+screen->size.width+50;
-			float bottem = screen->origin.y+screen->size.height+50;
-			top = top / scale;
-			left = left / scale;
-			right = right / scale;
-			bottem = bottem / scale;
-			//float pos1 = <screen->origin.x-50;
-			if(x<left||x>right||y<top||y>right){
+			float layerx =  this->body->GetPosition().x* PTM_RATIO;
+			float layery =  this->body->GetPosition().y* PTM_RATIO;
+			float left = screen->origin.x;
+			float bottom = screen->origin.y;
+			float winwidth = screen->size.width*scale;
+			float winheight = screen->size.height*scale;
+			float screenx=layerx*scale-left;
+			float screeny=layery*scale-bottom;
+			if(screeny<0||screeny>winheight||screenx<0||screenx>winwidth)
 				return true;
-			}
-			return false;
+			else
+				return false;
 		}
 
 		GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr )
