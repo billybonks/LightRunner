@@ -1,8 +1,9 @@
 #include "Spawner.h"
-
-Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* player){
+#include "GameScene.h"
+Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* player){
 	srand(time(0));
 	_stats = stats;
+	_game = game;
 	_world = world;
 	_player = player;
 	_initialSpawnLocation = initialSpawnLocation;
@@ -82,7 +83,9 @@ LineSegment Spawner::GenerateCompoundSegment(){
 	}
 	b2Vec2* vert = _lastSegment->GetGameWorldVerticies(2);
 	segment->OffsetStartPosition(2,0,_lastSegment);
+	
 	segment->InitilizeData();
+	
 	LineSegment* ret =  dynamic_cast<LineSegment*>(segment);
 	segmentQueue.push_back(segment);
 	_lastSegment = _currentSegment;
@@ -104,6 +107,7 @@ void Spawner::update(){
 	if(_stats->GetDistanceTraveled()>spawnX){
 		GenerateCompoundSegment();
 		segmentQueue.back()->GenerateNextBody();
+		_game->addChild(segmentQueue.back()->getSprite());	
 	}
 
 }

@@ -1,4 +1,5 @@
 #include "LineSegment.h"
+#include "Light.h"
 
 EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
 	:ContinuousLineSegment(world,startPosition,width,height)
@@ -8,7 +9,6 @@ EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width
 	float h = _height/2;
 	_polygonVerticies[0].Set(-w, -h);
 	_polygonVerticies[1].Set(w, h);
-	
 }
 
 EdgeLineSegment::EdgeLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height)
@@ -42,6 +42,8 @@ bool EdgeLineSegment::GenerateNextBody()
 	fixture->density = 1.0f;
 	fixture->friction = 0;
 	body->CreateFixture(fixture);
+	this->sprite=Light::retainedLight(_polygonVerticies);
+	this->sprite->setPosition(ccp(body->GetPosition().x*PTM_RATIO,body->GetPosition().y*PTM_RATIO));
 	return ContinuousLineSegment::GenerateNextBody();
 }
 
