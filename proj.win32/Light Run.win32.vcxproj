@@ -182,6 +182,7 @@
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ScoreLayer.cpp" />
+    <ClCompile Include="Tunnel.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Statistics.cpp" />
     <ClCompile Include="StraightLineSegment.cpp" />

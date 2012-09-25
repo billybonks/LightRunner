@@ -48,7 +48,7 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 1.0f;
+	_scale = 0.8f;
 	this->setScale(_scale);
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -107,19 +107,21 @@ void Game::update(float dt) {
 	float y = segement->GetYForX(playerPos.x);
 	float difInY = playerPos.y -y;
 	//CCLog("%f",dt);
-
+	//if(difInY > 360){
+	//	_scale = 360/difInY;
+	//}
+	//this->setScale(_scale);
 	//boss antigravity:
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
-	
-	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
+	y = segement->GetYForX(_boss->getBody()->GetPosition().x);
+	difInY = _boss->getBody()->GetPosition().y -y;
+	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,difInY));//_boss->getBody()->GetLinearVelocity().y));
 	//_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	//acceleration
 	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
 		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
 	}
-
-
 	B2DLayer::update(dt);
 	_stats.IncrementDistance(_player->getSprite()->getPosition().x - _lastPos.x);
 	_lastPos = _player->getSprite()->getPosition();

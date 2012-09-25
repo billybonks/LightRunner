@@ -69,7 +69,8 @@ float EdgeLineSegment::CalculateDistance(){
 float EdgeLineSegment::GetYForX(float x){
 	b2Vec2 *startVert =   GetGameWorldVerticies(_sourceAttachmentVerticie);
 	startVert->x;
-	if(x>(startVert->x+_width)){
+	float width = _width * PTM_RATIO;
+	if(x>(startVert->x+width)){
 		return 0;
 	}
 	float difference = startVert->x -x;

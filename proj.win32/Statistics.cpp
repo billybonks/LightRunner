@@ -6,7 +6,7 @@
 		_multiplier = 1;
 		_distanceTraveld = 0;
 		_velocity = 0.1;
-		_maxSpeed =25;
+		_maxSpeed =15;
 	}
 
 	int Statistics::GetMultiplier(){

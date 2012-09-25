@@ -117,4 +117,19 @@ public:
 };
 
 
+class Tunnel :public ContinuousLineSegment{
+private:
+protected:
+	EdgeLineSegment* left;
+	EdgeLineSegment* right;
+public:
+	Tunnel(b2World *world,b2Vec2 startPosition,float width,float height,bool leftEntrance,bool rightExit);
+	Tunnel(b2World *world,float width,float height,bool leftEntrance,bool rightExit);
+	virtual void GenerateBody();
+	virtual bool GenerateNextBody();
+	virtual void InitilizeData();
+	virtual float CalculateDistance();
+	virtual float GetYForX(float x);
+	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
+};
 #endif
