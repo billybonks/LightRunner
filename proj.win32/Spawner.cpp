@@ -11,18 +11,21 @@ Spawner::Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,Ga
 	segment->InitilizeData();
 	segmentQueue.push_back(segment);
 	segment->GenerateNextBody();
-	_currentSegment = segment;
-	_lastSegment = segment;
+	_currentSegment= segment;
 	indexMarker =0;
+	_generate = true;
+	_verticalGapChance = 3;
+	_horizontalGapChance = 3;
 }
 
 int Spawner::Random(int lowest, int highest){
-	 
+
 	int range=(highest-lowest)+1;		    	
 	return lowest+int(range*rand()/(RAND_MAX + 1.0)); 
 }
 
 LineSegment Spawner::GenerateCompoundSegment(){
+
 	/*
 	Currently only spawning with 3 test OBJects
 	str8 line	1
@@ -45,7 +48,8 @@ LineSegment Spawner::GenerateCompoundSegment(){
 	maxDistance = speed*runtime;
 	segmentDistance =  Random(minDistance,maxDistance);
 	distanceRemeinder;
-	structType = Random(1,6);
+	int spawnFloatingPLatformChance = 6;
+	structType = Random(1,3);
 	switch ( structType )
 	{
 	case 1:
@@ -64,14 +68,8 @@ LineSegment Spawner::GenerateCompoundSegment(){
 		segment = dynamic_cast<ContinuousLineSegment*>(new EdgeLineSegment(_world,segmentDistance,0));
 		break;
 	case 5:
-		segmentDistance = Random(segmentDistance/3,(segmentDistance/2));
-		hieght = Random(segmentDistance/3,segmentDistance/2);
-		segment = dynamic_cast<ContinuousLineSegment*>(new EdgeLineSegment(_world,segmentDistance,hieght));
 		break;
 	case 6:
-		segmentDistance = Random(segmentDistance/3,(segmentDistance/2));
-		hieght = Random(segmentDistance/3,segmentDistance/2);
-		segment = dynamic_cast<ContinuousLineSegment*>(new EdgeLineSegment(_world,segmentDistance,-hieght));
 		break;
 	case 7:
 		//Upward jump tunnel
@@ -80,36 +78,58 @@ LineSegment Spawner::GenerateCompoundSegment(){
 		//LongDrop jump tunnel
 		break;
 	}
-	b2Vec2* vert = _lastSegment->GetGameWorldVerticies(2);
-	segment->OffsetStartPosition(2,0,_lastSegment);
+	segment->OffsetStartPosition(2,0,_currentSegment);
+	
+	b2Vec2 pos = segment->GetPosition();
+	int spawnFloatingPLatform = Random(1,10);
+	if((spawnFloatingPLatformChance > spawnFloatingPLatform)&&(structType ==1)){
+		int floatDist = segmentDistance/2;
+		int floatH = Random(5,20);
+		b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
+		StraightLineSegment *floater = new StraightLineSegment(_world,floaterPos,floatDist,floatH);
+		floater->GenerateNextBody();
+	}
+	structType = Random(1,10);
+	if(structType < _verticalGapChance){
+		pos.x = pos.x+100;
+	}
+	structType = Random(1,10);
+	if(structType < _horizontalGapChance){
+		pos.y = pos.y+100;
+	}
+	segment->SetPosition(pos);
 	segment->InitilizeData();
 	LineSegment* ret =  dynamic_cast<LineSegment*>(segment);
-	segmentQueue.push_back(segment);
-	_lastSegment = _currentSegment;
-	_currentSegment = segment;
+	_nextSegment = segment;
+	_nextSegment->GenerateNextBody();
 	//b2Vec2* vert = _lastSegment->GetGameWorldVerticies(0);
 	return *ret;
 }
 
 void Spawner::update(){
+
 	float x;
 	float spawnX;
 	float distanace = _currentSegment->CalculateDistance();
+	float playerX = _player->getBody()->GetPosition().x*PTM_RATIO;
 	if(distanace>0){
-		 x =_currentSegment->GetGameWorldVerticies(0)->x;
+		x =_currentSegment->GetGameWorldVerticies(0)->x;
 	}else{
-		 x =_currentSegment->GetGameWorldVerticies(1)->x;
+		x =_currentSegment->GetGameWorldVerticies(1)->x;
 	}
-	spawnX = distanace/4+x;
-	if(_stats->GetDistanceTraveled()>spawnX){
+	if(_generate == true){
 		GenerateCompoundSegment();
-		segmentQueue.back()->GenerateNextBody();
+		_generate= false;
+	}
+	if(playerX >x+distanace){
+		_currentSegment = _nextSegment;
+		_generate = true;
 	}
 
 }
 
 LineSegment* Spawner::GetCurrentPlatform(){
-	return segmentQueue.at(indexMarker);
+	return _currentSegment;
 }
 
 
