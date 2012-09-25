@@ -15,11 +15,15 @@ private:
 	b2World* _world;
 	Statistics* _stats;
 	b2Vec2 _initialSpawnLocation;
-	LineSegment* _lastSegment;
 	LineSegment* _currentSegment;
+	LineSegment* _nextSegment;
+	bool _generate;
 	float indexMarker;
 	int _counter;
 	GameObject* _player;
+	int _verticalGapChance;
+	int _horizontalGapChance;
+	int _floatingPlatformChance;
 public:
 	Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* _player);
 	int Random(int lowest, int highest);
