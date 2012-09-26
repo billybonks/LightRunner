@@ -23,14 +23,21 @@ Light::Light(CCPoint position,float width,float height)
 	return l;
 }
 
+	Light* Light::retainedLight(b2Vec2* polygonVerticies){
+	Light* l = new Light();
+	polygonVerticies[0]*=PTM_RATIO;
+	polygonVerticies[1]*=PTM_RATIO;
+	l->_polygonVerticies=polygonVerticies;
+	l->setContentSize(CCSize(abs(polygonVerticies[1].x-polygonVerticies[0].x),abs(polygonVerticies[1].y-polygonVerticies[0].y)));
+
+	return l;
+}
+
 void Light::draw(){
-	glLineWidth( 5.0f );
-	glColor4ub(255.0f,0.0f,0.0f,255.0f);
-	ccDrawLine( ccp(-50,0), ccp(MIN(screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
+	glLineWidth( 3.0f );
+	//ccDrawLine( ccp(-50,0), ccp(MIN(screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
+	ccDrawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(_polygonVerticies[1].x,_polygonVerticies[1].y));
 	glLineWidth(1);
-	glColor4ub(255,255,255,255);
-
-
 }
 
 void Light::removeFromParentAndCleanup(){
