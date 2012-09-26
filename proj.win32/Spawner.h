@@ -1,3 +1,5 @@
+#ifndef __SPAWNER__
+#define __SPAWNER__
 
 
 #include "cocos2d.h"
@@ -5,8 +7,11 @@
 #include "Statistics.h"
 #include "Light.h"
 #include "LineSegment.h"
+
 #include <vector>
 using namespace cocos2d;
+
+class Game;
 
 class Spawner 
 {
@@ -14,6 +19,7 @@ private:
 	vector<LineSegment*> segmentQueue;
 	b2World* _world;
 	Statistics* _stats;
+	Game* _game;
 	b2Vec2 _initialSpawnLocation;
 	LineSegment* _lastSegment;
 	LineSegment* _currentSegment;
@@ -21,10 +27,10 @@ private:
 	int _counter;
 	GameObject* _player;
 public:
-	Spawner(Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* _player);
+	Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* _player);
 	int Random(int lowest, int highest);
 	LineSegment GenerateCompoundSegment();
 	void update();
 	LineSegment* GetCurrentPlatform();
 };
-
+#endif

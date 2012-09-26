@@ -169,5 +169,8 @@
     <ClCompile Include="GapSegment.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="Tunnel.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

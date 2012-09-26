@@ -51,7 +51,7 @@ bool Game::init()
 	//prep stats
 		this->setAnchorPoint(ccp(0.0f,0.0f));
 
-	_scale = 1.0f;
+	_scale = 0.2f;
 	this->setScale(_scale);
 
 	 winSize = CCDirector::sharedDirector()->getWinSize();
@@ -98,7 +98,7 @@ bool Game::init()
 				b2Vec2 start = b2Vec2::b2Vec2();
 			start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
 	_stats =  Statistics();
-	this->_spawner = new Spawner(&_stats,world,start,_player);
+	this->_spawner = new Spawner(this, &_stats,world,start,_player);
 	return true;
 }
 void Game::update(float dt) {
