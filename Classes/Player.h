@@ -15,8 +15,11 @@ public:
 	void setNumFootContacts(int i);
 	void addNumFootContacts();
 	void subNumFootContacts();
+	//	void setCanJump();
+	void subCanJump();
 private:
 	int numFootContacts;
+	int canjump;
 };
   
 

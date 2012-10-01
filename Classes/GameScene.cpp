@@ -52,7 +52,7 @@ bool Game::init()
 	//prep stats
 		this->setAnchorPoint(ccp(0.0f,0.0f));
 
-	_scale = 1.0f;
+	_scale = 0.2f;
 	this->setScale(_scale);
 
 	 winSize = CCDirector::sharedDirector()->getWinSize();
@@ -127,7 +127,7 @@ void Game::update(float dt) {
 		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
 	}
 
-
+	_player->subCanJump();
 	B2DLayer::update(dt);
 	_stats.IncrementDistance(_player->getSprite()->getPosition().x - _lastPos.x);
 	_lastPos = _player->getSprite()->getPosition();

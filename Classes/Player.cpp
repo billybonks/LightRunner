@@ -7,12 +7,36 @@ Player::Player(void)
 }
 
 void Player::jump(){
-	if ( this->numFootContacts>= 1 ) {
-    b2Vec2 impulse = b2Vec2(0.0f, 4.5f);
-    this->body->ApplyLinearImpulse(impulse, this->body->GetWorldCenter());	
+
+	if ( this->numFootContacts>= 1&&canjump<=0 ) {
+		//jump
+		b2Vec2 impulse = b2Vec2(0.0f, 4.5f);
+		this->body->ApplyLinearImpulse(impulse, this->body->GetWorldCenter());
+		//prevent jumping for 10frames
+		canjump=10;
+		/*
+		idk this doesnt work
+		//prevent jumping for 0.2secs
+		canjump=false;
+		// set up the time delay
+		CCDelayTime *delayAction = CCDelayTime::actionWithDuration(0.2f);
+		// perform the selector call
+		CCCallFunc *callSelectorAction = CCCallFunc::actionWithTarget(this, callfunc_selector(Player::setCanJump));
+		CCHide *h = CCHide::action();
+		// run the action
+		this->runAction(CCSequence::actions(h,delayAction, h,callSelectorAction, NULL));
+		*/
 	}
 }
 
+//void Player::setCanJump(){
+//	CCLog("asd");
+//	canjump=true;
+//}
+
+void Player::subCanJump(){
+	canjump--;
+}
 void Player::createFootFixture(b2World* world) {
 	  //add foot sensor fixture
 
@@ -26,7 +50,8 @@ void Player::createFootFixture(b2World* world) {
       myFixtureDef.isSensor = true;
 	  b2Fixture* footSensorFixture = this->getBody()->CreateFixture(&myFixtureDef);
       footSensorFixture->SetUserData( (void*)3 );
-
+	  
+	  canjump=0;
 }
 
 void Player::setNumFootContacts(int i){
