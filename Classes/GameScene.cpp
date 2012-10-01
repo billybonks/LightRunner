@@ -2,7 +2,6 @@
 #include "Light.h"
 #include "cocos2d.h"
 #include "b2debugDraw.h"
-#include "ContactListener.h"
 using namespace cocos2d;
 
 CCScene* Game::scene()
@@ -44,14 +43,16 @@ bool Game::init()
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("runner.plist");
  //END
 	//setting ContactListner
-	//ContactListener listener = new ContactListener();
-	//world->SetContactListener(listener);
+		listener = new ContactListener();
+
+	  world->SetContactListener(listener);
+
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
 		this->setAnchorPoint(ccp(0.0f,0.0f));
 
-	_scale = 0.2f;
+	_scale = 1.0f;
 	this->setScale(_scale);
 
 	 winSize = CCDirector::sharedDirector()->getWinSize();
@@ -60,6 +61,9 @@ bool Game::init()
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
 	_player->createBox2dObject(B2DLayer::world);
+	_player->createFootFixture(B2DLayer::world);
+	  _player->setNumFootContacts(0);
+
 	_player->SetCanBeOffScreen(true);
 
 	//animation

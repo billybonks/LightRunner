@@ -68,9 +68,6 @@
     <ClInclude Include="backgroundlayer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="ContactListener.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="scorelayer.h">
       <Filter>include</Filter>
     </ClInclude>

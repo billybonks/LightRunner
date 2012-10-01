@@ -41,7 +41,8 @@ void B2DLayer::Debug(bool debug){
 
 
 void B2DLayer::update(float dt){
-	//this will fuckup the game if the device doesnt run at exactly 60fps. check http://gafferongames.com/game-physics/fix-your-timestep/ for how to do it if we do need to, changed it back to normal dt
+	//this will fuckup the game if the device doesnt run at exactly 60fps. check http://gafferongames.com/game-physics/fix-your-timestep/ for how to do it
+	//we gotta do a fixed timestep ey - else game will physics differently if phone isnt at 60fps!
 	//_secondCounter++;
 	int32 velocityIterations = 8;
 	int32 positionIterations = 1;

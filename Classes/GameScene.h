@@ -12,6 +12,8 @@
 #include "Statistics.h"
 #include "B2DLayer.h"
 #include "Spawner.h"
+#include "ContactListener.cpp"
+
 #define PTM_RATIO 32
 
 
@@ -21,6 +23,7 @@ using namespace cocos2d;
 class Game : public B2DLayer
 {
 private:
+	ContactListener* listener;
 	bool move;
 	float spawnrate;
 	CCSpriteBatchNode * _batchNode;

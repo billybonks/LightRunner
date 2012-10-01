@@ -155,7 +155,6 @@
     <ClInclude Include="B2DLayer.h" />
     <ClInclude Include="B2dPlay.h" />
     <ClInclude Include="backgroundlayer.h" />
-    <ClInclude Include="ContactListener.h" />
     <ClInclude Include="LineSegment.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
