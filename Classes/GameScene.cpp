@@ -52,7 +52,7 @@ bool Game::init()
 	//prep stats
 		this->setAnchorPoint(ccp(0.0f,0.0f));
 
-	_scale = 0.2f;
+	_scale = 0.5f;
 	this->setScale(_scale);
 
 	 winSize = CCDirector::sharedDirector()->getWinSize();

@@ -16,16 +16,20 @@ class Game;
 class Spawner 
 {
 private:
+	Game* _game;
 	vector<LineSegment*> segmentQueue;
 	b2World* _world;
 	Statistics* _stats;
-	Game* _game;
 	b2Vec2 _initialSpawnLocation;
-	LineSegment* _lastSegment;
 	LineSegment* _currentSegment;
+	LineSegment* _nextSegment;
+	bool _generate;
 	float indexMarker;
 	int _counter;
 	GameObject* _player;
+	int _verticalGapChance;
+	int _horizontalGapChance;
+	int _floatingPlatformChance;
 public:
 	Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* _player);
 	int Random(int lowest, int highest);
