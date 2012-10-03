@@ -50,7 +50,7 @@ LineSegment Spawner::GenerateCompoundSegment(){
 	maxDistance = speed*runtime;
 	segmentDistance =  Random(minDistance,maxDistance);
 	distanceRemeinder;
-	int spawnFloatingPLatformChance = 6;
+	int spawnFloatingPLatformChance = 10;
 	structType = Random(1,3);
 	switch ( structType )
 	{
@@ -86,18 +86,19 @@ LineSegment Spawner::GenerateCompoundSegment(){
 	int spawnFloatingPLatform = Random(1,10);
 	if((spawnFloatingPLatformChance > spawnFloatingPLatform)&&(structType ==1)){
 		int floatDist = segmentDistance/2;
-		int floatH = Random(5,20);
+		int floatH = 20;
 		b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
 		StraightLineSegment *floater = new StraightLineSegment(_world,floaterPos,floatDist,floatH);
 		floater->GenerateNextBody();
 	}
+
 	structType = Random(1,10);
-	if(structType < _verticalGapChance){
-		pos.x = pos.x+100;
+	if((structType < _verticalGapChance)&&(!spawnFloatingPLatformChance > spawnFloatingPLatform)){
+		pos.y = pos.y+100;
 	}
 	structType = Random(1,10);
 	if(structType < _horizontalGapChance){
-		pos.y = pos.y+100;
+		pos.x = pos.x+100;
 	}
 	segment->SetPosition(pos);
 	segment->InitilizeData();
