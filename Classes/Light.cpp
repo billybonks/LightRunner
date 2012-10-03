@@ -22,9 +22,18 @@ Light::Light(CCPoint position,float width,float height)
 
 	return l;
 }
-
 	Light* Light::retainedLight(b2Vec2* polygonVerticies){
 	Light* l = new Light();
+
+	//l->_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*2);
+	//l->_polygonVerticies[0].Set(polygonVerticies[0].x, polygonVerticies[0].y);
+	//l->_polygonVerticies[1].Set(polygonVerticies[1].x, polygonVerticies[1].y);
+	//l->_polygonVerticies[0].x*=PTM_RATIO;
+	//l->_polygonVerticies[1].x*=PTM_RATIO;
+	//l->_polygonVerticies[0].y*=PTM_RATIO;
+	//l->_polygonVerticies[1].y*=PTM_RATIO;
+	
+	//l->setContentSize(CCSize(abs(l->_polygonVerticies[1].x-l->_polygonVerticies[0].x),abs(l->_polygonVerticies[1].y-l->_polygonVerticies[0].y)));
 	polygonVerticies[0]*=PTM_RATIO;
 	polygonVerticies[1]*=PTM_RATIO;
 	l->_polygonVerticies=polygonVerticies;
@@ -32,13 +41,13 @@ Light::Light(CCPoint position,float width,float height)
 
 	return l;
 }
-
-void Light::draw(){
+ 
+ void Light::draw(){
 	glLineWidth( 3.0f );
 	//ccDrawLine( ccp(-50,0), ccp(MIN(screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
 	ccDrawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(_polygonVerticies[1].x,_polygonVerticies[1].y));
 	glLineWidth(1);
-}
+ }
 
 void Light::removeFromParentAndCleanup(){
 	CCSprite::removeFromParentAndCleanup(true);

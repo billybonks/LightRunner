@@ -1,6 +1,8 @@
 #include "Spawner.h"
 #include "GameScene.h"
+
 Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* player){
+	_game = game;
 	srand(time(0));
 	_stats = stats;
 	_world = world;
@@ -16,11 +18,10 @@ Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawn
 	_generate = true;
 	_verticalGapChance = 3;
 	_horizontalGapChance = 3;
-	_game = game;
 }
 
 int Spawner::Random(int lowest, int highest){
-	 
+
 	int range=(highest-lowest)+1;		    	
 	return lowest+int(range*rand()/(RAND_MAX + 1.0)); 
 }
@@ -103,6 +104,7 @@ LineSegment Spawner::GenerateCompoundSegment(){
 	LineSegment* ret =  dynamic_cast<LineSegment*>(segment);
 	_nextSegment = segment;
 	_nextSegment->GenerateNextBody();
+	_game->addChild(_nextSegment->getSprite());	
 	//b2Vec2* vert = _lastSegment->GetGameWorldVerticies(0);
 	return *ret;
 }
@@ -120,18 +122,17 @@ void Spawner::update(){
 	}
 	if(_generate == true){
 		GenerateCompoundSegment();
-		_game->addChild(_nextSegment);
 		_generate= false;
 	}
 	if(playerX >x+distanace){
 		_currentSegment = _nextSegment;
 		_generate = true;
 	}
-			
+
 }
 
 LineSegment* Spawner::GetCurrentPlatform(){
-	return segmentQueue.at(indexMarker);
+	return _currentSegment;
 }
 
 

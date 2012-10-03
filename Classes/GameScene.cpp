@@ -25,7 +25,6 @@ CCScene* Game::scene()
 	return scene;
 }
 void Game::draw(){
-
 	B2DLayer::draw();
 }
 // on "init" you need to initialize your instance
@@ -43,18 +42,16 @@ bool Game::init()
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("runner.plist");
  //END
 	//setting ContactListner
-		listener = new ContactListener();
-
-	  world->SetContactListener(listener);
+	//ContactListener listener = new ContactListener();
+	listener = new ContactListener();
+	world->SetContactListener(listener);
 
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-		this->setAnchorPoint(ccp(0.0f,0.0f));
-
-	_scale = 0.5f;
+	_scale = 0.8f;
 	this->setScale(_scale);
-
+	this->setAnchorPoint(ccp(0.0f,0.0f));
 	 winSize = CCDirector::sharedDirector()->getWinSize();
 
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png",&screenBounds);
@@ -62,7 +59,7 @@ bool Game::init()
 	_batchNode->addChild(_player->getSprite(), 1);
 	_player->createBox2dObject(B2DLayer::world);
 	_player->createFootFixture(B2DLayer::world);
-	  _player->setNumFootContacts(0);
+    _player->setNumFootContacts(0);
 
 	_player->SetCanBeOffScreen(true);
 
@@ -115,19 +112,21 @@ void Game::update(float dt) {
 	float y = segement->GetYForX(playerPos.x);
 	float difInY = playerPos.y -y;
 	//CCLog("%f",dt);
-
+	//if(difInY > 360){
+	//	_scale = 360/difInY;
+	//}
+	//this->setScale(_scale);
 	//boss antigravity:
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
-	
-	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,_boss->getBody()->GetLinearVelocity().y));
+	y = segement->GetYForX(_boss->getBody()->GetPosition().x);
+	difInY = _boss->getBody()->GetPosition().y -y;
+	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,difInY));//_boss->getBody()->GetLinearVelocity().y));
 	//_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	//acceleration
 	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
 		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
 	}
-
-	_player->subCanJump();
 	B2DLayer::update(dt);
 	_stats.IncrementDistance(_player->getSprite()->getPosition().x - _lastPos.x);
 	_lastPos = _player->getSprite()->getPosition();
@@ -188,7 +187,7 @@ void Game::CleanWorld(){
 	//move screen
 	this->setPosition(ccp((-_player->getBody()->GetPosition().x*PTM_RATIO*_scale+(winSize.width*0.1f)),(-_player->getBody()->GetPosition().y*PTM_RATIO*_scale+(winSize.height*0.5f))));
 	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width/_scale,this->getContentSize().height/_scale);
-	
+
 }
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {

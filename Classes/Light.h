@@ -12,6 +12,7 @@ public:
 	static Light* retainedLight(CCRect* scr);
 	static Light* retainedLight(b2Vec2* polygonVerticies);
 	b2Vec2* _polygonVerticies;
+
 	virtual void draw();
 	virtual void removeFromParentAndCleanup();
 	bool IsTouched();

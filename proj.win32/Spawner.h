@@ -1,16 +1,13 @@
 #ifndef __SPAWNER__
 #define __SPAWNER__
 
-
 #include "cocos2d.h"
 #include "GameObject.h"
 #include "Statistics.h"
 #include "Light.h"
 #include "LineSegment.h"
-
 #include <vector>
 using namespace cocos2d;
-
 class Game;
 
 class Spawner 
@@ -37,4 +34,5 @@ public:
 	void update();
 	LineSegment* GetCurrentPlatform();
 };
+
 #endif

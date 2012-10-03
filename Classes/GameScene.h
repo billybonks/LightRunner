@@ -13,7 +13,6 @@
 #include "B2DLayer.h"
 #include "Spawner.h"
 #include "ContactListener.cpp"
-
 #define PTM_RATIO 32
 
 

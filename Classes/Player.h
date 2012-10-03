@@ -9,18 +9,16 @@
  
 class Player : public GameObject {
 public:
-	Player();
-	void jump();
 	void createFootFixture(b2World* world);
 	void setNumFootContacts(int i);
 	void addNumFootContacts();
 	void subNumFootContacts();
-	//	void setCanJump();
-	void subCanJump();
-private:
+	Player();
+	void jump();
+	private:
 	int numFootContacts;
-	int canjump;
+
+
 };
   
-
 #endif

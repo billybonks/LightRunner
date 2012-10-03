@@ -4,7 +4,7 @@
 EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
 	:ContinuousLineSegment(world,startPosition,width,height)
 {
-	_polygonVerticies = (b2Vec2*)malloc(sizeof(EdgeLineSegment)*2);
+	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*2);
 	float w = _width/2;
 	float h = _height/2;
 	_polygonVerticies[0].Set(-w, -h);
@@ -13,12 +13,11 @@ EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width
 
 EdgeLineSegment::EdgeLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height)
 {
-	_polygonVerticies = (b2Vec2*)malloc(sizeof(EdgeLineSegment)*2);
+	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*2);
 	float w = _width/2;
 	float h = _height/2;
 	_polygonVerticies[0].Set(-w, -h);
 	_polygonVerticies[1].Set(w, h);
-	
 }
 
 void EdgeLineSegment::GenerateBody()
@@ -43,7 +42,7 @@ bool EdgeLineSegment::GenerateNextBody()
 	fixture->friction = 0;
 	body->CreateFixture(fixture);
 	this->sprite=Light::retainedLight(_polygonVerticies);
-	this->sprite->setPosition(ccp(body->GetPosition().x*PTM_RATIO,body->GetPosition().y*PTM_RATIO));
+	this->sprite->setPosition(ccp(_startWorldPosition.x*PTM_RATIO,_startWorldPosition.y*PTM_RATIO));
 	return ContinuousLineSegment::GenerateNextBody();
 }
 
