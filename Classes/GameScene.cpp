@@ -49,7 +49,7 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 0.8f;
+	_scale = 0.3f;
 	this->setScale(_scale);
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	 winSize = CCDirector::sharedDirector()->getWinSize();
@@ -71,7 +71,7 @@ bool Game::init()
 	
 	//boss
 	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
-	_boss->getSprite()->setPosition(ccp(winSize.width * 0.9, winSize.height * 0.5));
+	_boss->getSprite()->setPosition(ccp(400.0f, winSize.height * 0.5));
 	_batchNode->addChild(_boss->getSprite(), 1);
 	_boss->createBox2dObject(B2DLayer::world);
 	_boss->SetCanBeOffScreen(true);
@@ -99,7 +99,7 @@ bool Game::init()
 				b2Vec2 start = b2Vec2::b2Vec2();
 			start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
 	_stats =  Statistics();
-	this->_spawner = new Spawner(this, &_stats,world,start,_player);
+	this->_spawner = new Spawner(this, &_stats,world,start,_boss);
 	return true;
 }
 void Game::update(float dt) {
@@ -107,20 +107,12 @@ void Game::update(float dt) {
 	this->_spawner->update();
 	LineSegment* segement = _spawner->GetCurrentPlatform();
 	b2Vec2 playerPos = _player->getBody()->GetPosition();
-	playerPos.x = playerPos.x *PTM_RATIO;
-	playerPos.y = playerPos.y *PTM_RATIO;
-	float y = segement->GetYForX(playerPos.x);
-	float difInY = playerPos.y -y;
-	//CCLog("%f",dt);
-	//if(difInY > 360){
-	//	_scale = 360/difInY;
-	//}
-	//this->setScale(_scale);
-	//boss antigravity:
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
-	y = segement->GetYForX(_boss->getBody()->GetPosition().x);
-	difInY = _boss->getBody()->GetPosition().y -y;
-	_boss->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,difInY));//_boss->getBody()->GetLinearVelocity().y));
+	LineSegment* temp = _spawner->GetCurrentPlatform();
+	float newY = temp->GetYForX(_boss->getBody()->GetPosition().x);
+	float currentY = _boss->getBody()->GetPosition().y;
+	float accel = newY-currentY;
+	_boss->getBody()->SetLinearVelocity(b2Vec2(18,accel*8));//_boss->getBody()->GetLinearVelocity().y));
 	//_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	//acceleration

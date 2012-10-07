@@ -67,14 +67,26 @@ float EdgeLineSegment::CalculateDistance(){
 	return this->GetWidth()*-1;
 }
 
+
+//y = mx+c
+//m = (x2-x1)/(y2-y1)
+//c = 0
+// x = param
 float EdgeLineSegment::GetYForX(float x){
-	b2Vec2 *startVert =   GetGameWorldVerticies(_sourceAttachmentVerticie);
-	startVert->x;
-	float width = _width * PTM_RATIO;
-	if(x>(startVert->x+width)){
-		return 0;
+	float startX = _GameWorldVerticies[0]->x/PTM_RATIO;
+	float relX =  x -startX ;
+	b2Vec2* v1 = _GameWorldVerticies[0];
+	b2Vec2* v2 = _GameWorldVerticies[1];
+
+	float cY = (v2->y-v1->y);
+	float cX = (v2->x-v1->x);
+	float m;
+	if(cY!=0){
+		m = cX/cY;
+	}else{
+		float  y = v1->y;
+		return y/PTM_RATIO;
 	}
-	float difference = startVert->x -x;
-	float rate = _height/_width;
-	return GetGameWorldVerticies(_sourceAttachmentVerticie)->y+(difference*rate);
+
+	return m*relX;
 }
