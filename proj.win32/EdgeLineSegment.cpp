@@ -43,6 +43,7 @@ bool EdgeLineSegment::GenerateNextBody()
 	body->CreateFixture(fixture);
 	this->sprite=Light::retainedLight(_polygonVerticies);
 	this->sprite->setPosition(ccp(_startWorldPosition.x*PTM_RATIO,_startWorldPosition.y*PTM_RATIO));
+	fixture->userData = this;
 	return ContinuousLineSegment::GenerateNextBody();
 }
 

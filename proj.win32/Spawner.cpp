@@ -8,7 +8,7 @@ Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawn
 	_world = world;
 	_player = player;
 	_initialSpawnLocation = initialSpawnLocation;
-	b2Vec2* startPos = new b2Vec2(800,100);
+	b2Vec2* startPos = new b2Vec2(200,100);
 	LineSegment* segment = dynamic_cast<LineSegment*>(new EdgeLineSegment (_world,*startPos,800,0));
 	segment->InitilizeData();
 	segmentQueue.push_back(segment);
