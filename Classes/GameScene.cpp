@@ -53,8 +53,8 @@ bool Game::init()
 	this->setScale(_scale);
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();
-
-	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png",&screenBounds);
+	GameObject::SetScreen(&screenBounds);
+	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png");
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
 	_player->createBox2dObject(B2DLayer::world);
@@ -70,14 +70,13 @@ bool Game::init()
 	_lastPos = _player->getSprite()->getPosition();
 
 	//boss
-	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
+	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png");
 	_boss->getSprite()->setPosition(ccp(400.0f, winSize.height * 0.5));
 	_batchNode->addChild(_boss->getSprite(), 1);
 	_boss->createBox2dObject(B2DLayer::world);
 	_boss->SetCanBeOffScreen(true);
 
-	//platforms
-	//Light::initShader();
+	
 
 	//Register for touches and gameloop
 	this->setTouchEnabled(true) ;
@@ -92,7 +91,7 @@ bool Game::init()
 	//this->setScale(0.5);
 	_boss->getBody()->GetFixtureList()->SetFilterData(filter);
 	//floor
-	_floor = GameObject::retainedObjectWithSpriteFrameName("floor.png",&screenBounds);
+	_floor = GameObject::retainedObjectWithSpriteFrameName("floor.png");
 	_floor->getSprite()->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.1));
 	_batchNode->addChild(_floor->getSprite(), 1);
 	_floor->createBox2dObject(world);
@@ -117,8 +116,8 @@ void Game::update(float dt) {
 	_boss->getBody()->SetLinearVelocity(b2Vec2(15,accel*8));
 	temp = listener->GetLastPlatform();
 	//if(temp != NULL){
-//		newY =  temp->GetYForX(playerPos.x);
-		//if(newY > playerPos.y){
+ 	//	newY =  temp->GetYForX(playerPos.x);
+	//	if(newY-200 > playerPos.y){
 	//		playerPos = _player->getBody()->GetPosition();
 	//	}
 	//}

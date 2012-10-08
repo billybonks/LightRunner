@@ -1,7 +1,7 @@
 		#include "GameObject.h"
 
 		using namespace cocos2d;
-
+		CCRect* GameObject::screen;
 		GameObject::GameObject()
 		{
 			this->newtrail=0.05f;
@@ -10,6 +10,10 @@
 				this->colourmode=0;
 
 		CCNode::CCNode();
+		}
+
+		void GameObject::SetScreen(CCRect* screen){
+			GameObject::screen = screen;
 		}
 
 		bool GameObject::canBeOffScreen(){
@@ -21,13 +25,12 @@
 			this->CanBeOffScreen=can;
 		}
 		
-		void GameObject::init(CCRect* scr)
+		void GameObject::init()
 		{
 			this->newtrail=0.05f;
 			_ccColor3B c =  {255,0,0};
 			this->colour =c;
 			this->colourmode=0;
-			this->screen=scr;
 			this->CanBeOffScreen=false;
 		}
 
@@ -48,24 +51,24 @@
 
 		}
 
-		GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr )
+		GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName)
 		{
 		GameObject *obj = new GameObject();
 		if (obj->sprite=CCSprite::createWithSpriteFrameName(pszSpriteFrameName))
 		{
-			obj->init(scr);
+			obj->init();
 			return obj;
 		}
 		CC_SAFE_DELETE(obj);
 		return NULL;
 		}
 
-		GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame, CCRect* scr )
+		GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame)
 		{
 		GameObject *obj = new GameObject();
 		if (obj->sprite=CCSprite::create(pSpriteFrame))
 		{
-						obj->init(scr);
+						obj->init();
 
 
 				return obj;
@@ -74,11 +77,11 @@
 		return NULL;
 		}
 
-		GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr )
+		GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite)
 		{
 		GameObject *obj = new GameObject();
 		obj->sprite=pSprite;
-		obj->init(scr);
+		obj->init();
 		return obj;
 	
 		}
@@ -153,7 +156,7 @@
 			if(this->newtrail<=0){
 				this->newtrail=0.05f;
 			}
-			GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame(),screen); 
+			GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame()); 
 			trail->sprite->setPosition(ccp(this->sprite->getPositionX(), this->sprite->getPositionY()));
 			this->sprite->getParent()->addChild(trail->getSprite());
 			trail->sprite->setColor(nextColour());

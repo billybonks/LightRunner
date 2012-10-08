@@ -34,6 +34,7 @@ bool StraightLineSegment::GenerateNextBody()
 	fixture->density = 1.0f;
 	fixture->friction = 0;
 	fixture->userData = (void*)1;
+	//body->SetUserData(this);
 	body->CreateFixture(fixture);
 	if(child != NULL){
 		if(child->GenerateNextBody()){

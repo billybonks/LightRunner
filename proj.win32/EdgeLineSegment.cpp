@@ -34,6 +34,7 @@ bool EdgeLineSegment::GenerateNextBody()
 	bodyDef.type = b2_staticBody;
 	bodyDef.position.Set(_startWorldPosition.x,_startWorldPosition.y);
 	body =world->CreateBody(&bodyDef);
+	body->SetUserData(this);
 	b2FixtureDef* fixture = new b2FixtureDef();
 	b2EdgeShape edge;
 	edge.Set(_polygonVerticies[0],_polygonVerticies[1]);
@@ -43,7 +44,8 @@ bool EdgeLineSegment::GenerateNextBody()
 	body->CreateFixture(fixture);
 	this->sprite=Light::retainedLight(_polygonVerticies);
 	this->sprite->setPosition(ccp(_startWorldPosition.x*PTM_RATIO,_startWorldPosition.y*PTM_RATIO));
-	fixture->userData = this;
+	fixture->userData = (void*) 1;
+	
 	return ContinuousLineSegment::GenerateNextBody();
 }
 

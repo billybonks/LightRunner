@@ -16,8 +16,8 @@ Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawn
 	_currentSegment= segment;
 	indexMarker =0;
 	_generate = true;
-	_verticalGapChance = 0;
-	_horizontalGapChance = 0;
+	_verticalGapChance = 3;
+	_horizontalGapChance = 3;
 }
 
 int Spawner::Random(int lowest, int highest){

@@ -87,23 +87,6 @@ float LineSegment::GetHeight(){
 	return _height*PTM_RATIO;
 }
 
-bool LineSegment::isOffScreen(float scale){
-	float x =  this->body->GetPosition().x* PTM_RATIO;
-	float y =  this->body->GetPosition().y* PTM_RATIO;
-	float top = screen->origin.y-50;
-	float left = screen->origin.x-50;
-	float right = screen->origin.x+screen->size.width+50;
-	float bottem = screen->origin.y+screen->size.height+50;
-	top = top / scale;
-	left = left / scale;
-	right = right / scale;
-	bottem = bottem / scale;
-	if(x<left){
-		return true;
-	}
-	return false;
-}
-
 void LineSegment::OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target )
 {
 	b2Vec2 sourceVert = this->_polygonVerticies[sourceAttachementVerticie];

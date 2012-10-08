@@ -7,6 +7,7 @@
  using namespace cocos2d;
  #define PTM_RATIO 32
 
+
 class GameObject : public CCNode {
 public:
 	CCSprite* getSprite();
@@ -15,9 +16,9 @@ public:
 	CCPoint _target;
 	string id;
 	GameObject();
-	static GameObject* retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName, CCRect* scr);
-	static GameObject* retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame, CCRect* scr );
-	static GameObject* retainedObjectWithSprite(CCSprite *pSprite, CCRect* scr );
+	static GameObject* retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName);
+	static GameObject* retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame);
+	static GameObject* retainedObjectWithSprite(CCSprite *pSprite);
 	void updateTrail(float dt);
 	bool canBeOffScreen();
 	virtual bool isOffScreen(float scale);
@@ -27,9 +28,10 @@ public:
 	void SetCanBeOffScreen(bool can);
 	void SetTarget(CCPoint position);
 	float velocity;
-	CCRect *screen;
+	static CCRect *screen;
+	static void SetScreen(CCRect * screen);
 	bool CanBeOffScreen;
-	void init(CCRect* scr);
+	void init();
 
 private:
 

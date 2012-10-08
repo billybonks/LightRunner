@@ -30,7 +30,6 @@ public:
 	virtual b2Vec2 getLastVerticies();
 	virtual float getIncline();
 	virtual b2Vec2* GetGameWorldVerticies(int verticie);
-	virtual bool isOffScreen(float scale);
 	void SetPosition(b2Vec2 _startWorldPosition);
 	b2Vec2 GetPosition();
 	float GetWidth();
