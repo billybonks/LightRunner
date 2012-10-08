@@ -94,11 +94,11 @@ LineSegment Spawner::GenerateCompoundSegment(){
 
 	structType = Random(1,10);
 	if((structType < _verticalGapChance)&&(!spawnFloatingPLatformChance > spawnFloatingPLatform)){
-		//pos.y = pos.y+100;
+		pos.y = pos.y+100;
 	}
 	structType = Random(1,10);
 	if(structType < _horizontalGapChance){
-		//pos.x = pos.x+100;
+		pos.x = pos.x+100;
 	}
 	segment->SetPosition(pos);
 	segment->InitilizeData();

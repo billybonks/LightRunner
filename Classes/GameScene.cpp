@@ -40,7 +40,7 @@ bool Game::init()
 	_batchNode = CCSpriteBatchNode::create("runner.png");
 	this->addChild(_batchNode);
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("runner.plist");
- //END
+	//END
 	//setting ContactListner
 	//ContactListener listener = new ContactListener();
 	listener = new ContactListener();
@@ -49,17 +49,17 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 0.3f;
+	_scale = 0.8f;
 	this->setScale(_scale);
 	this->setAnchorPoint(ccp(0.0f,0.0f));
-	 winSize = CCDirector::sharedDirector()->getWinSize();
+	winSize = CCDirector::sharedDirector()->getWinSize();
 
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png",&screenBounds);
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
 	_player->createBox2dObject(B2DLayer::world);
 	_player->createFootFixture(B2DLayer::world);
-    _player->setNumFootContacts(0);
+	_player->setNumFootContacts(0);
 
 	_player->SetCanBeOffScreen(true);
 
@@ -68,7 +68,7 @@ bool Game::init()
 	CCAnimation *animation = CCAnimation::create(frames,0.2f);
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
 	_lastPos = _player->getSprite()->getPosition();
-	
+
 	//boss
 	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
 	_boss->getSprite()->setPosition(ccp(400.0f, winSize.height * 0.5));
@@ -83,12 +83,12 @@ bool Game::init()
 	spawnrate=3;
 	//Debug(false);
 	//get the existing filter
-  b2Filter filter = _boss->getBody()->GetFixtureList()->GetFilterData();
-  //make no collisions
-  filter.maskBits = 0;
-  //and set it back
-  //this->setScale(0.5);
-  _boss->getBody()->GetFixtureList()->SetFilterData(filter);
+	b2Filter filter = _boss->getBody()->GetFixtureList()->GetFilterData();
+	//make no collisions
+	filter.maskBits = 0;
+	//and set it back
+	//this->setScale(0.5);
+	_boss->getBody()->GetFixtureList()->SetFilterData(filter);
 	//floor
 	_floor = GameObject::retainedObjectWithSpriteFrameName("floor.png",&screenBounds);
 	_floor->getSprite()->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.1));
@@ -96,8 +96,8 @@ bool Game::init()
 	_floor->createBox2dObject(world);
 	_floor->getBody()->SetType(b2_kinematicBody);
 	_floor->SetCanBeOffScreen(true);
-				b2Vec2 start = b2Vec2::b2Vec2();
-			start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
+	b2Vec2 start = b2Vec2::b2Vec2();
+	start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
 	_stats =  Statistics();
 	this->_spawner = new Spawner(this, &_stats,world,start,_boss);
 	return true;
@@ -109,10 +109,14 @@ void Game::update(float dt) {
 	b2Vec2 playerPos = _player->getBody()->GetPosition();
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
 	LineSegment* temp = _spawner->GetCurrentPlatform();
+
 	float newY = temp->GetYForX(_boss->getBody()->GetPosition().x);
 	float currentY = _boss->getBody()->GetPosition().y;
 	float accel = newY-currentY;
-	_boss->getBody()->SetLinearVelocity(b2Vec2(18,accel*8));//_boss->getBody()->GetLinearVelocity().y));
+
+
+
+	_boss->getBody()->SetLinearVelocity(b2Vec2(15,accel*8));//_boss->getBody()->GetLinearVelocity().y));
 	//_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
 
 	//acceleration
@@ -156,16 +160,16 @@ void Game::update(float dt) {
 }
 
 void Game::CleanWorld(){
-		vector<GameObject*> objectsToClean(0);
+	vector<GameObject*> objectsToClean(0);
 	//Iterate over the bodies in the physics world
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
 		if (b->GetUserData() != NULL) {
 			GameObject *myActor = (GameObject*)b->GetUserData();
 			if(myActor->isOffScreen(_scale)&&!myActor->canBeOffScreen()){
-					objectsToClean.push_back(myActor);	
+				objectsToClean.push_back(myActor);	
 			}
 			else {
-			//Synchronize the AtlasSprites position and rotation with the corresponding body
+				//Synchronize the AtlasSprites position and rotation with the corresponding body
 				myActor->getSprite()->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
 				myActor->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
 				myActor->getSprite()->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
@@ -183,7 +187,7 @@ void Game::CleanWorld(){
 }
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-		_player->jump();
+	_player->jump();
 }
 
 Statistics* Game::GetStats(){

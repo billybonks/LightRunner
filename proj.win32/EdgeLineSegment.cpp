@@ -82,7 +82,7 @@ float EdgeLineSegment::GetYForX(float x){
 	float cX = (v2->x-v1->x);
 	float m;
 	if(cY!=0){
-		m = cX/cY;
+		m = cY/cX;
 	}else{
 		float  y = v1->y;
 		return y/PTM_RATIO;
