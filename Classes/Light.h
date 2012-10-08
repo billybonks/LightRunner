@@ -9,7 +9,6 @@ class Light : public CCSprite
 public:
 	Light();
 	Light(CCPoint position,float width,float height);
-	static Light* retainedLight(CCRect* scr);
 	static Light* retainedLight(b2Vec2* polygonVerticies);
 	b2Vec2* _polygonVerticies;
 
@@ -21,5 +20,10 @@ public:
 
 protected:
 	bool _touched;
+private:
+	//CCTexture2D *colorRampTexture;
+	static CCGLProgram* _shaderProgram;
+	static void lazyInit();
+	void drawLine( const CCPoint& origin, const CCPoint& destination );
 };
 #endif

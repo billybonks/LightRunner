@@ -69,37 +69,6 @@ bool Game::init()
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
 	_lastPos = _player->getSprite()->getPosition();
 
-	//TEST
-		CCSprite* sprite = CCSprite::create("Default.png");
-        sprite->setAnchorPoint(CCPointZero);
-        sprite->setRotation(90);
-        sprite->setPosition(ccp(0, 320));
-        this->addChild(sprite);
-
-		CCGLProgram* shaderProgram_ = new CCGLProgram();
-        shaderProgram_->initWithVertexShaderFilename("PositionColor.vsh", "PositionColor.fsh");
-		sprite->setShaderProgram(shaderProgram_);
-        sprite->getShaderProgram()->addAttribute(kCCAttributeNamePosition,kCCVertexAttrib_Position);
-        sprite->getShaderProgram()->addAttribute(kCCAttributeNameTexCoord,kCCVertexAttrib_TexCoords);
-        sprite->getShaderProgram()->link();
-        sprite->getShaderProgram()->updateUniforms();
-		
-        // 3
-        int colorRampUniformLocation = glGetUniformLocation(sprite->getShaderProgram()->getProgram(), "u_colorRampTexture");
-        glUniform1i(colorRampUniformLocation, 1);
-
-        // 4
-        CCTexture2D *colorRampTexture = CCTextureCache::sharedTextureCache()->addImage("colorRamp.png");
-        colorRampTexture->setAliasTexParameters();
-
-        // 5
-        sprite->getShaderProgram()->use();
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, colorRampTexture->getName());
-        glActiveTexture(GL_TEXTURE0);
-
-	//ENDTEST
-	
 	//boss
 	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
 	_boss->getSprite()->setPosition(ccp(400.0f, winSize.height * 0.5));
@@ -107,11 +76,13 @@ bool Game::init()
 	_boss->createBox2dObject(B2DLayer::world);
 	_boss->SetCanBeOffScreen(true);
 
+	//platforms
+	//Light::initShader();
+
 	//Register for touches and gameloop
 	this->setTouchEnabled(true) ;
 	this->scheduleUpdate();
 	move=true;
-	spawnrate=3;
 	//Debug(false);
 	//get the existing filter
 	b2Filter filter = _boss->getBody()->GetFixtureList()->GetFilterData();
@@ -145,12 +116,12 @@ void Game::update(float dt) {
 	float accel = newY-currentY;
 	_boss->getBody()->SetLinearVelocity(b2Vec2(15,accel*8));
 	temp = listener->GetLastPlatform();
-	if(temp != NULL){
-		newY =  temp->GetYForX(playerPos.x);
-		if(newY > playerPos.y){
-			playerPos = _player->getBody()->GetPosition();
-		}
-	}
+	//if(temp != NULL){
+//		newY =  temp->GetYForX(playerPos.x);
+		//if(newY > playerPos.y){
+	//		playerPos = _player->getBody()->GetPosition();
+	//	}
+	//}
 
 	//acceleration
 	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
@@ -162,34 +133,6 @@ void Game::update(float dt) {
 	_stats.SetVelocity(_player->getBody()->GetLinearVelocity().x);
 
 	CleanWorld();
-	if(move==false){
-		spawnrate+=dt;
-		if(spawnrate>=10){
-			spawnrate=10;
-			//_boss->getBody()->ApplyLinearImpulse(b2Vec2(0.0f, 0.5f),_boss->getBody()->GetWorldCenter());
-			move=true;
-		}
-	}
-	else{
-		spawnrate-=dt;
-		if(spawnrate<=0){//err:doesn't account for change in players height on new platform
-			GameObject* test = GameObject::retainedObjectWithSprite(Light::retainedLight(&screenBounds),&screenBounds);
-
-			//StraightLineSegment segment(B2DLayer::world,start,50.0f,10.0f,1);
-			b2Body* body = NULL;
-			//segment.InitilizeData();
-			//segment.GenerateBody(body);
-			/*test->getSprite()->setPosition(ccp(_boss->getSprite()->getPositionX()+50, _boss->getSprite()->getPositionY()));
-			this->addChild(test->getSprite());	
-			test->createBox2dObject(world);
-
-			b2Body* body = test->getBody();
-			body->SetType(b2_staticBody);
-			spawnrate=0;
-			platforms.push_back((GameObject*)test);
-			move=false;*/
-		}
-	}
 }
 
 void Game::CleanWorld(){

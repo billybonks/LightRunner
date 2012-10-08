@@ -24,7 +24,6 @@ class Game : public B2DLayer
 private:
 	ContactListener* listener;
 	bool move;
-	float spawnrate;
 	CCSpriteBatchNode * _batchNode;
 	Player* _player;
 	GameObject* _floor;
