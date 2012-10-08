@@ -140,16 +140,17 @@ void Game::update(float dt) {
 	b2Vec2 playerPos = _player->getBody()->GetPosition();
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
 	LineSegment* temp = _spawner->GetCurrentPlatform();
-
 	float newY = temp->GetYForX(_boss->getBody()->GetPosition().x);
 	float currentY = _boss->getBody()->GetPosition().y;
 	float accel = newY-currentY;
-
-
-
-
-	_boss->getBody()->SetLinearVelocity(b2Vec2(15,accel*8));//_boss->getBody()->GetLinearVelocity().y));
-	//_floor->getBody()->SetLinearVelocity(b2Vec2(_player->getBody()->GetLinearVelocity().x,0.0f));
+	_boss->getBody()->SetLinearVelocity(b2Vec2(15,accel*8));
+	temp = listener->GetLastPlatform();
+	if(temp != NULL){
+		newY =  temp->GetYForX(playerPos.x);
+		if(newY > playerPos.y){
+			playerPos = _player->getBody()->GetPosition();
+		}
+	}
 
 	//acceleration
 	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
