@@ -88,5 +88,5 @@ float EdgeLineSegment::GetYForX(float x){
 		return y/PTM_RATIO;
 	}
 
-	return m*relX;
+	return _startWorldPosition.y+(m*relX);
 }

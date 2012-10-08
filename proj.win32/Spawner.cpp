@@ -16,8 +16,8 @@ Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawn
 	_currentSegment= segment;
 	indexMarker =0;
 	_generate = true;
-	_verticalGapChance = 3;
-	_horizontalGapChance = 3;
+	_verticalGapChance = 0;
+	_horizontalGapChance = 0;
 }
 
 int Spawner::Random(int lowest, int highest){
@@ -81,15 +81,18 @@ LineSegment Spawner::GenerateCompoundSegment(){
 		break;
 	}
 	segment->OffsetStartPosition(2,0,_currentSegment);
-	
+
 	b2Vec2 pos = segment->GetPosition();
 	int spawnFloatingPLatform = Random(1,10);
 	if((spawnFloatingPLatformChance > spawnFloatingPLatform)&&(structType ==1)){
 		int floatDist = segmentDistance/2;
-		int floatH = 20;
-		b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
-		StraightLineSegment *floater = new StraightLineSegment(_world,floaterPos,floatDist,floatH);
-		floater->GenerateNextBody();
+		if(floatDist>1){
+			int floatH = 20;
+			b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
+			StraightLineSegment *floater = new StraightLineSegment(_world,floaterPos,floatDist,floatH);
+			floater->GenerateNextBody();
+		}
+
 	}
 
 	structType = Random(1,10);

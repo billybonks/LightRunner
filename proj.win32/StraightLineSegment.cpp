@@ -3,13 +3,13 @@
 StraightLineSegment::StraightLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
 	:ContinuousLineSegment(world,startPosition,width,height)
 {
-	_polygonVerticies = (b2Vec2*)malloc(sizeof(StraightLineSegment)*4);
+	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*4);
 	ContinuousLineSegment::GetVertsSquare(_polygonVerticies,_width,_height);
 
 }
 
 StraightLineSegment::StraightLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height){
-	_polygonVerticies = (b2Vec2*)malloc(sizeof(StraightLineSegment)*4);
+	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*4);
 	ContinuousLineSegment::GetVertsSquare(_polygonVerticies,_width,_height);
 
 }
