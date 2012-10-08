@@ -4,6 +4,7 @@
  using namespace cocos2d;
  class ContactListener : public b2ContactListener
   {
+
 	  LineSegment* lastPlatform;
       void BeginContact(b2Contact* contact) {
           //check if fixture A was the foot sensor
@@ -11,15 +12,13 @@
 		  if ( (int)fixtureUserData == 3 ){
 			  Player* player = (Player*)contact->GetFixtureA()->GetBody()->GetUserData();
 			  player->addNumFootContacts();
-		  }else{
-			  lastPlatform=(LineSegment*) contact->GetFixtureA()->GetBody()->GetUserData();
+			  lastPlatform=(LineSegment*) contact->GetFixtureB()->GetBody()->GetUserData();
 		  }
           //check if fixture B was the foot sensor
           fixtureUserData = contact->GetFixtureB()->GetUserData();
 		  if ( (int)fixtureUserData == 3 ){
 			Player* player = (Player*)contact->GetFixtureB()->GetBody()->GetUserData();
-			  player->addNumFootContacts();		  
-		  }else{
+			  player->addNumFootContacts();		 
 			  lastPlatform=(LineSegment*) contact->GetFixtureA()->GetBody()->GetUserData();
 		  }
       }
@@ -39,7 +38,7 @@
 		  }
       }
 
-	  LineSegment* GetLastPlatform(){
+  public: LineSegment* GetLastPlatform(){
 		  return lastPlatform;
 	  }
   };

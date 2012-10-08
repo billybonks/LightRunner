@@ -39,6 +39,34 @@ Light::Light(CCPoint position,float width,float height)
 	l->_polygonVerticies=polygonVerticies;
 	l->setContentSize(CCSize(abs(polygonVerticies[1].x-polygonVerticies[0].x),abs(polygonVerticies[1].y-polygonVerticies[0].y)));
 
+	//TEST
+	//TEST
+
+		CCGLProgram* shaderProgram_ = new CCGLProgram();
+        shaderProgram_->initWithVertexShaderFilename("PositionColor.vsh", "PositionColor.fsh");
+		l->setShaderProgram(shaderProgram_);
+        l->getShaderProgram()->addAttribute(kCCAttributeNamePosition,kCCVertexAttrib_Position);
+        l->getShaderProgram()->addAttribute(kCCAttributeNameTexCoord,kCCVertexAttrib_TexCoords);
+        l->getShaderProgram()->link();
+        l->getShaderProgram()->updateUniforms();
+		
+        // 3
+        int colorRampUniformLocation = glGetUniformLocation(l->getShaderProgram()->getProgram(), "u_colorRampTexture");
+        glUniform1i(colorRampUniformLocation, 1);
+
+        // 4
+        CCTexture2D *colorRampTexture = CCTextureCache::sharedTextureCache()->addImage("colorRamp.png");
+        colorRampTexture->setAliasTexParameters();
+
+        // 5
+        l->getShaderProgram()->use();
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, colorRampTexture->getName());
+        glActiveTexture(GL_TEXTURE0);
+
+	//ENDTEST
+	//ENDTEST
+	
 	return l;
 }
  

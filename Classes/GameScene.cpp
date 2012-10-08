@@ -69,6 +69,37 @@ bool Game::init()
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
 	_lastPos = _player->getSprite()->getPosition();
 
+	//TEST
+		CCSprite* sprite = CCSprite::create("Default.png");
+        sprite->setAnchorPoint(CCPointZero);
+        sprite->setRotation(90);
+        sprite->setPosition(ccp(0, 320));
+        this->addChild(sprite);
+
+		CCGLProgram* shaderProgram_ = new CCGLProgram();
+        shaderProgram_->initWithVertexShaderFilename("PositionColor.vsh", "PositionColor.fsh");
+		sprite->setShaderProgram(shaderProgram_);
+        sprite->getShaderProgram()->addAttribute(kCCAttributeNamePosition,kCCVertexAttrib_Position);
+        sprite->getShaderProgram()->addAttribute(kCCAttributeNameTexCoord,kCCVertexAttrib_TexCoords);
+        sprite->getShaderProgram()->link();
+        sprite->getShaderProgram()->updateUniforms();
+		
+        // 3
+        int colorRampUniformLocation = glGetUniformLocation(sprite->getShaderProgram()->getProgram(), "u_colorRampTexture");
+        glUniform1i(colorRampUniformLocation, 1);
+
+        // 4
+        CCTexture2D *colorRampTexture = CCTextureCache::sharedTextureCache()->addImage("colorRamp.png");
+        colorRampTexture->setAliasTexParameters();
+
+        // 5
+        sprite->getShaderProgram()->use();
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, colorRampTexture->getName());
+        glActiveTexture(GL_TEXTURE0);
+
+	//ENDTEST
+	
 	//boss
 	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",&screenBounds);
 	_boss->getSprite()->setPosition(ccp(400.0f, winSize.height * 0.5));
