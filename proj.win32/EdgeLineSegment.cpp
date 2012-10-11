@@ -57,10 +57,10 @@ void EdgeLineSegment::InitilizeData()
 	float x,y;
 	x = _startWorldPosition.x;
 	y = _startWorldPosition.y;
-	LineSegment::_GameWorldVerticies[0] = new b2Vec2((x-w/2)*PTM_RATIO,(y-h/2)*PTM_RATIO);
-	LineSegment::_GameWorldVerticies[1] = new b2Vec2((x+w/2)*PTM_RATIO,(y+h/2)*PTM_RATIO);
-	LineSegment::_GameWorldVerticies[2] =  _GameWorldVerticies[1];
-	LineSegment::_GameWorldVerticies[3] =  _GameWorldVerticies[0];
+	this->_GameWorldVerticies[0] = new b2Vec2((x-w/2)*PTM_RATIO,(y-h/2)*PTM_RATIO);
+	this->_GameWorldVerticies[1] = new b2Vec2((x+w/2)*PTM_RATIO,(y+h/2)*PTM_RATIO);
+	this->_GameWorldVerticies[2] =  _GameWorldVerticies[1];
+	this->_GameWorldVerticies[3] =  _GameWorldVerticies[0];
 }
 
 float EdgeLineSegment::CalculateDistance(){
@@ -80,16 +80,17 @@ float EdgeLineSegment::GetYForX(float x){
 	float relX =  x -startX ;
 	b2Vec2* v1 = _GameWorldVerticies[0];
 	b2Vec2* v2 = _GameWorldVerticies[1];
-
 	float cY = (v2->y-v1->y);
 	float cX = (v2->x-v1->x);
 	float m;
 	if(cY!=0){
 		m = cY/cX;
 	}else{
+
 		float  y = v1->y;
+
 		return y/PTM_RATIO;
 	}
-
-	return _startWorldPosition.y+(m*relX);
+					CCLog("%f", (v2->y-v1->y));
+					return _startWorldPosition.y-(v2->y/PTM_RATIO-v1->y/PTM_RATIO)/2 +(m*relX);
 }

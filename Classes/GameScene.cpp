@@ -49,7 +49,7 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 0.2f;
+	_scale = 0.1f;
 	this->setScale(_scale);
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();
@@ -106,14 +106,14 @@ bool Game::init()
 void Game::update(float dt) {
 	_player->updateTrail(dt);
 	this->_spawner->update();
-	LineSegment* segement = _spawner->GetCurrentPlatform();
 	b2Vec2 playerPos = _player->getBody()->GetPosition();
 	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
 	LineSegment* temp = _spawner->GetCurrentPlatform();
-	float newY = temp->GetYForX(_boss->getBody()->GetPosition().x);
-	float currentY = _boss->getBody()->GetPosition().y;
-	float accel = newY-currentY;
-	_boss->getBody()->SetLinearVelocity(b2Vec2(15,accel*8));
+	float newY = _spawner->GetCurrentPlatform()->GetYForX(_boss->getBody()->GetPosition().x);
+	//float currentY = _boss->getBody()->GetPosition().y;
+	//float accel = newY-currentY;
+	_boss->getBody()->SetLinearVelocity(b2Vec2(15,0));
+	_boss->getBody()->SetTransform(b2Vec2(_boss->getBody()->GetPosition().x,newY),_boss->getBody()->GetAngle());
 	temp = listener->GetLastPlatform();
 	//if(temp != NULL){
  	//	newY =  temp->GetYForX(playerPos.x);
