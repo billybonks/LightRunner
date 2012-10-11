@@ -37,6 +37,8 @@ public:
 	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
 	virtual float CalculateDistance();
 	virtual float GetYForX(float x);
+	virtual CCPoint worldToLocalPoint(b2Vec2 point);
+
 };
 
 class ContinuousLineSegment :public  LineSegment{
@@ -76,6 +78,8 @@ public:
 	virtual void InitilizeData();
 	virtual float CalculateDistance();
 	virtual float GetYForX(float x);
+	virtual CCPoint worldToLocalPoint(b2Vec2 point);
+	virtual void removeFromParentAndCleanup();
 };
 
 class EdgeLineSegment : public ContinuousLineSegment{
@@ -90,6 +94,8 @@ public:
 	virtual void InitilizeData();
 	virtual float CalculateDistance();
 	virtual float GetYForX(float x);
+	virtual CCPoint worldToLocalPoint(b2Vec2 point);
+	virtual void removeFromParentAndCleanup();
 };
 
 class InclineLineSegment : public StraightLineSegment{
@@ -102,6 +108,8 @@ public:
 	virtual b2Vec2 getLinearVelocity();
 	virtual void InitilizeData();
 	virtual float GetYForX(float x);
+	virtual CCPoint worldToLocalPoint(b2Vec2 point);
+
 };
 
 class GapSegment : public EdgeLineSegment{
@@ -129,6 +137,7 @@ public:
 	virtual void InitilizeData();
 	virtual float CalculateDistance();
 	virtual float GetYForX(float x);
+	virtual CCPoint worldToLocalPoint(b2Vec2 point);
 	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
 };
 #endif

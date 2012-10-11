@@ -8,6 +8,7 @@
 			_ccColor3B c =  {255,0,0};
 				this->colour =c;
 				this->colourmode=0;
+							this->CanBeOffScreen=false;
 
 		CCNode::CCNode();
 		}
@@ -34,22 +35,34 @@
 			this->CanBeOffScreen=false;
 		}
 
-		bool GameObject::isOffScreen(float scale){//err: need to implement properly for y axis maybe
-			//CCLog("May bug here in offscreen when screen moves up/down");
-			float layerx =  this->body->GetPosition().x* PTM_RATIO;
-			float layery =  this->body->GetPosition().y* PTM_RATIO;
+		bool GameObject::isOffScreen(float scale){
 			float left = screen->origin.x;
 			float bottom = screen->origin.y;
 			float winwidth = screen->size.width*scale;
 			float winheight = screen->size.height*scale;
-			float screenx=layerx*scale-left;
-			float screeny=layery*scale-bottom;
-			if(screeny<0||screeny>winheight||screenx<0||screenx>winwidth)
-				return true;
-			else
-				return false;
-
+			b2Vec2 screenlower=b2Vec2(bounds.lowerBound.x*scale -left,bounds.lowerBound.y*scale -bottom);
+			b2Vec2 screenupper=b2Vec2(bounds.upperBound.x*scale -left,bounds.upperBound.y*scale -bottom);
+			if (screenupper.x < 0) return true; // is left of screen
+			if (screenlower.x > winwidth) return true; // is right of screen
+			if (screenupper.y < 0) return true; // is above screen
+			if (screenlower.y > winheight) return true; // is below screen
+			return false; // onscreen
 		}
+
+	void GameObject::setBoundingBox(){
+		b2AABB aabb;
+		aabb.lowerBound = b2Vec2(FLT_MAX,FLT_MAX);
+		aabb.upperBound = b2Vec2(-FLT_MAX,-FLT_MAX); 
+		b2Fixture* fixture = this->body->GetFixtureList();
+		while (fixture != NULL)
+		{
+			aabb.Combine(aabb, fixture->GetAABB(0));
+			fixture = fixture->GetNext();
+		}
+		aabb.lowerBound*=PTM_RATIO;
+		aabb.upperBound*=PTM_RATIO;
+		bounds=aabb;
+	}
 
 		GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName)
 		{
@@ -149,6 +162,7 @@
 			fixtureDef.friction = 0.0f;
 			fixtureDef.restitution =  0.0f;
 			this->body->CreateFixture(&fixtureDef);
+			setBoundingBox();
 		}
 
 		void GameObject::updateTrail(float dt){
@@ -176,14 +190,12 @@
 
 		}
 
-		void GameObject::SetPosition(CCPoint position){
-			this->getSprite()->setPosition(position); 
-		}
 
 		void GameObject::SetTarget(CCPoint position){
 		}
 
 		void GameObject::removeFromParentAndCleanup(){
+
 			this->body->GetWorld()->DestroyBody( this->body );
 			this->sprite->removeFromParentAndCleanup(true);
 		}	

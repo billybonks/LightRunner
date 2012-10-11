@@ -54,6 +54,8 @@ public:
 	Statistics* GetStats();
 	// implement the "static node()" method manually
 	LAYER_NODE_FUNC(Game);
+	GameObject* getBoss();
+	Spawner* getSpawner();
 
 };
 

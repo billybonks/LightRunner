@@ -1,7 +1,10 @@
 #include "Light.h"
+#include "GameScene.h"
 
 using namespace cocos2d;
 CCGLProgram* Light::_shaderProgram;
+Game* Light::gameDelegate;
+
 Light::Light()
 {
 	//CCSize winSize = CCDirector::sharedDirector()->getWinSize();
@@ -22,7 +25,11 @@ void Light::lazyInit(){
         _shaderProgram->link();
         _shaderProgram->updateUniforms();
 }
-	
+
+void Light::setGame(Game* game){
+		Light::gameDelegate=game;
+	}
+
 Light* Light::retainedLight(b2Vec2* polygonVerticies){
 		if(_shaderProgram==NULL){
 			Light::lazyInit();
@@ -42,19 +49,33 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
 		//  l->colorRampTexture->setAliasTexParameters();
 
         // 5
+
 	return l;
 }
  
  void Light::draw(){
+
 	//  glActiveTexture(GL_TEXTURE1);
     //    glBindTexture(GL_TEXTURE_2D, colorRampTexture->getName());
      //   glActiveTexture(GL_TEXTURE0);
 	glLineWidth( 3.0f );
 	//ccDrawLine( ccp(-50,0), ccp(MIN(screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
-	ccDrawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(_polygonVerticies[1].x,_polygonVerticies[1].y));
-	drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(_polygonVerticies[1].x,_polygonVerticies[1].y));
+	ccDrawLine( ccp(this->getPositionX()/PTM_RATIO,-50), ccp(this->getPositionX()/PTM_RATIO,50));
+	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getBody()->GetPosition());
+	//ccDrawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(MIN(bosspos.x,_polygonVerticies[1].x),MIN(bosspos.y,_polygonVerticies[0].y)));
+	//CCLog("%f,%f, %f,%f", gameDelegate->getBoss()->getBody()->GetPosition().x,gameDelegate->getBoss()->getBody()->GetPosition().y,bosspos.y,_polygonVerticies[1].y);
+	//drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(MIN(_polygonVerticies[1].x,gameDelegate->getBoss()->getSprite()->getPositionX()),_polygonVerticies[1].y));
 	glLineWidth(1);
  }
+
+ CCPoint Light::worldToLocalPoint(b2Vec2 point){
+		float startX = this->getPositionX();
+		float startY = this->getPositionY()/PTM_RATIO;
+		float relX =  point.x -startX ;
+		float relY =  point.y -startY ;
+		//CCLog("%f,%f", startX, );
+		return ccp(relX,relY);
+}
 
  void Light::drawLine( const CCPoint& origin, const CCPoint& destination )
 {

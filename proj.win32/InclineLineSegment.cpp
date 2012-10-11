@@ -53,4 +53,6 @@
 float InclineLineSegment::GetYForX(float x){
 	return 0;
 }
-
+CCPoint InclineLineSegment::worldToLocalPoint(b2Vec2 point){
+	return ccp(0,0);
+}

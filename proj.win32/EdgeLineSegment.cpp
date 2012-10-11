@@ -29,7 +29,6 @@ void EdgeLineSegment::GenerateBody()
 ///JOOOOOOOOOOOOOOOO
 bool EdgeLineSegment::GenerateNextBody()
 {
-	_startWorldPosition;
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
 	bodyDef.position.Set(_startWorldPosition.x,_startWorldPosition.y);
@@ -45,7 +44,7 @@ bool EdgeLineSegment::GenerateNextBody()
 	this->sprite=Light::retainedLight(_polygonVerticies);
 	this->sprite->setPosition(ccp(_startWorldPosition.x*PTM_RATIO,_startWorldPosition.y*PTM_RATIO));
 	fixture->userData = (void*) 1;
-	
+	GameObject::setBoundingBox();
 	return ContinuousLineSegment::GenerateNextBody();
 }
 
@@ -91,6 +90,18 @@ float EdgeLineSegment::GetYForX(float x){
 
 		return y/PTM_RATIO;
 	}
-					CCLog("%f", (v2->y-v1->y));
 					return _startWorldPosition.y-(v2->y/PTM_RATIO-v1->y/PTM_RATIO)/2 +(m*relX);
 }
+
+CCPoint EdgeLineSegment::worldToLocalPoint(b2Vec2 point){
+		float startX = _GameWorldVerticies[0]->x/PTM_RATIO;
+		float startY = _GameWorldVerticies[0]->y/PTM_RATIO;
+		float relX =  point.x -startX ;
+		float relY =  point.y -startY ;
+		return ccp(relX,relY);
+}
+
+	void EdgeLineSegment::removeFromParentAndCleanup(){
+			this->body->GetWorld()->DestroyBody( this->body );
+			this->sprite->removeFromParentAndCleanup(true);
+		}	

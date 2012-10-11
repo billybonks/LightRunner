@@ -54,6 +54,7 @@ bool Game::init()
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();
 	GameObject::SetScreen(&screenBounds);
+	Light::setGame(this);
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png");
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
@@ -103,6 +104,15 @@ bool Game::init()
 	this->_spawner = new Spawner(this, &_stats,world,start,_boss);
 	return true;
 }
+
+GameObject* Game::getBoss(){
+	return _boss;
+}
+
+	Spawner* Game::getSpawner(){
+	return this->_spawner;
+}
+
 void Game::update(float dt) {
 	_player->updateTrail(dt);
 	this->_spawner->update();
@@ -144,6 +154,7 @@ void Game::CleanWorld(){
 				objectsToClean.push_back(myActor);	
 			}
 			else {
+				
 				//Synchronize the AtlasSprites position and rotation with the corresponding body
 				myActor->getSprite()->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
 				myActor->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));

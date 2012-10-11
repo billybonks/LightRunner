@@ -42,3 +42,7 @@ float Tunnel::GetYForX(float x)
 {
 	return 0.0f;
 }
+
+CCPoint Tunnel::worldToLocalPoint(b2Vec2 point){
+	return ccp(0,0);
+}

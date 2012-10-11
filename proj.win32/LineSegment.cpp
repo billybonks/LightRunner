@@ -104,3 +104,7 @@ float LineSegment::CalculateDistance(){
 float LineSegment::GetYForX(float x){
 	return 0;
 }
+
+CCPoint LineSegment::worldToLocalPoint(b2Vec2 point){
+	return ccp(0,0);
+}

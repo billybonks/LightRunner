@@ -24,7 +24,6 @@ public:
 	virtual bool isOffScreen(float scale);
 	virtual void removeFromParentAndCleanup();
 	void update(float dt);
-	void SetPosition(CCPoint position);
 	void SetCanBeOffScreen(bool can);
 	void SetTarget(CCPoint position);
 	float velocity;
@@ -39,9 +38,12 @@ private:
 	_ccColor3B colour;
 	float newtrail;
 	_ccColor3B nextColour();
+	b2AABB bounds;
 
 protected:
 	b2Body *body;
 	CCSprite* sprite;
+	void setBoundingBox();
+
 };
 #endif

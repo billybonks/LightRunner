@@ -34,8 +34,10 @@ bool StraightLineSegment::GenerateNextBody()
 	fixture->density = 1.0f;
 	fixture->friction = 0;
 	fixture->userData = (void*)1;
-	//body->SetUserData(this);
+	body->SetUserData(this);
+	this->sprite=new CCSprite();
 	body->CreateFixture(fixture);
+	GameObject::setBoundingBox();
 	if(child != NULL){
 		if(child->GenerateNextBody()){
 			return true;
@@ -80,3 +82,11 @@ float StraightLineSegment::GetYForX(float x){
 	return 0;
 }
 
+CCPoint StraightLineSegment::worldToLocalPoint(b2Vec2 point){
+	return ccp(0,0);
+}
+
+void StraightLineSegment::removeFromParentAndCleanup(){
+			this->body->GetWorld()->DestroyBody( this->body );
+			this->sprite->removeFromParentAndCleanup(true);
+		}	
