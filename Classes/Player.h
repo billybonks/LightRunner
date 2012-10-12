@@ -6,7 +6,8 @@
 #include "cocos2d.h"
 #include "Box2D.h"
 #include "GameObject.h"
- 
+//#include "Timer.h"
+
 class Player : public GameObject {
 public:
 	void createFootFixture(b2World* world);
@@ -15,10 +16,12 @@ public:
 	void subNumFootContacts();
 	Player();
 	void jump();
+	void init();
+	void timeOutJump();
+
 	private:
 	int numFootContacts;
-
-
+	int jumpTimeout;
 };
   
 #endif

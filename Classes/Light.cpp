@@ -35,9 +35,10 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
 			Light::lazyInit();
 		}
 		Light* l = new Light();
-		polygonVerticies[0]*=PTM_RATIO;
-		polygonVerticies[1]*=PTM_RATIO;
-		l->_polygonVerticies=polygonVerticies;
+		
+		l->_polygonVerticies = (CCPoint*)malloc(sizeof(CCPoint)*2);
+		l->_polygonVerticies[0]=ccp(polygonVerticies[0].x*PTM_RATIO,polygonVerticies[0].y*PTM_RATIO);
+		l->_polygonVerticies[1]=ccp(polygonVerticies[1].x*PTM_RATIO,polygonVerticies[1].y*PTM_RATIO);
 		l->setContentSize(CCSize(abs(polygonVerticies[1].x-polygonVerticies[0].x),abs(polygonVerticies[1].y-polygonVerticies[0].y)));
 		l->setShaderProgram(_shaderProgram);
         //TEST
@@ -60,6 +61,7 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
 	glLineWidth( 3.0f );
 	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getPosition());
 	drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), bosspos);
+
 	glLineWidth(1);
  }
 

@@ -29,9 +29,7 @@ void B2DLayer::draw(){
 	CCLayer::draw();
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
 	kmGLPushMatrix();
-	if(_debug){
-		world->DrawDebugData();
-	}
+	//world->DrawDebugData();
 	kmGLPopMatrix();
 }
 

@@ -49,7 +49,7 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 0.7f;
+	_scale = 0.3f;
 	this->setScale(_scale);
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();
@@ -60,9 +60,7 @@ bool Game::init()
 	_batchNode->addChild(_player->getSprite(), 1);
 	_player->createBox2dObject(B2DLayer::world);
 	_player->createFootFixture(B2DLayer::world);
-	_player->setNumFootContacts(0);
-
-	_player->SetCanBeOffScreen(true);
+	_player->init();
 
 	//animation
 	CCArray* frames = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner3.png"),NULL);
@@ -89,19 +87,14 @@ bool Game::init()
 	//make no collisions
 	filter.maskBits = 0;
 	//and set it back
-	//this->setScale(0.5);
 	_boss->getBody()->GetFixtureList()->SetFilterData(filter);
-	//floor
-	_floor = GameObject::retainedObjectWithSpriteFrameName("floor.png");
-	_floor->getSprite()->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.1));
-	_batchNode->addChild(_floor->getSprite(), 1);
-	_floor->createBox2dObject(world);
-	_floor->getBody()->SetType(b2_kinematicBody);
-	_floor->SetCanBeOffScreen(true);
-	b2Vec2 start = b2Vec2::b2Vec2();
-	start.Set(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
-	_stats =  Statistics();
+
+	//Spawner
+	b2Vec2 start = b2Vec2(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
 	this->_spawner = new Spawner(this, &_stats,world,start,_boss);
+
+	_stats =  Statistics();
+
 	return true;
 }
 
@@ -114,16 +107,17 @@ GameObject* Game::getBoss(){
 }
 
 void Game::update(float dt) {
+
 	_player->updateTrail(dt);
+
 	this->_spawner->update();
-	b2Vec2 playerPos = _player->getBody()->GetPosition();
-	_boss->getBody()->ApplyForce(_boss->getBody()->GetMass()*b2Vec2(0.0f, 10.0f),_boss->getBody()->GetWorldCenter());
+
+	//move boss according to platforms
 	LineSegment* temp = _spawner->GetCurrentPlatform();
 	float newY = _spawner->GetCurrentPlatform()->GetYForX(_boss->getBody()->GetPosition().x);
-	//float currentY = _boss->getBody()->GetPosition().y;
-	//float accel = newY-currentY;
 	_boss->getBody()->SetLinearVelocity(b2Vec2(15,0));
 	_boss->getBody()->SetTransform(b2Vec2(_boss->getBody()->GetPosition().x,newY),_boss->getBody()->GetAngle());
+
 	temp = listener->GetLastPlatform();
 	//if(temp != NULL){
  	//	newY =  temp->GetYForX(playerPos.x);
@@ -132,11 +126,15 @@ void Game::update(float dt) {
 	//	}
 	//}
 
-	//acceleration
+	//player acceleration
 	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
 		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
 	}
+
+	//Box2D tick
 	B2DLayer::update(dt);
+	
+	//Update Stats
 	_stats.IncrementDistance(_player->getSprite()->getPosition().x - _lastPos.x);
 	_lastPos = _player->getSprite()->getPosition();
 	_stats.SetVelocity(_player->getBody()->GetLinearVelocity().x);
@@ -154,8 +152,7 @@ void Game::CleanWorld(){
 				objectsToClean.push_back(myActor);	
 			}
 			else {
-				
-				//Synchronize the AtlasSprites position and rotation with the corresponding body
+				//Synchronize the Sprites position and rotation with the corresponding body
 				myActor->getSprite()->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
 				myActor->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
 				myActor->getSprite()->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));

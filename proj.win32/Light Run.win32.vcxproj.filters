@@ -101,6 +101,12 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSprite.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,6 +173,12 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="Tunnel.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlatformSprite.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

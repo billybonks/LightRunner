@@ -1,18 +1,39 @@
 #include "Player.h"
 
-
 Player::Player(void)
 {
 	GameObject::GameObject();
+	
+}
+
+void Player::init(){
+	numFootContacts=0;
+	jumpTimeout=0;
+	SetCanBeOffScreen(true);
 }
 
 void Player::jump(){
-	if ( this->numFootContacts>= 1 ) {
+	if ( this->numFootContacts>= 1 &&jumpTimeout==0) {
     b2Vec2 impulse = b2Vec2(0.0f, 4.5f);
     this->body->ApplyLinearImpulse(impulse, this->body->GetWorldCenter());	
+	//jumpTimeout=1;
+	// t = new Timer();
+
+	// set up the time delay
+	//CCDelayTime *delayAction = CCDelayTime::create(0.2f);
+	// perform the selector call
+	//t->forJumpTimeout=*CCCallFunc::create(this, callfunc_selector(Player::timeOutJump));
+	// run the action
+	//t->runAction(CCSequence::create(delayAction, t->forJumpTimeout, NULL));
+	CCTimer* test = CCTimer::timerWithTarget(this,schedule_selector(Player::timeOutJump),0.2f);
+	test->update(2.3f);
 	}
 }
 
+void Player::timeOutJump(){
+	CCLog("asdf");
+		jumpTimeout=0;
+}
 void Player::createFootFixture(b2World* world) {
 	  //add foot sensor fixture
 

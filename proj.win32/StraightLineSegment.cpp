@@ -1,5 +1,5 @@
 #include "LineSegment.h"
-#include "Light.h"
+#include "PlatformSprite.h"
 
 StraightLineSegment::StraightLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
 	:ContinuousLineSegment(world,startPosition,width,height)
@@ -40,7 +40,7 @@ bool StraightLineSegment::GenerateNextBody()
 	body->SetUserData(this);
 	this->sprite=new CCSprite();
 	body->CreateFixture(fixture);
-	this->sprite=Light::retainedLight(_polygonVerticies);
+	this->sprite=PlatformSprite::retainedPlatformSprite(_polygonVerticies);
 	this->sprite->setPosition(ccp(_startWorldPosition.x*PTM_RATIO,_startWorldPosition.y*PTM_RATIO));
 	GameObject::setBoundingBox();
 	if(child != NULL){
