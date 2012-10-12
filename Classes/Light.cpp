@@ -54,27 +54,37 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
 }
  
  void Light::draw(){
-
 	//  glActiveTexture(GL_TEXTURE1);
     //    glBindTexture(GL_TEXTURE_2D, colorRampTexture->getName());
      //   glActiveTexture(GL_TEXTURE0);
 	glLineWidth( 3.0f );
-	//ccDrawLine( ccp(-50,0), ccp(MIN(screen->origin.x+screen->size.width*0.9-getPositionX(),50),0));
-	ccDrawLine( ccp(this->getPositionX()/PTM_RATIO,-50), ccp(this->getPositionX()/PTM_RATIO,50));
-	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getBody()->GetPosition());
-	//ccDrawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(MIN(bosspos.x,_polygonVerticies[1].x),MIN(bosspos.y,_polygonVerticies[0].y)));
-	//CCLog("%f,%f, %f,%f", gameDelegate->getBoss()->getBody()->GetPosition().x,gameDelegate->getBoss()->getBody()->GetPosition().y,bosspos.y,_polygonVerticies[1].y);
-	//drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(MIN(_polygonVerticies[1].x,gameDelegate->getBoss()->getSprite()->getPositionX()),_polygonVerticies[1].y));
+	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getPosition());
+	drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), bosspos);
 	glLineWidth(1);
  }
 
- CCPoint Light::worldToLocalPoint(b2Vec2 point){
-		float startX = this->getPositionX();
-		float startY = this->getPositionY()/PTM_RATIO;
-		float relX =  point.x -startX ;
-		float relY =  point.y -startY ;
-		//CCLog("%f,%f", startX, );
-		return ccp(relX,relY);
+ CCPoint Light::worldToLocalPoint(CCPoint point){
+	float thisx=this->getPositionX();
+	float distancex=point.x-thisx-_polygonVerticies[0].x;
+	float lengthx=_polygonVerticies[1].x-_polygonVerticies[0].x;
+	float drawtox=0;
+	if (distancex<0)
+		drawtox=_polygonVerticies[0].x;
+	else if (distancex<lengthx)
+		drawtox=distancex-_polygonVerticies[1].x;
+	else 
+		drawtox=_polygonVerticies[1].x;
+
+	float thisy=this->getPositionY();
+	float distancey=point.y-thisy;
+	float drawtoy=0;
+	if (distancex<0)
+		drawtoy=_polygonVerticies[0].y;
+	else if (distancex<lengthx)
+		drawtoy=distancey;
+	else 
+		drawtoy=_polygonVerticies[1].y;
+	return ccp(drawtox,drawtoy);
 }
 
  void Light::drawLine( const CCPoint& origin, const CCPoint& destination )

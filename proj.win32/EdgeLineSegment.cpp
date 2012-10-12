@@ -9,6 +9,8 @@ EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width
 	float h = _height/2;
 	_polygonVerticies[0].Set(-w, -h);
 	_polygonVerticies[1].Set(w, h);
+	this->SetCanBeOffScreen(true);
+
 }
 
 EdgeLineSegment::EdgeLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height)
@@ -18,6 +20,8 @@ EdgeLineSegment::EdgeLineSegment(b2World *world,float width,float height):Contin
 	float h = _height/2;
 	_polygonVerticies[0].Set(-w, -h);
 	_polygonVerticies[1].Set(w, h);
+	this->SetCanBeOffScreen(true);
+
 }
 
 void EdgeLineSegment::GenerateBody()
@@ -27,6 +31,7 @@ void EdgeLineSegment::GenerateBody()
 
 //hello
 ///JOOOOOOOOOOOOOOOO
+//whats up??
 bool EdgeLineSegment::GenerateNextBody()
 {
 	b2BodyDef bodyDef;

@@ -27,7 +27,7 @@ private:
 	static CCGLProgram* _shaderProgram;
 	static void lazyInit();
 	void drawLine( const CCPoint& origin, const CCPoint& destination );
-	CCPoint worldToLocalPoint(b2Vec2 point);
+	CCPoint worldToLocalPoint(CCPoint point);
 
 };
 #endif

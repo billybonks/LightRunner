@@ -19,7 +19,7 @@ void main()
     float rampedR = texture2D(u_colorRampTexture, vec2(normalColor.r, 0)).r;
     float rampedG = texture2D(u_colorRampTexture, vec2(normalColor.g, 0)).g;
     float rampedB = texture2D(u_colorRampTexture, vec2(normalColor.b, 0)).b;
-	float ratio=gl_FragCoord.x/480;
+	float ratio=1;//gl_FragCoord.x/480;
     gl_FragColor = vec4(wat*ratio,the*ratio,fuck*ratio,1);
 // 4
 }

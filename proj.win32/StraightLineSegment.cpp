@@ -5,12 +5,14 @@ StraightLineSegment::StraightLineSegment(b2World *world,b2Vec2 startPosition,flo
 {
 	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*4);
 	ContinuousLineSegment::GetVertsSquare(_polygonVerticies,_width,_height);
+	this->SetCanBeOffScreen(true);
 
 }
 
 StraightLineSegment::StraightLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height){
 	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*4);
 	ContinuousLineSegment::GetVertsSquare(_polygonVerticies,_width,_height);
+	this->SetCanBeOffScreen(true);
 
 }
 
