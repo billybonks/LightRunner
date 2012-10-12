@@ -91,6 +91,8 @@ LineSegment Spawner::GenerateCompoundSegment(){
 			b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
 			StraightLineSegment *floater = new StraightLineSegment(_world,floaterPos,floatDist,floatH);
 			floater->GenerateNextBody();
+				_game->addChild(floater->getSprite());	
+
 		}
 
 	}
