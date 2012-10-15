@@ -155,7 +155,7 @@
 			playerBodyDef.fixedRotation = true;
 			this->body = world->CreateBody(&playerBodyDef);
 			b2PolygonShape dynamicBox;
-			dynamicBox.SetAsBox((this->sprite->getContentSize().width/PTM_RATIO)/2, (this->sprite->getContentSize().height/PTM_RATIO)/2);//These are mid points for our 1m box err:if object is scaled/rotated this will bug out
+			dynamicBox.SetAsBox((this->sprite->getContentSize().width/PTM_RATIO*this->sprite->getScale())/2, (this->sprite->getContentSize().height/PTM_RATIO)/2*this->sprite->getScale());//These are mid points for our 1m box err:if object is scaled/rotated this will bug out
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &dynamicBox;
 			fixtureDef.density = 1.0f;
