@@ -30,6 +30,7 @@ void Game::draw(){
 // on "init" you need to initialize your instance
 bool Game::init()
 {
+	tracking = false;
 	//////////////////////////////
 	// 1. super init first
 	if ( !B2DLayer::init() )
@@ -75,7 +76,7 @@ bool Game::init()
 	_boss->createBox2dObject(B2DLayer::world);
 	_boss->SetCanBeOffScreen(true);
 
-	
+
 
 	//Register for touches and gameloop
 	this->setTouchEnabled(true) ;
@@ -102,12 +103,15 @@ GameObject* Game::getBoss(){
 	return _boss;
 }
 
-	Spawner* Game::getSpawner(){
+Spawner* Game::getSpawner(){
 	return this->_spawner;
 }
 
 void Game::update(float dt) {
-
+	if(tracking)
+	{
+		steps += dt;
+	}
 	_player->updateTrail(dt);
 
 	this->_spawner->update();
@@ -120,7 +124,7 @@ void Game::update(float dt) {
 
 	temp = listener->GetLastPlatform();
 	//if(temp != NULL){
- 	//	newY =  temp->GetYForX(playerPos.x);
+	//	newY =  temp->GetYForX(playerPos.x);
 	//	if(newY-200 > playerPos.y){
 	//		playerPos = _player->getBody()->GetPosition();
 	//	}
@@ -133,7 +137,7 @@ void Game::update(float dt) {
 
 	//Box2D tick
 	B2DLayer::update(dt);
-	
+
 	//Update Stats
 	_stats.IncrementDistance(_player->getSprite()->getPosition().x - _lastPos.x);
 	_lastPos = _player->getSprite()->getPosition();
@@ -170,7 +174,17 @@ void Game::CleanWorld(){
 }
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	_player->jump();
+	tracking = true;
+	steps = 0;
+}
+
+void Game::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+{
+	if(steps > 2.0f){
+		steps = 2.0f;
+	}
+	_player->jump(steps);
+	tracking = false;
 }
 
 Statistics* Game::GetStats(){

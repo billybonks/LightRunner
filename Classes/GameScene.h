@@ -38,6 +38,8 @@ private:
 	CCPoint _lastPos;
 	Spawner* _spawner;
 	float _scale;
+	float steps;
+	bool tracking;
 public:
 	virtual void draw();
 	    LAYER_CREATE_FUNC(Game);
@@ -51,6 +53,7 @@ public:
 	virtual void menuCloseCallback(CCObject* pSender);
 	
 	virtual void ccTouchesBegan(CCSet* touches, cocos2d::CCEvent* event);
+	virtual void ccTouchesEnded(CCSet* touches, cocos2d::CCEvent* event);
 	Statistics* GetStats();
 	// implement the "static node()" method manually
 	LAYER_NODE_FUNC(Game);

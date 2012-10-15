@@ -12,9 +12,10 @@ void Player::init(){
 	SetCanBeOffScreen(true);
 }
 
-void Player::jump(){
+void Player::jump(float multiplier){
 	if ( this->numFootContacts>= 1 &&jumpTimeout==0) {
-    b2Vec2 impulse = b2Vec2(0.0f, 4.5f);
+    float vertImpulse =  10.0f*multiplier;
+    b2Vec2 impulse = b2Vec2(0.0f, vertImpulse);
     this->body->ApplyLinearImpulse(impulse, this->body->GetWorldCenter());	
 	//jumpTimeout=1;
 	// t = new Timer();
