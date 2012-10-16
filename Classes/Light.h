@@ -18,17 +18,22 @@ public:
 	void IsTouched(bool touched);
 	CCRect *screen;
 	static void setGame(Game* game);
+		void setMix(ccColor4F mix);
 
 protected:
 	bool _touched;
 	static Game* gameDelegate;
 	static CCGLProgram* _shaderProgram;
 	static void lazyInit();
+	void drawLine( const CCPoint& origin, const CCPoint& destination,ccColor4F colour );
+	CCPoint worldToLocalPoint(CCPoint point);
+
+	ccColor4F _mix;
+	ccColor4F _colour;
+	void nextColour();
 
 private:
 	//CCTexture2D *colorRampTexture;
-	void drawLine( const CCPoint& origin, const CCPoint& destination );
-	CCPoint worldToLocalPoint(CCPoint point);
 
 };
 #endif

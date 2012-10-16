@@ -7,16 +7,18 @@ Game* Light::gameDelegate;
 
 Light::Light()
 {
-	//CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	//CCSprite::CCSprite();
-	//_origin = ccp(-50,0);
-	//_destination = ccp(MIN(winSize.width*0.9-getPositionX(),50),0);
+	CCSprite::CCSprite();
+	ccColor4F mix = {0,0,0,0};
+	ccColor4F start = {0,0,0,1};
+	_mix=mix;
+	_colour=start;
 }
 
 Light::Light(CCPoint position,float width,float height)
 {;
-	CCSprite::CCSprite();
+	Light::Light();
 }
+
 void Light::lazyInit(){
 		_shaderProgram = new CCGLProgram();
         _shaderProgram->initWithVertexShaderFilename("PositionColor.vsh", "PositionColor.fsh");
@@ -60,7 +62,9 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
      //   glActiveTexture(GL_TEXTURE0);
 	glLineWidth( 3.0f );
 	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getPosition());
-	drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), bosspos);
+		nextColour();
+
+		drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), bosspos,_colour);
 
 	glLineWidth(1);
  }
@@ -89,7 +93,7 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
 	return ccp(drawtox,drawtoy);
 }
 
- void Light::drawLine( const CCPoint& origin, const CCPoint& destination )
+ void Light::drawLine( const CCPoint& origin, const CCPoint& destination ,ccColor4F colour)
 {
 
     ccVertex2F vertices[2] = {
@@ -101,14 +105,14 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
     CHECK_GL_ERROR_DEBUG();
     _shaderProgram->setUniformForModelViewProjectionMatrix();
     CHECK_GL_ERROR_DEBUG();
-	float wat= rand()/(RAND_MAX + 1.0); 
-	float the= rand()/(RAND_MAX + 1.0); 
-	float fuck= rand()/(RAND_MAX + 1.0); 
+	float r= colour.r; 
+	float g= colour.g; 
+	float b= colour.b; 
 	
 	const GLuint program = _shaderProgram->getProgram();
-	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "wat"), wat);
-	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "the"), the);
-	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "fuck"), fuck);
+	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "r"), r);
+	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "g"), g);
+	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "b"), b);
  ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
     CHECK_GL_ERROR_DEBUG();
     glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
@@ -116,6 +120,25 @@ Light* Light::retainedLight(b2Vec2* polygonVerticies){
     glDrawArrays(GL_LINES, 0, 2);
 
     CC_INCREMENT_GL_DRAWS(1);
+}
+
+ void Light::setMix(ccColor4F mix){
+	_mix=mix;
+}
+
+void Light::nextColour(){
+	float red= rand()/(RAND_MAX + 1.0); 
+	float green= rand()/(RAND_MAX + 1.0); 
+	float blue= rand()/(RAND_MAX + 1.0); 
+
+	// mix the color
+	if (_mix.r!=0&&_mix.g!=0&&_mix.b!=0&&_mix.a!=0) {
+        red = (red + _mix.r) / 2;
+        green = (green + _mix.g) / 2;
+        blue = (blue +_mix.b) / 2;
+    }
+	ccColor4F colour = {red,green,blue,1};
+	_colour=colour;
 }
 
 void Light::removeFromParentAndCleanup(){

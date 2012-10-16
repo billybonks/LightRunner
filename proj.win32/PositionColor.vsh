@@ -5,9 +5,6 @@ attribute vec2 a_texCoord;
 //2
 uniform mat4 u_MVPMatrix;
 varying vec4 v_fragmentColor;
-uniform float wat;
-uniform float the;
-uniform float fuck;
 //3
 #ifdef GL_ES
 varying mediump vec2 v_texCoord;

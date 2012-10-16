@@ -4,11 +4,12 @@
 PlatformSprite::PlatformSprite()
 {
 	Light::Light();
+	_fillColour=&_colour;
 }
 
 PlatformSprite::PlatformSprite(CCPoint position,float width,float height)
-{;
-	Light::Light();
+{
+	PlatformSprite::PlatformSprite();
 }
 
 PlatformSprite* PlatformSprite::retainedPlatformSprite(b2Vec2* polygonVerticies){
@@ -23,14 +24,15 @@ PlatformSprite* PlatformSprite::retainedPlatformSprite(b2Vec2* polygonVerticies)
 		p->_polygonVerticies[3]=ccp(polygonVerticies[3].x*PTM_RATIO,polygonVerticies[3].y*PTM_RATIO);
 		p->setContentSize(CCSize(abs(polygonVerticies[1].x-polygonVerticies[0].x),abs(polygonVerticies[2].y-polygonVerticies[0].y)));
 		p->setShaderProgram(_shaderProgram);
-		ccColor4F colour = {0,0,0,0};
-		p->_mix=colour;
+		
+
 		return p;
 }
  
-void PlatformSprite::setMix(ccColor4F mix){
-	_mix=mix;
-}
+
+void PlatformSprite::setFillColour(ccColor4F* colour){
+		this->_fillColour=colour;
+	}
 
  void PlatformSprite::draw(){
 	glLineWidth( 1.0f );
@@ -38,78 +40,13 @@ void PlatformSprite::setMix(ccColor4F mix){
 	//0		1      <maybe wrong and flipped vertically
 	//3		2
 	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getPosition());
-	drawLine( bosspos,ccp(bosspos.x,_polygonVerticies[0].y));
-
-	float red= rand()/(RAND_MAX + 1.0); 
-	float green= rand()/(RAND_MAX + 1.0); 
-	float blue= rand()/(RAND_MAX + 1.0); 
-
-	// mix the color
-	if (_mix.r!=0&&_mix.g!=0&&_mix.b!=0&&_mix.a!=0) {
-        red = (red + _mix.r) / 2;
-        green = (green + _mix.g) / 2;
-        blue = (blue +_mix.b) / 2;
-    }
-
+	nextColour();
+	drawLine( bosspos,ccp(bosspos.x,_polygonVerticies[0].y),_colour);
 	CCPoint* vertices = (CCPoint*)malloc(sizeof(CCPoint)*4);
 	vertices[0]=ccp(_polygonVerticies[0].x,_polygonVerticies[0].y);
 	vertices[1]=ccp(bosspos.x,_polygonVerticies[1].y);
 	vertices[2]=ccp(bosspos.x,_polygonVerticies[2].y);
 	vertices[3]=ccp(_polygonVerticies[3].x,_polygonVerticies[3].y);
-	ccColor4F colour = {red,green,blue,1};
-	ccDrawSolidPoly(vertices,4,colour);
+	ccDrawSolidPoly(vertices,4,*_fillColour);
 	glLineWidth(1);
  }
-
- CCPoint PlatformSprite::worldToLocalPoint(CCPoint point){
-	float thisx=this->getPositionX();
-	float distancex=point.x-thisx-_polygonVerticies[0].x;
-	float lengthx=_polygonVerticies[1].x-_polygonVerticies[0].x;
-	float drawtox=0;
-	if (distancex<0)
-		drawtox=_polygonVerticies[0].x;
-	else if (distancex<lengthx)
-		drawtox=distancex-_polygonVerticies[1].x;
-	else 
-		drawtox=_polygonVerticies[1].x;
-
-	float thisy=this->getPositionY();
-	float distancey=point.y-thisy;
-	float drawtoy=0;
-	if (distancex<0)
-		drawtoy=_polygonVerticies[0].y;
-	else if (distancex<lengthx)
-		drawtoy=distancey;
-	else 
-		drawtoy=_polygonVerticies[1].y;
-	return ccp(drawtox,drawtoy);
-}
-
- void PlatformSprite::drawLine( const CCPoint& origin, const CCPoint& destination )
-{
-
-    ccVertex2F vertices[2] = {
-        {origin.x, origin.y},
-        {destination.x, destination.y}
-    };
-
-	_shaderProgram->use();
-    CHECK_GL_ERROR_DEBUG();
-    _shaderProgram->setUniformForModelViewProjectionMatrix();
-    CHECK_GL_ERROR_DEBUG();
-	float wat= rand()/(RAND_MAX + 1.0); 
-	float the= rand()/(RAND_MAX + 1.0); 
-	float fuck= rand()/(RAND_MAX + 1.0); 
-	
-	const GLuint program = _shaderProgram->getProgram();
-	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "wat"), wat);
-	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "the"), the);
-	_shaderProgram->setUniformLocationWith1f(glGetUniformLocation( program, "fuck"), fuck);
- ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
-    CHECK_GL_ERROR_DEBUG();
-    glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-    CHECK_GL_ERROR_DEBUG();
-    glDrawArrays(GL_LINES, 0, 2);
-
-    CC_INCREMENT_GL_DRAWS(1);
-}

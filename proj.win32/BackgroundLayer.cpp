@@ -14,8 +14,12 @@ bool BackgroundLayer::init(){
 	PlatformSprite* sprite=PlatformSprite::retainedPlatformSprite(vertices);
 	sprite->setPosition(ccp(width/2,height/2));
 	ccColor4F colour = {1,1,1,1};
-	//sprite->setMix(colour);
+	_fillColour= colour;
+	colourmode=0;
+	time=0;
+	sprite->setFillColour(&this->_fillColour);
 	this->addChild(sprite);
+	this->scheduleUpdate();
 	return true;
 }
 
@@ -24,5 +28,65 @@ bool BackgroundLayer::init(){
  }
 
 void BackgroundLayer::update(float dt){
+	time+=dt;
+	if(time>0.1){
+		nextFillColour();
+	time=0;
+	}
+}
+
+void BackgroundLayer::nextFillColour(){
+	 _fillColour.r = _fillColour.r*2-1 ;
+        _fillColour.g =  _fillColour.g*2-1;
+        _fillColour.b = _fillColour.b*2-1;
+
+	if(colourmode==0){
+		_fillColour.b+=0.025f;
+		if(_fillColour.b>=1){
+			_fillColour.b=1;
+			colourmode=1;
+		}
+	}
+	if(colourmode==1){
+		_fillColour.r-=0.025f;
+		if(_fillColour.r<=0){
+			_fillColour.r=0;
+			colourmode=2;
+		}
+	}
+	if(colourmode==2){
+		_fillColour.g+=0.025f;
+		if(_fillColour.g>=1){
+			_fillColour.g=1;
+			colourmode=3;
+		}
+	}
+	if(colourmode==3){
+		_fillColour.b-=0.025f;
+		if(_fillColour.b<=0){
+			_fillColour.b=0;
+			colourmode=4;
+		}
+	}
+	if(colourmode==4){
+		_fillColour.r+=0.025f;
+		if(_fillColour.r>=1){
+			_fillColour.r=1;
+			colourmode=5;
+		}
+	}	
+	if(colourmode==5){
+		_fillColour.g-=0.025f;
+		if(_fillColour.g<=0){
+			_fillColour.g=0;
+			colourmode=0;
+		}
+	}	
+
+	 _fillColour.r = (_fillColour.r + 1) / 2;
+        _fillColour.g = ( _fillColour.g + 1) / 2;
+        _fillColour.b = (_fillColour.b +1) / 2;
 
 }
+
+

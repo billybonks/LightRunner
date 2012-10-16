@@ -14,6 +14,10 @@ private:
 
 	void update(float dt);
 	CCSize winSize;
+	void nextFillColour();
+	ccColor4F _fillColour;
+	int colourmode;
+	float time;
 public:
 	virtual void draw();
 	LAYER_CREATE_FUNC(BackgroundLayer);
