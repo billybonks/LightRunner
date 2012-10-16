@@ -2,6 +2,8 @@
 #include "Light.h"
 #include "cocos2d.h"
 #include "b2debugDraw.h"
+#include "SimpleAudioEngine.h"    
+
 using namespace cocos2d;
 
 CCScene* Game::scene()
@@ -56,16 +58,16 @@ bool Game::init()
 	winSize = CCDirector::sharedDirector()->getWinSize();
 	GameObject::SetScreen(&screenBounds);
 	Light::setGame(this);
-	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png");
+	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("0.png");
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
-	_player->getSprite()->setScale(2.5);
+	_player->getSprite()->setScale(0.8);
 	_player->createBox2dObject(B2DLayer::world);
 	_player->createFootFixture(B2DLayer::world);
 	_player->init();
 
 	//animation
-	CCArray* frames = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("runner3.png"),NULL);
+	CCArray* frames = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("3.png"),NULL);
 	CCAnimation *animation = CCAnimation::create(frames,0.2f);
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
 	_lastPos = _player->getSprite()->getPosition();
@@ -96,6 +98,9 @@ bool Game::init()
 	this->_spawner = new Spawner(this, &_stats,world,start,_boss);
 
 	_stats =  Statistics();
+
+	//MUsicccccc
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("ghosts.mp3", true);    
 
 	return true;
 }

@@ -168,8 +168,7 @@
 		void GameObject::updateTrail(float dt){
 			this->newtrail-=dt;
 			if(this->newtrail<=0){
-				this->newtrail=0.05f;
-			}
+			this->newtrail=0.01f;
 			GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame()); 
 			trail->sprite->setPosition(ccp(this->sprite->getPositionX(), this->sprite->getPositionY()));
 			this->sprite->getParent()->addChild(trail->getSprite());
@@ -184,6 +183,7 @@
 			filter.maskBits = 0;
 			//and set it back
 			trail->body->GetFixtureList()->SetFilterData(filter);
+			}
 		}
 				
 
