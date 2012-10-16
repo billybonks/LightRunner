@@ -23,9 +23,15 @@ PlatformSprite* PlatformSprite::retainedPlatformSprite(b2Vec2* polygonVerticies)
 		p->_polygonVerticies[3]=ccp(polygonVerticies[3].x*PTM_RATIO,polygonVerticies[3].y*PTM_RATIO);
 		p->setContentSize(CCSize(abs(polygonVerticies[1].x-polygonVerticies[0].x),abs(polygonVerticies[2].y-polygonVerticies[0].y)));
 		p->setShaderProgram(_shaderProgram);
+		ccColor4F colour = {0,0,0,0};
+		p->_mix=colour;
 		return p;
 }
  
+void PlatformSprite::setMix(ccColor4F mix){
+	_mix=mix;
+}
+
  void PlatformSprite::draw(){
 	glLineWidth( 1.0f );
 	//polygonvertices are:
@@ -34,17 +40,23 @@ PlatformSprite* PlatformSprite::retainedPlatformSprite(b2Vec2* polygonVerticies)
 	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getPosition());
 	drawLine( bosspos,ccp(bosspos.x,_polygonVerticies[0].y));
 
-	//ccDrawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), ccp(_polygonVerticies[1].x,_polygonVerticies[1].y));
-	//ccDrawLine( ccp(_polygonVerticies[2].x,_polygonVerticies[2].y), ccp(_polygonVerticies[3].x,_polygonVerticies[3].y));
-	float wat= rand()/(RAND_MAX + 1.0); 
-	float the= rand()/(RAND_MAX + 1.0); 
-	float fuck= rand()/(RAND_MAX + 1.0); 
+	float red= rand()/(RAND_MAX + 1.0); 
+	float green= rand()/(RAND_MAX + 1.0); 
+	float blue= rand()/(RAND_MAX + 1.0); 
+
+	// mix the color
+	if (_mix.r!=0&&_mix.g!=0&&_mix.b!=0&&_mix.a!=0) {
+        red = (red + _mix.r) / 2;
+        green = (green + _mix.g) / 2;
+        blue = (blue +_mix.b) / 2;
+    }
+
 	CCPoint* vertices = (CCPoint*)malloc(sizeof(CCPoint)*4);
 	vertices[0]=ccp(_polygonVerticies[0].x,_polygonVerticies[0].y);
 	vertices[1]=ccp(bosspos.x,_polygonVerticies[1].y);
 	vertices[2]=ccp(bosspos.x,_polygonVerticies[2].y);
 	vertices[3]=ccp(_polygonVerticies[3].x,_polygonVerticies[3].y);
-	ccColor4F colour = {wat,the,fuck,1};
+	ccColor4F colour = {red,green,blue,1};
 	ccDrawSolidPoly(vertices,4,colour);
 	glLineWidth(1);
  }

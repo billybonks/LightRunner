@@ -97,6 +97,13 @@ void LineSegment::OffsetStartPosition( int targetAttachementVerticie, int source
 	this->_startWorldPosition.y -= sourceVert.y;
 }
 
+float LineSegment::getEndVertice(){
+	return 2;
+}
+
+float LineSegment::getStartVertice(){
+	return 0;
+}
 float LineSegment::CalculateDistance(){
 	return 0;
 }

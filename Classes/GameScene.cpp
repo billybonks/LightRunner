@@ -50,7 +50,7 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 0.7f;
+	_scale = 0.3f;
 	this->setScale(_scale);
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();

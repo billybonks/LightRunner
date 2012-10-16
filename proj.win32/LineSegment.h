@@ -38,6 +38,8 @@ public:
 	virtual float CalculateDistance();
 	virtual float GetYForX(float x);
 	virtual CCPoint worldToLocalPoint(b2Vec2 point);
+	float getStartVertice();
+	float getEndVertice();
 
 };
 
@@ -126,6 +128,8 @@ public:
 
 class Tunnel :public ContinuousLineSegment{
 private:
+	bool _leftEntrance;
+		bool _rightExit;
 protected:
 	EdgeLineSegment* left;
 	EdgeLineSegment* right;
@@ -138,6 +142,8 @@ public:
 	virtual float CalculateDistance();
 	virtual float GetYForX(float x);
 	virtual CCPoint worldToLocalPoint(b2Vec2 point);
-	virtual void  OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target );
+	virtual float getEndVertice();
+	virtual float getStartVertice();
+
 };
 #endif

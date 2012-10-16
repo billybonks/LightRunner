@@ -30,7 +30,7 @@ private:
 public:
 	Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* _player);
 	int Random(int lowest, int highest);
-	LineSegment GenerateCompoundSegment();
+	void GenerateCompoundSegment();
 	void update();
 	LineSegment* GetCurrentPlatform();
 };
