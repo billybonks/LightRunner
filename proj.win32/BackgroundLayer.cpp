@@ -36,9 +36,9 @@ void BackgroundLayer::update(float dt){
 }
 
 void BackgroundLayer::nextFillColour(){
-	 _fillColour.r = _fillColour.r*2-1 ;
-        _fillColour.g =  _fillColour.g*2-1;
-        _fillColour.b = _fillColour.b*2-1;
+	 _fillColour.r = _fillColour.r*2.5-1.5 ;
+        _fillColour.g =  _fillColour.g*2.5-1.5;
+        _fillColour.b = _fillColour.b*2.5-1.5;
 
 	if(colourmode==0){
 		_fillColour.b+=0.025f;
@@ -83,9 +83,9 @@ void BackgroundLayer::nextFillColour(){
 		}
 	}	
 
-	 _fillColour.r = (_fillColour.r + 1) / 2;
-        _fillColour.g = ( _fillColour.g + 1) / 2;
-        _fillColour.b = (_fillColour.b +1) / 2;
+	 _fillColour.r = (_fillColour.r + 1.5) / 2.5;
+        _fillColour.g = ( _fillColour.g + 1.5) / 2.5;
+        _fillColour.b = (_fillColour.b +1.5) / 2.5;
 
 }
 
