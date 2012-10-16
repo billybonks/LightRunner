@@ -15,7 +15,7 @@ void Player::init(){
 void Player::jump(float multiplier){
 	if ( this->numFootContacts>= 1 &&jumpTimeout==0) {
     float vertImpulse =  10.0f*multiplier;
-    b2Vec2 impulse = b2Vec2(0.0f, vertImpulse);
+	b2Vec2 impulse = b2Vec2(0.0f, vertImpulse*this->getBody()->GetMass());
     this->body->ApplyLinearImpulse(impulse, this->body->GetWorldCenter());	
 	//jumpTimeout=1;
 	// t = new Timer();
@@ -26,20 +26,19 @@ void Player::jump(float multiplier){
 	//t->forJumpTimeout=*CCCallFunc::create(this, callfunc_selector(Player::timeOutJump));
 	// run the action
 	//t->runAction(CCSequence::create(delayAction, t->forJumpTimeout, NULL));
-	CCTimer* test = CCTimer::timerWithTarget(this,schedule_selector(Player::timeOutJump),0.2f);
-	test->update(2.3f);
+	//CCTimer* test = CCTimer::timerWithTarget(this,schedule_selector(Player::timeOutJump),0.2f);
+	//test->update(2.3f);
 	}
 }
 
 void Player::timeOutJump(){
-	CCLog("asdf");
 		jumpTimeout=0;
 }
 void Player::createFootFixture(b2World* world) {
 	  //add foot sensor fixture
 
 	b2PolygonShape polygonShape;
-     polygonShape.SetAsBox((this->sprite->getContentSize().width/PTM_RATIO)/2, (this->sprite->getContentSize().height/PTM_RATIO)/8, b2Vec2(0,(-this->sprite->getContentSize().height/PTM_RATIO)/1.9), 0);
+     polygonShape.SetAsBox((this->sprite->getContentSize().width/PTM_RATIO*this->getSprite()->getScale())/2, (this->sprite->getContentSize().height/PTM_RATIO)/8, b2Vec2(0,(-this->sprite->getContentSize().height/PTM_RATIO*this->getSprite()->getScale())/1.9), 0);
 
      b2FixtureDef myFixtureDef;
       myFixtureDef.shape = &polygonShape;

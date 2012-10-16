@@ -50,7 +50,7 @@ bool Game::init()
 	//Preping Vector
 	platforms.reserve(10);
 	//prep stats
-	_scale = 0.3f;
+	_scale = 0.7f;
 	this->setScale(_scale);
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();
@@ -59,7 +59,7 @@ bool Game::init()
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("stander.png");
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
-	//_player->getSprite()->setScale(2.5);
+	_player->getSprite()->setScale(2.5);
 	_player->createBox2dObject(B2DLayer::world);
 	_player->createFootFixture(B2DLayer::world);
 	_player->init();

@@ -174,6 +174,7 @@
 			trail->sprite->setPosition(ccp(this->sprite->getPositionX(), this->sprite->getPositionY()));
 			this->sprite->getParent()->addChild(trail->getSprite());
 			trail->sprite->setColor(nextColour());
+			trail->getSprite()->setScale(this->getSprite()->getScale());
 
 			trail->createBox2dObject(this->body->GetWorld());
 			trail->body->SetType(b2_staticBody);
