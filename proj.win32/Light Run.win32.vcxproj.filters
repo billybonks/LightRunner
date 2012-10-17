@@ -107,6 +107,9 @@
     <ClInclude Include="PlatformSprite.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="TrajectorySprite.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -179,6 +182,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="PlatformSprite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="TrajectorySprite.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

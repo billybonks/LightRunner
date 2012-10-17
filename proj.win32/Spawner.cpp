@@ -16,8 +16,8 @@ Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawn
 	_currentSegment= segment;
 	indexMarker =0;
 	_generate = true;
-	_verticalGapChance = 3;
-	_horizontalGapChance = 3;
+	_verticalGapChance = 5;
+	_horizontalGapChance = 5;
 }
 
 int Spawner::Random(int lowest, int highest){
@@ -43,12 +43,12 @@ void Spawner::GenerateCompoundSegment(){
 	int structType;
 	int height;
 
-	runtime = Random(1,6)/2;
-	float minRunTime = Random(1,6)/2;
+	runtime = Random(3,8);
+
 	float speed = _stats->GetVelocity()*32;
-	minDistance = speed*minRunTime;
+
 	maxDistance = speed*runtime;
-	segmentDistance =  Random(minDistance,maxDistance);
+	segmentDistance = speed*runtime;
 	distanceRemeinder;
 	int spawnFloatingPLatformChance = 10;
 	structType = Random(1,3);
@@ -95,7 +95,8 @@ void Spawner::GenerateCompoundSegment(){
 		int floatDist = segmentDistance/2;
 		if(floatDist>1){
 			int floatH = 20;
-			b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
+			int height = Random(150,300);
+			b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+height));
 			StraightLineSegment *floater = new StraightLineSegment(_world,floaterPos,floatDist,floatH);
 			floater->GenerateNextBody();
 				_game->addChild(floater->getSprite());	

@@ -13,6 +13,7 @@
 #include "B2DLayer.h"
 #include "Spawner.h"
 #include "ContactListener.cpp"
+#include "TrajectorySprite.h"
 #define PTM_RATIO 32
 
 
@@ -40,6 +41,7 @@ private:
 	float _scale;
 	float steps;
 	bool tracking;
+	TrajectorySprite* trajectory;
 public:
 	virtual void draw();
 	    LAYER_CREATE_FUNC(Game);

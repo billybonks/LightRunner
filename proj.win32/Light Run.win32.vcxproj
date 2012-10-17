@@ -163,6 +163,7 @@
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Statistics.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TrajectorySprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="PlatformSprite.cpp" />
     <ClCompile Include="ScoreLayer.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TrajectorySprite.cpp" />
     <ClCompile Include="Tunnel.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Statistics.cpp" />
