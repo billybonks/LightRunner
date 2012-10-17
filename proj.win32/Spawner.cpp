@@ -16,8 +16,8 @@ Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawn
 	_currentSegment= segment;
 	indexMarker =0;
 	_generate = true;
-	_verticalGapChance = 5;
-	_horizontalGapChance = 5;
+	_verticalGapChance = 3;
+	_horizontalGapChance = 3;
 }
 
 int Spawner::Random(int lowest, int highest){
@@ -43,12 +43,12 @@ void Spawner::GenerateCompoundSegment(){
 	int structType;
 	int height;
 
-	runtime = Random(3,8);
-
+	runtime = Random(1,6)/2;
+	float minRunTime = Random(1,6)/2;
 	float speed = _stats->GetVelocity()*32;
-
+	minDistance = speed*minRunTime;
 	maxDistance = speed*runtime;
-	segmentDistance = speed*runtime;
+	segmentDistance =  Random(minDistance,maxDistance);
 	distanceRemeinder;
 	int spawnFloatingPLatformChance = 10;
 	structType = Random(1,3);
@@ -95,8 +95,7 @@ void Spawner::GenerateCompoundSegment(){
 		int floatDist = segmentDistance/2;
 		if(floatDist>1){
 			int floatH = 20;
-			int height = Random(150,300);
-			b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+height));
+			b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
 			StraightLineSegment *floater = new StraightLineSegment(_world,floaterPos,floatDist,floatH);
 			floater->GenerateNextBody();
 				_game->addChild(floater->getSprite());	
@@ -137,13 +136,9 @@ void Spawner::update(){
 	}else{
 		x =_currentSegment->GetGameWorldVerticies(1)->x;
 	}
-	if(_generate == true){
-		GenerateCompoundSegment();
-		_generate= false;
-	}
 	if(playerX >x+distanace){
+		GenerateCompoundSegment();
 		_currentSegment = _nextSegment;
-		_generate = true;
 	}
 
 }

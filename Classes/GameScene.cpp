@@ -65,7 +65,7 @@ bool Game::init()
 	_player->createBox2dObject(B2DLayer::world);
 	_player->createFootFixture(B2DLayer::world);
 	_player->init();
-	
+
 	//animation
 	CCArray* frames = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("3.png"),NULL);
 	CCAnimation *animation = CCAnimation::create(frames,0.2f);
@@ -92,8 +92,7 @@ bool Game::init()
 	filter.maskBits = 0;
 	//and set it back
 	_boss->getBody()->GetFixtureList()->SetFilterData(filter);
-	trajectory = new TrajectorySprite(world,_player->getBody());
-	_batchNode->addChild(trajectory,1);
+
 	//Spawner
 	b2Vec2 start = b2Vec2(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
 	this->_spawner = new Spawner(this, &_stats,world,start,_boss);
@@ -187,11 +186,8 @@ void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 
 void Game::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	steps+=0.5f;
 	if(steps > 2.0f){
 		steps = 2.0f;
-	}else if(steps < 0.5f){
-		steps = 0.5f;
 	}
 	_player->jump(steps);
 	tracking = false;
