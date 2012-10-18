@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Statistics.h"
 #include "Light.h"
-#include "LineSegment.h"
+#include "Segment.h"
 #include <vector>
 using namespace cocos2d;
 class Game;
@@ -14,14 +14,11 @@ class Spawner
 {
 private:
 	Game* _game;
-	vector<LineSegment*> segmentQueue;
 	b2World* _world;
 	Statistics* _stats;
 	b2Vec2 _initialSpawnLocation;
-	LineSegment* _currentSegment;
-	LineSegment* _nextSegment;
-	bool _generate;
-	float indexMarker;
+	Segment* _currentSegment;
+	Segment* _nextSegment;
 	int _counter;
 	GameObject* _player;
 	int _verticalGapChance;
@@ -32,7 +29,7 @@ public:
 	int Random(int lowest, int highest);
 	void GenerateCompoundSegment();
 	void update();
-	LineSegment* GetCurrentPlatform();
+	Segment* GetCurrentPlatform();
 };
 
 #endif

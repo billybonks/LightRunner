@@ -110,6 +110,12 @@
     <ClInclude Include="TrajectorySprite.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Segment.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -157,27 +163,6 @@
     <ClCompile Include="B2DPlay.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="LineSegment.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="ContinousLineSegment.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="StraightLineSegment.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="InclineLineSegment.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="EdgeLineSegment.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="GapSegment.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="Tunnel.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -185,6 +170,27 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="TrajectorySprite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="LineSegment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Segment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="B2Segment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="CompoundSegment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadSegment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Tunnel.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

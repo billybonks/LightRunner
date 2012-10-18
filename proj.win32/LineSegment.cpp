@@ -1,117 +1,63 @@
-#include "LineSegment.h"
+#include "Segment.h"
+#include "Light.h"
+using namespace cocos2d;
 
-void LineSegment::GetVertsInclineSquare(b2Vec2 vertices[],float width,float height,float incline){
-	vertices[0].Set(-width/2, -height/2);
-	vertices[1].Set(width/2, (height/2));
-	vertices[2].Set(vertices[1].x, vertices[1].y+(incline/2));
-	vertices[3].Set(vertices[0].x, vertices[0].y+(incline/2));
-}
-
-void LineSegment::GetVertsSquare(b2Vec2 vertices[],float width,float height){
-	vertices[0].Set(-width/2, -height/2);
-	vertices[1].Set(width/2, -height/2);
-	vertices[2].Set(width/2, height/2);
-	vertices[3].Set(-width/2, height/2);
-}
-//INPUT EXAMPLES 
-//Inputs work in pixel values
-//LineSegment segment(B2DLayer::world,start,10.0f,-0.5f,10.0f); NEVative Sloper
-//LineSegment segment(B2DLayer::world,start,10.0f,0.5f,10.0f);	Positive Slope
-//LineSegment segment(B2DLayer::world,start,10.0f,10.0f,10.0f); Square
-//LineSegment segment(B2DLayer::world,start,5.0f,5.0f,10.0f); Rectangle
-LineSegment::LineSegment(b2World *world,b2Vec2 startPosition){
-	this->_startWorldPosition = *new b2Vec2(startPosition.x/PTM_RATIO,startPosition.y/PTM_RATIO);
-	this->world = world;
-	//this->_lastVerts = originPoints;
-}
-
-LineSegment::LineSegment(b2World *world,float width, float height){
-		this->_width = width/PTM_RATIO;
-	this->_height = height/PTM_RATIO;
-	this->world = world;
-}
-
-LineSegment::LineSegment(b2World *world,b2Vec2 startPosition,float width, float height){
-	this->_width = width/PTM_RATIO;
-	this->_height = height/PTM_RATIO;
-	this->_startWorldPosition = *new b2Vec2(startPosition.x/PTM_RATIO,startPosition.y/PTM_RATIO);
-	this->world = world;
-}
-
-b2Vec2 LineSegment::getLinearVelocity(){
-	return b2Vec2();
-}
-
-b2Vec2 LineSegment::getLastVerticies(){
-	return b2Vec2();
-}
-
-float LineSegment::getIncline(){
-	return 0.0f;
-}
-
-b2Vec2* LineSegment::GetGameWorldVerticies(int verticie){
-	return _GameWorldVerticies[verticie];
-}
-
-void LineSegment::SetPosition(b2Vec2 startPosition){
-	startPosition.x = startPosition.x/PTM_RATIO;
-	startPosition.y = startPosition.y/PTM_RATIO;
-	this->_startWorldPosition =startPosition;
-}
-
-void LineSegment::GenerateBody(){
-
-}
-
-void LineSegment::InitilizeData(){
-
-}
-
-bool LineSegment::GenerateNextBody(){
-	return false;
-}
-
-b2Vec2 LineSegment::GetPosition(){
-	b2Vec2 *ret = new b2Vec2( _startWorldPosition);
-	ret->x = ret->x*PTM_RATIO;
-	ret->y = ret->y*PTM_RATIO;
-	return *ret;
-}
-
-float LineSegment::GetWidth(){
-	return this->_width*PTM_RATIO;
-}
-
-float LineSegment::GetHeight(){
-	return _height*PTM_RATIO;
-}
-
-void LineSegment::OffsetStartPosition( int targetAttachementVerticie, int sourceAttachementVerticie,LineSegment* target )
+LineSegment::LineSegment()
 {
-	b2Vec2 sourceVert = this->_polygonVerticies[sourceAttachementVerticie];
-	b2Vec2* targetVert = target->GetGameWorldVerticies(targetAttachementVerticie);
-	this->_startWorldPosition.x = targetVert->x/PTM_RATIO;
-	this->_startWorldPosition.y = targetVert->y/PTM_RATIO;
-	this->_startWorldPosition.x -= sourceVert.x;
-	this->_startWorldPosition.y -= sourceVert.y;
+	B2Segment::B2Segment();
 }
 
-float LineSegment::getEndVertice(){
-	return 2;
+LineSegment::LineSegment(b2World *world,float width,float height)
+{
+	B2Segment::B2Segment();
+	_gameWorldVerticesCCW = (CCPoint*)malloc(sizeof(CCPoint)*2);
+	this->setContentSize(CCSize( width, height));
+	_polygonVerticesCCW = (CCPoint*)malloc(sizeof(CCPoint)*2);
+	_polygonVerticesCCW[0]=ccp((-this->getContentSize().width/2),(-this->getContentSize().height/2)) ;
+	_polygonVerticesCCW[1]= ccp((this->getContentSize().width/2),(this->getContentSize().height/2)) ;
 }
 
-float LineSegment::getStartVertice(){
-	return 0;
-}
-float LineSegment::CalculateDistance(){
-	return 0;
+LineSegment::LineSegment(b2World *world,CCPoint position,float width,float height)
+{
+	LineSegment::LineSegment(world,width,height);
+	this->setPosition(position);
+	float x = this->getPositionX();
+	float y = this->getPositionY();
+	//_gameWorldVerticesCCW = (CCPoint*)malloc(sizeof(CCPoint)*2);
+
+	this->_gameWorldVerticesCCW[0].setPoint((x-width/2),(y-height/2));
+	this->_gameWorldVerticesCCW[1].setPoint((x+width/2),(y+height/2));
+	generate(world);
 }
 
-float LineSegment::GetYForX(float x){
-	return 0;
+void LineSegment::generate(b2World *world)
+{
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.position.Set(this->getPositionX()/PTM_RATIO,this->getPositionY()/PTM_RATIO);
+	this->_body =world->CreateBody(&bodyDef);
+	this->_body->SetUserData(this);
+	b2FixtureDef* fixture = new b2FixtureDef();
+	b2EdgeShape edge;
+	
+	b2Vec2 leftvertex=b2Vec2(_polygonVerticesCCW[0].x/PTM_RATIO,_polygonVerticesCCW[0].y/PTM_RATIO) ;
+	b2Vec2 rightvertex= b2Vec2(_polygonVerticesCCW[1].x/PTM_RATIO,_polygonVerticesCCW[1].y/PTM_RATIO) ;
+	
+	edge.Set(leftvertex,rightvertex);
+	fixture->shape = &edge;
+	fixture->density = 1.0f;
+	fixture->friction = 0;
+	this->_body->CreateFixture(fixture);
+
+	this->_sprite=Light::retainedLight(_polygonVerticesCCW);
+	fixture->userData = (void*) 1;
+	genBoundingBox();
 }
 
-CCPoint LineSegment::worldToLocalPoint(b2Vec2 point){
-	return ccp(0,0);
+CCPoint* LineSegment::getEndVertice(){
+	return &_gameWorldVerticesCCW[0];
+}
+
+CCPoint* LineSegment::getStartVertice(){
+	return &_gameWorldVerticesCCW[1];
 }

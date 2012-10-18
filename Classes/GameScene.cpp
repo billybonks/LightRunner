@@ -49,8 +49,6 @@ bool Game::init()
 	listener = new ContactListener();
 	world->SetContactListener(listener);
 
-	//Preping Vector
-	platforms.reserve(10);
 	//prep stats
 	_scale = 0.7f;
 	this->setScale(_scale);
@@ -123,10 +121,10 @@ void Game::update(float dt) {
 	this->_spawner->update();
 
 	//move boss according to platforms
-	LineSegment* temp = _spawner->GetCurrentPlatform();
-	float newY = _spawner->GetCurrentPlatform()->GetYForX(_boss->getBody()->GetPosition().x);
+	Segment* temp = _spawner->GetCurrentPlatform();
+	//float newY = _spawner->GetCurrentPlatform()->GetYForX(_boss->getBody()->GetPosition().x);
 	_boss->getBody()->SetLinearVelocity(b2Vec2(25,0));
-	_boss->getBody()->SetTransform(b2Vec2(_boss->getBody()->GetPosition().x,newY),_boss->getBody()->GetAngle());
+	//_boss->getBody()->SetTransform(b2Vec2(_boss->getBody()->GetPosition().x,newY),_boss->getBody()->GetAngle());
 
 	temp = listener->GetLastPlatform();
 	//if(temp != NULL){

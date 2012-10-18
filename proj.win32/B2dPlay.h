@@ -1,4 +1,4 @@
-#include "cocos2d.h"
+/*#include "cocos2d.h"
 #include "B2DLayer.h"
 #include "GameObject.h"
 #define PTM_RATIO 32
@@ -32,7 +32,7 @@ public:
 	virtual void draw();
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 	virtual bool init();  
-	void lineSegmentTest();
+	void SegmentTest();
 
 	// there's no 'id' in cpp, so we recommand to return the exactly class pointer
 	static cocos2d::CCScene* scene();
@@ -45,3 +45,4 @@ public:
 
 };
 
+*/

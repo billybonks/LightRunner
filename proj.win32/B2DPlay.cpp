@@ -1,5 +1,5 @@
-#include "B2dPlay.h" 
-#include "LineSegment.h"
+/*#include "B2dPlay.h" 
+#include "Segment.h"
 
 void B2dPlay::draw(){
 	B2DLayer::draw();
@@ -19,81 +19,81 @@ bool B2dPlay::init(){
 	start.Set(2,3);
 	b2Vec2 end = b2Vec2::b2Vec2();
 	end.Set(0,0);
-	lineSegmentTest();
+	SegmentTest();
 	B2DLayer::Debug(true);
 	return true;
 }  
 //
-void B2dPlay::lineSegmentTest(){
+void B2dPlay::SegmentTest(){
 	b2Vec2 start = b2Vec2::b2Vec2();
 	start.Set(120,100);
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	StraightLineSegment segment(B2DLayer::world,start,120.0f,10.0f);
+	QuadSegment segment(B2DLayer::world,start,120.0f,10.0f);
 	//segment.GenerateNextBody();
-	ContinuousLineSegment* child;
-	EdgeLineSegment* edge = new EdgeLineSegment(world,b2Vec2(50.0f,100.0f),0,100);
+	ContinuousSegment* child;
+	LineSegment* edge = new LineSegment(world,b2Vec2(50.0f,100.0f),0,100);
 	edge->InitilizeData();
-	//edge->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,5),2);
-	StraightLineSegment* square = new StraightLineSegment(B2DLayer::world,120.0f,50.0f);
+	//edge->SetChild(new InclineSegment(B2DLayer::world,start,120.0f,50.0f,5),2);
+	QuadSegment* square = new QuadSegment(B2DLayer::world,120.0f,50.0f);
 	edge->SetChild(square,0,1);
 	edge->GenerateNextBody();
-	InclineLineSegment* rhombus = new InclineLineSegment(B2DLayer::world,120.0f,50.0f,-10);
+	InclineSegment* rhombus = new InclineSegment(B2DLayer::world,120.0f,50.0f,-10);
 	rhombus->OffsetStartPosition(1,0,square);
 	rhombus->InitilizeData();
 	GapSegment* rohmbusedge = new GapSegment(world,100,100);
-	EdgeLineSegment* edge2 = new EdgeLineSegment(world,0,100);
+	LineSegment* edge2 = new LineSegment(world,0,100);
 	rhombus->SetChild(rohmbusedge,0,1);
 	rohmbusedge->SetChild(edge2,1,1);
 	rhombus->GenerateBody();
 	//child = edge->GetChild();
-	////child->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),2);
-	//child->SetChild(new EdgeLineSegment(world,b2Vec2(50.0f,100.0f),100,40),2);
+	////child->SetChild(new QuadSegment(B2DLayer::world,start,120.0f,50.0f),2);
+	//child->SetChild(new LineSegment(world,b2Vec2(50.0f,100.0f),100,40),2);
 	//child = child->GetChild();
-	//child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),100,-40),2);
+	//child->SetChild(new LineSegment(world,b2Vec2(100.0f,100.0f),100,-40),2);
 	//child = child->GetChild();
-	////child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),100,-100),1);
-	//child->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),2);
+	////child->SetChild(new LineSegment(world,b2Vec2(100.0f,100.0f),100,-100),1);
+	//child->SetChild(new QuadSegment(B2DLayer::world,start,120.0f,50.0f),2);
 	
 	//child = edge->GetChild();
-	//child->SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),2);
+	//child->SetChild(new QuadSegment(B2DLayer::world,start,120.0f,50.0f),2);
 	//child = child->GetChild();
-	//child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),0,50),2);
+	//child->SetChild(new LineSegment(world,b2Vec2(100.0f,100.0f),0,50),2);
 	//child = child->GetChild();
-	//child->SetChild(new EdgeLineSegment(world,b2Vec2(100.0f,100.0f),200,0),1);
+	//child->SetChild(new LineSegment(world,b2Vec2(100.0f,100.0f),200,0),1);
 	//b2Vec2* vec = child->GetGameWorldVerticies(2);
 	//vec->x += 50;
 	//vec->y += 20;
-	//EdgeLineSegment* edge2 = new EdgeLineSegment(world,*vec,0,100);
+	//LineSegment* edge2 = new LineSegment(world,*vec,0,100);
 	//
 	//edge2->InitilizeData();
 	//edge2->GenerateNextBody();
-	// InclineLineSegment segment(B2DLayer::world,start,120.0f,360.0f,30.0f);
+	// InclineSegment segment(B2DLayer::world,start,120.0f,360.0f,30.0f);
 	//segment.InitilizeData();
 	//segment.GetChild();
-	//segment.SetChild(new StraightLineSegment(B2DLayer::world,start,120.0f,50.0f),&segment);
-	//ContinuousLineSegment* child = segment.GetChild();
-	//child->SetChild(new InclineLineSegment(B2DLayer::world,start,120.0f,50.0f,-10),child);
+	//segment.SetChild(new QuadSegment(B2DLayer::world,start,120.0f,50.0f),&segment);
+	//ContinuousSegment* child = segment.GetChild();
+	//child->SetChild(new InclineSegment(B2DLayer::world,start,120.0f,50.0f,-10),child);
 	//segment.GenerateBody();
-	//// LineSegment segment(B2DLayer::world,start,10.0f,10.0f,240.0f);
+	//// Segment segment(B2DLayer::world,start,10.0f,10.0f,240.0f);
 
-	//LineSegment segment(B2DLayer::world,start,120.0f,15.0f,80.0f);
+	//Segment segment(B2DLayer::world,start,120.0f,15.0f,80.0f);
 
 	//	 b2Vec2 Vert3 = segment.GetGameWorldVerticies(2);
 	//	 start.Set((Vert3.x+40.0f),Vert3.y-5.0f);
 	//	 //
-	//	 LineSegment segment2(B2DLayer::world,start,10.0f,10.0f,80.0f);
+	//	 Segment segment2(B2DLayer::world,start,10.0f,10.0f,80.0f);
 	//	 segment2.GenerateBody(body);
 	//
 	//	 Vert3 = segment2.GetGameWorldVerticies(2);
 	//	 start.Set((Vert3.x+5),Vert3.y-5.0f);
-	//	 //LineSegment segment2(B2DLayer::world,start,120.0f,-10.0f,240.0f);
-	//	 LineSegment segment3(B2DLayer::world,start,80.0f,-10.0f,80.0f);
+	//	 //Segment segment2(B2DLayer::world,start,120.0f,-10.0f,240.0f);
+	//	 Segment segment3(B2DLayer::world,start,80.0f,-10.0f,80.0f);
 	//	 segment3.GenerateBody(body);
 	//
 	//	 Vert3 = segment3.GetGameWorldVerticies(2);
 	//	 start.Set((Vert3.x+4),Vert3.y-5.0f);
-	//	 //LineSegment segment2(B2DLayer::world,start,120.0f,-10.0f,240.0f);
-	//	 LineSegment segment4(B2DLayer::world,start,120.0f,10.0f,100.0f);
+	//	 //Segment segment2(B2DLayer::world,start,120.0f,-10.0f,240.0f);
+	//	 Segment segment4(B2DLayer::world,start,120.0f,10.0f,100.0f);
 	//	 segment4.GenerateBody(body);
 	//	 //start.Set(segment._GameWorldVerticies
 	//	// body->SetTransform(body->GetPosition(),45 * DEGTORAD);
@@ -101,7 +101,7 @@ void B2dPlay::lineSegmentTest(){
 	//	//	//move boss
 	//	//}
 	//	// 	 start.Set(200,230);
-	//	//LineSegment segment2(B2DLayer::world,start,120.0f,120.0f,80.0f);
+	//	//Segment segment2(B2DLayer::world,start,120.0f,120.0f,80.0f);
 	//	//	 		while(segment2.GenerateNextBody(body)){
 	//	//	//move boss
 	//	//}
@@ -285,4 +285,4 @@ b2Vec2 B2dPlay::findCentroid(b2Vec2 vs[], int count) {
 	c.x*=1.0/area;
 	c.y*=1.0/area;
 	return c;
-}
+}*/

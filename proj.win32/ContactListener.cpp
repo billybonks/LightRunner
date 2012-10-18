@@ -1,10 +1,10 @@
 #include "Player.h"
-#include "LineSegment.h"
+#include "Segment.h"
 
 using namespace cocos2d;
 class ContactListener : public b2ContactListener
 {
-	LineSegment* lastPlatform;
+	Segment* lastPlatform;
 public :ContactListener(){
 			lastPlatform = NULL;
 		}
@@ -15,7 +15,7 @@ public :ContactListener(){
 			if ( (int)fixtureUserData == 3 ){
 				Player* player = (Player*)contact->GetFixtureA()->GetBody()->GetUserData();
 				player->addNumFootContacts();
-				lastPlatform=(LineSegment*) contact->GetFixtureB()->GetBody()->GetUserData();
+				lastPlatform=(Segment*) contact->GetFixtureB()->GetBody()->GetUserData();
 			}
 
 
@@ -24,7 +24,7 @@ public :ContactListener(){
 			if ( (int)fixtureUserData == 3 ){
 				Player* player = (Player*)contact->GetFixtureB()->GetBody()->GetUserData();
 				player->addNumFootContacts();		 
-				lastPlatform=(LineSegment*) contact->GetFixtureA()->GetBody()->GetUserData();
+				lastPlatform=(Segment*) contact->GetFixtureA()->GetBody()->GetUserData();
 			}
 		}
 
@@ -43,7 +43,7 @@ public :ContactListener(){
 			}
 		}
 
-public: LineSegment* GetLastPlatform(){
+public: Segment* GetLastPlatform(){
 			return lastPlatform;
 		}
 };

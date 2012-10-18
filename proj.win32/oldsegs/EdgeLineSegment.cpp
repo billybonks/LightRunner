@@ -1,8 +1,8 @@
-#include "LineSegment.h"
+#include "Segment.h"
 #include "Light.h"
 
-EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width,float height)
-	:ContinuousLineSegment(world,startPosition,width,height)
+EdgeSegment::EdgeSegment(b2World *world,b2Vec2 startPosition,float width,float height)
+	:ContinuousSegment(world,startPosition,width,height)
 {
 	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*2);
 	float w = _width/2;
@@ -13,7 +13,7 @@ EdgeLineSegment::EdgeLineSegment(b2World *world,b2Vec2 startPosition,float width
 
 }
 
-EdgeLineSegment::EdgeLineSegment(b2World *world,float width,float height):ContinuousLineSegment(world,width,height)
+EdgeSegment::EdgeSegment(b2World *world,float width,float height):ContinuousSegment(world,width,height)
 {
 	_polygonVerticies = (b2Vec2*)malloc(sizeof(b2Vec2)*2);
 	float w = _width/2;
@@ -24,7 +24,7 @@ EdgeLineSegment::EdgeLineSegment(b2World *world,float width,float height):Contin
 
 }
 
-void EdgeLineSegment::GenerateBody()
+void EdgeSegment::GenerateBody()
 {
 
 }
@@ -32,7 +32,7 @@ void EdgeLineSegment::GenerateBody()
 //hello
 ///JOOOOOOOOOOOOOOOO
 //whats up??
-bool EdgeLineSegment::GenerateNextBody()
+bool EdgeSegment::GenerateNextBody()
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
@@ -50,11 +50,11 @@ bool EdgeLineSegment::GenerateNextBody()
 	this->sprite->setPosition(ccp(_startWorldPosition.x*PTM_RATIO,_startWorldPosition.y*PTM_RATIO));
 	fixture->userData = (void*) 1;
 	GameObject::setBoundingBox();
-	return ContinuousLineSegment::GenerateNextBody();
+	return ContinuousSegment::GenerateNextBody();
 }
 
 
-void EdgeLineSegment::InitilizeData()
+void EdgeSegment::InitilizeData()
 {
 	float w = _width;
 	float h = _height;
@@ -67,7 +67,7 @@ void EdgeLineSegment::InitilizeData()
 	this->_GameWorldVerticies[3] =  _GameWorldVerticies[0];
 }
 
-float EdgeLineSegment::CalculateDistance(){
+float EdgeSegment::CalculateDistance(){
 	if(this->_sourceAttachmentVerticie == 0||this->_sourceAttachmentVerticie == 3){
 		return this->GetWidth();
 	}
@@ -79,7 +79,7 @@ float EdgeLineSegment::CalculateDistance(){
 //m = (x2-x1)/(y2-y1)
 //c = 0
 // x = param
-float EdgeLineSegment::GetYForX(float x){
+float EdgeSegment::GetYForX(float x){
 	float startX = _GameWorldVerticies[0]->x/PTM_RATIO;
 	float relX =  x -startX ;
 	b2Vec2* v1 = _GameWorldVerticies[0];
@@ -98,7 +98,7 @@ float EdgeLineSegment::GetYForX(float x){
 					return _startWorldPosition.y-(v2->y/PTM_RATIO-v1->y/PTM_RATIO)/2 +(m*relX);
 }
 
-CCPoint EdgeLineSegment::worldToLocalPoint(b2Vec2 point){
+CCPoint EdgeSegment::worldToLocalPoint(b2Vec2 point){
 		float startX = _GameWorldVerticies[0]->x/PTM_RATIO;
 		float startY = _GameWorldVerticies[0]->y/PTM_RATIO;
 		float relX =  point.x -startX ;
@@ -106,7 +106,7 @@ CCPoint EdgeLineSegment::worldToLocalPoint(b2Vec2 point){
 		return ccp(relX,relY);
 }
 
-	void EdgeLineSegment::removeFromParentAndCleanup(){
+	void EdgeSegment::removeFromParentAndCleanup(){
 			this->body->GetWorld()->DestroyBody( this->body );
 			this->sprite->removeFromParentAndCleanup(true);
 		}	

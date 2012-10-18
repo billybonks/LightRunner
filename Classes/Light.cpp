@@ -32,15 +32,15 @@ void Light::setGame(Game* game){
 		Light::gameDelegate=game;
 	}
 
-Light* Light::retainedLight(b2Vec2* polygonVerticies){
+Light* Light::retainedLight(CCPoint* polygonVerticies){
 		if(_shaderProgram==NULL){
 			Light::lazyInit();
 		}
 		Light* l = new Light();
 		
 		l->_polygonVerticies = (CCPoint*)malloc(sizeof(CCPoint)*2);
-		l->_polygonVerticies[0]=ccp(polygonVerticies[0].x*PTM_RATIO,polygonVerticies[0].y*PTM_RATIO);
-		l->_polygonVerticies[1]=ccp(polygonVerticies[1].x*PTM_RATIO,polygonVerticies[1].y*PTM_RATIO);
+		l->_polygonVerticies[0]=ccp(polygonVerticies[0].x,polygonVerticies[0].y);
+		l->_polygonVerticies[1]=ccp(polygonVerticies[1].x,polygonVerticies[1].y);
 		l->setContentSize(CCSize(abs(polygonVerticies[1].x-polygonVerticies[0].x),abs(polygonVerticies[1].y-polygonVerticies[0].y)));
 		l->setShaderProgram(_shaderProgram);
         //TEST

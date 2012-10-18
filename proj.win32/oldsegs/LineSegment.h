@@ -65,15 +65,15 @@ public:
 	virtual bool GenerateNextBody();
 };
 
-class QuadSegment : public ContinuousSegment{
+class StraightSegment : public ContinuousSegment{
 private:
 protected:
 
 		b2Vec2 _polygonStartPos;
 		///Only use if you are going to init steps and polugonStartPos yourself
 public:
-	QuadSegment(b2World *world,b2Vec2 startPosition,float width,float height);
-	QuadSegment(b2World *world,float width,float height);
+	StraightSegment(b2World *world,b2Vec2 startPosition,float width,float height);
+	StraightSegment(b2World *world,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual b2Vec2* GetGameWorldVerticies(int verticie);
@@ -84,13 +84,13 @@ public:
 	virtual void removeFromParentAndCleanup();
 };
 
-class LineSegment : public ContinuousSegment{
+class EdgeSegment : public ContinuousSegment{
 private:
 protected:
 	b2Vec2* _verts[2];
 public:
-	LineSegment(b2World *world,b2Vec2 startPosition,float width,float height);
-	LineSegment(b2World *world,float width,float height);
+	EdgeSegment(b2World *world,b2Vec2 startPosition,float width,float height);
+	EdgeSegment(b2World *world,float width,float height);
 	virtual void GenerateBody();
 	virtual bool GenerateNextBody();
 	virtual void InitilizeData();
@@ -100,7 +100,7 @@ public:
 	virtual void removeFromParentAndCleanup();
 };
 
-class InclineSegment : public QuadSegment{
+class InclineSegment : public StraightSegment{
 private:
 protected:
 	float _thickness;
@@ -114,7 +114,7 @@ public:
 
 };
 
-class GapSegment : public LineSegment{
+class GapSegment : public EdgeSegment{
 private:
 protected:
 	float _thickness;
@@ -131,8 +131,8 @@ private:
 	bool _leftEntrance;
 		bool _rightExit;
 protected:
-	LineSegment* left;
-	LineSegment* right;
+	EdgeSegment* left;
+	EdgeSegment* right;
 public:
 	Tunnel(b2World *world,b2Vec2 startPosition,float width,float height,bool leftEntrance,bool rightExit);
 	Tunnel(b2World *world,float width,float height,bool leftEntrance,bool rightExit);

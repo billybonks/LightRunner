@@ -9,7 +9,7 @@ class Light : public CCSprite
 public:
 	Light();
 	Light(CCPoint position,float width,float height);
-	static Light* retainedLight(b2Vec2* polygonVerticies);
+	static Light* retainedLight(CCPoint* polygonVerticies);
 	CCPoint* _polygonVerticies;
 
 	virtual void draw();
