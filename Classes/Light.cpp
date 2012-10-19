@@ -3,7 +3,7 @@
 
 using namespace cocos2d;
 CCGLProgram* Light::_shaderProgram;
-Game* Light::gameDelegate;
+GameObject* Light::_boss;
 
 Light::Light()
 {
@@ -28,8 +28,8 @@ void Light::lazyInit(){
         _shaderProgram->updateUniforms();
 }
 
-void Light::setGame(Game* game){
-		Light::gameDelegate=game;
+void Light::setBoss(GameObject* boss){
+		Light::_boss=boss;
 	}
 
 Light* Light::retainedLight(CCPoint* polygonVerticies){
@@ -61,7 +61,7 @@ Light* Light::retainedLight(CCPoint* polygonVerticies){
     //    glBindTexture(GL_TEXTURE_2D, colorRampTexture->getName());
      //   glActiveTexture(GL_TEXTURE0);
 	glLineWidth( 3.0f );
-	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getPosition());
+	CCPoint bosspos = worldToLocalPoint(_boss->getPosition());
 		nextColour();
 
 		drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), bosspos,_colour);

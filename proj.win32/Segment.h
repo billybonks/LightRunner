@@ -1,6 +1,7 @@
 
 #ifndef Segment_H
 #define Segment_H
+
 #include "Box2D.h"
 #include "cocos2d.h"
 #include <stdlib.h>
@@ -68,6 +69,7 @@ public:
 
 class LineSegment : public B2Segment{
 private:
+	void init(b2World *world,float width,float height);
 
 protected:
 public:

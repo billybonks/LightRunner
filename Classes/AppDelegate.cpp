@@ -5,7 +5,6 @@
 #include "SimpleAudioEngine.h"
 #include "ScoreLayer.h"
 #include "BackgroundLayer.h"
-#include "B2dPlay.h" 
 using namespace CocosDenshion;
 
 USING_NS_CC;

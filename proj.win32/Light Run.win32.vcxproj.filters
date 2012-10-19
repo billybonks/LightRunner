@@ -71,12 +71,6 @@
     <ClInclude Include="scorelayer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="B2dPlay.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="LineSegment.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Player.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -114,7 +108,7 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="Path.h">
-      <Filter>source</Filter>
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,9 +152,6 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="B2DLayer.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="B2DPlay.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">

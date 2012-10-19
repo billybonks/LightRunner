@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 using namespace cocos2d;
-class Game;
+
 class Light : public CCSprite
 {
 public:
@@ -17,12 +17,12 @@ public:
 	bool IsTouched();
 	void IsTouched(bool touched);
 	CCRect *screen;
-	static void setGame(Game* game);
-		void setMix(ccColor4F mix);
+	static void setBoss(GameObject* boss);
+	void setMix(ccColor4F mix);
 
 protected:
 	bool _touched;
-	static Game* gameDelegate;
+	static GameObject* _boss;
 	static CCGLProgram* _shaderProgram;
 	static void lazyInit();
 	void drawLine( const CCPoint& origin, const CCPoint& destination,ccColor4F colour );

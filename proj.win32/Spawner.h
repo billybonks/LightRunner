@@ -8,7 +8,7 @@
 #include "Segment.h"
 #include <vector>
 using namespace cocos2d;
-class Game;
+class  Game;
 
 class Spawner 
 {

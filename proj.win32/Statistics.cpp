@@ -5,7 +5,7 @@
 		_score = 0;
 		_multiplier = 1;
 		_distanceTraveld = 0;
-		_velocity = 0.1;
+		_velocity = 0.1f;
 		_maxSpeed =25;
 	}
 

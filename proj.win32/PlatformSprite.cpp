@@ -39,7 +39,7 @@ void PlatformSprite::setFillColour(ccColor4F* colour){
 	//polygonvertices are:
 	//0		1      <maybe wrong and flipped vertically
 	//3		2
-	CCPoint bosspos = worldToLocalPoint(gameDelegate->getBoss()->getPosition());
+	CCPoint bosspos = worldToLocalPoint(_boss->getPosition());
 	nextColour();
 	drawLine( bosspos,ccp(bosspos.x,_polygonVerticies[0].y),_colour);
 	CCPoint* vertices = (CCPoint*)malloc(sizeof(CCPoint)*4);

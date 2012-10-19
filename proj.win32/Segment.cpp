@@ -12,7 +12,7 @@ Segment::Segment(CCPoint position){
 
 
 void Segment::generate(){
-
+	
 }
 
 CCPoint* Segment::getEndVertice(){

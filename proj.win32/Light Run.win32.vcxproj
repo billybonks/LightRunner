@@ -153,9 +153,7 @@
     <ClInclude Include="..\Classes\TrailedCCSprite.h" />
     <ClInclude Include="b2debugDraw.h" />
     <ClInclude Include="B2DLayer.h" />
-    <ClInclude Include="B2dPlay.h" />
     <ClInclude Include="backgroundlayer.h" />
-    <ClInclude Include="LineSegment.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="PlatformSprite.h" />
@@ -176,7 +174,6 @@
     <ClCompile Include="..\Classes\TrailedCCSprite.cpp" />
     <ClCompile Include="b2debugDraw.cpp" />
     <ClCompile Include="B2DLayer.cpp" />
-    <ClCompile Include="B2DPlay.cpp" />
     <ClCompile Include="B2Segment.cpp" />
     <ClCompile Include="BackgroundLayer.cpp" />
     <ClCompile Include="CompoundSegment.cpp" />

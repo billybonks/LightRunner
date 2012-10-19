@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Light.h"
 using namespace cocos2d;
-class Game;
+
 class PlatformSprite : public Light
 {
 public:

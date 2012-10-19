@@ -10,24 +10,26 @@ LineSegment::LineSegment()
 LineSegment::LineSegment(b2World *world,float width,float height)
 {
 	B2Segment::B2Segment();
-	_gameWorldVerticesCCW = (CCPoint*)malloc(sizeof(CCPoint)*2);
-	this->setContentSize(CCSize( width, height));
-	_polygonVerticesCCW = (CCPoint*)malloc(sizeof(CCPoint)*2);
-	_polygonVerticesCCW[0]=ccp((-this->getContentSize().width/2),(-this->getContentSize().height/2)) ;
-	_polygonVerticesCCW[1]= ccp((this->getContentSize().width/2),(this->getContentSize().height/2)) ;
+	init(world,width,height);
 }
 
 LineSegment::LineSegment(b2World *world,CCPoint position,float width,float height)
 {
-	LineSegment::LineSegment(world,width,height);
+	init(world,width,height);
 	this->setPosition(position);
 	float x = this->getPositionX();
 	float y = this->getPositionY();
-	//_gameWorldVerticesCCW = (CCPoint*)malloc(sizeof(CCPoint)*2);
-
 	this->_gameWorldVerticesCCW[0].setPoint((x-width/2),(y-height/2));
 	this->_gameWorldVerticesCCW[1].setPoint((x+width/2),(y+height/2));
 	generate(world);
+}
+
+void LineSegment::init(b2World *world,float width,float height){
+	_gameWorldVerticesCCW = new CCPoint[2];
+	this->setContentSize(CCSize( width, height));
+	_polygonVerticesCCW =  new CCPoint[2];
+	_polygonVerticesCCW[0]=ccp((-this->getContentSize().width/2),(-this->getContentSize().height/2)) ;
+	_polygonVerticesCCW[1]= ccp((this->getContentSize().width/2),(this->getContentSize().height/2)) ;
 }
 
 void LineSegment::generate(b2World *world)

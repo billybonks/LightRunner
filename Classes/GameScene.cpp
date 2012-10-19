@@ -55,11 +55,11 @@ bool Game::init()
 	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();
 	GameObject::SetScreen(&screenBounds);
-	Light::setGame(this);
+
 	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("0.png");
 	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
 	_batchNode->addChild(_player->getSprite(), 1);
-	_player->getSprite()->setScale(0.8);
+	_player->getSprite()->setScale(0.8f);
 	_player->createBox2dObject(B2DLayer::world);
 	_player->createFootFixture(B2DLayer::world);
 	_player->init();
@@ -77,6 +77,7 @@ bool Game::init()
 	_boss->createBox2dObject(B2DLayer::world);
 	_boss->SetCanBeOffScreen(true);
 
+		Light::setBoss(_boss);
 
 
 	//Register for touches and gameloop
