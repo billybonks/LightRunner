@@ -61,7 +61,7 @@ Light* Light::retainedLight(CCPoint* polygonVerticies){
     //    glBindTexture(GL_TEXTURE_2D, colorRampTexture->getName());
      //   glActiveTexture(GL_TEXTURE0);
 	glLineWidth( 3.0f );
-	CCPoint bosspos = worldToLocalPoint(_boss->getPosition());
+	CCPoint bosspos = worldToLocalPoint(ccp(_boss->getBody()->GetPosition().x,_boss->getBody()->GetPosition().y));
 		nextColour();
 
 		drawLine( ccp(_polygonVerticies[0].x,_polygonVerticies[0].y), bosspos,_colour);

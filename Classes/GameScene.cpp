@@ -157,16 +157,16 @@ void Game::CleanWorld(){
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
 		if (b->GetUserData() != NULL) {
 			GameObject *myActor = (GameObject*)b->GetUserData();
-			if(myActor->isOffScreen(_scale)&&!myActor->canBeOffScreen()){
-				objectsToClean.push_back(myActor);	
-			}
-			else {
+			//if(myActor->isOffScreen(_scale)&&!myActor->canBeOffScreen()){
+			//	objectsToClean.push_back(myActor);	
+			//}
+			//else {
 				//Synchronize the Sprites position and rotation with the corresponding body
-				myActor->getSprite()->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
-				myActor->setPosition(CCPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
-				myActor->getSprite()->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
-				myActor->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
-			}
+			//	myActor->getSprite()->setPosition(ccp( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
+			//	myActor->setPosition(ccp( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
+			//	myActor->getSprite()->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
+			//	myActor->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
+			//}
 		}	
 	}
 	for(int i =0;i<objectsToClean.size();i++){

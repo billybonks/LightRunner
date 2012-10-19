@@ -1,5 +1,7 @@
 #include "Segment.h"
 #include "Light.h"
+#include "GameScene.h"
+
 using namespace cocos2d;
 
 LineSegment::LineSegment()
@@ -11,17 +13,14 @@ LineSegment::LineSegment(b2World *world,float width,float height)
 {
 	B2Segment::B2Segment();
 	init(world,width,height);
+	generate(world);
 }
 
 LineSegment::LineSegment(b2World *world,CCPoint position,float width,float height)
 {
 	init(world,width,height);
-	this->setPosition(position);
-	float x = this->getPositionX();
-	float y = this->getPositionY();
-	this->_gameWorldVerticesCCW[0].setPoint((x-width/2),(y-height/2));
-	this->_gameWorldVerticesCCW[1].setPoint((x+width/2),(y+height/2));
 	generate(world);
+	this->setPosition(position);
 }
 
 void LineSegment::init(b2World *world,float width,float height){
@@ -32,11 +31,21 @@ void LineSegment::init(b2World *world,float width,float height){
 	_polygonVerticesCCW[1]= ccp((this->getContentSize().width/2),(this->getContentSize().height/2)) ;
 }
 
+void LineSegment::setPosition(const CCPoint& newPosition){
+	CCNode::setPosition(newPosition);
+	float x = this->getPositionX();
+	float y = this->getPositionY();
+	this->_gameWorldVerticesCCW[0].setPoint((x-this->getContentSize().width/2),(y-this->getContentSize().height/2));
+	this->_gameWorldVerticesCCW[1].setPoint((x+this->getContentSize().width/2),(y+this->getContentSize().height/2));
+	this->getBody()->SetTransform(b2Vec2(this->getPositionX()/PTM_RATIO,this->getPositionY()/PTM_RATIO),this->getBody()->GetAngle());
+	this->getSprite()->setPosition(this->getPosition());
+}
+
 void LineSegment::generate(b2World *world)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
-	bodyDef.position.Set(this->getPositionX()/PTM_RATIO,this->getPositionY()/PTM_RATIO);
+	//bodyDef.position.Set(this->getPositionX()/PTM_RATIO,this->getPositionY()/PTM_RATIO);
 	this->_body =world->CreateBody(&bodyDef);
 	this->_body->SetUserData(this);
 	b2FixtureDef* fixture = new b2FixtureDef();
@@ -56,10 +65,14 @@ void LineSegment::generate(b2World *world)
 	genBoundingBox();
 }
 
-CCPoint* LineSegment::getEndVertice(){
-	return &_gameWorldVerticesCCW[0];
+void LineSegment::addSprites(Game* game){
+	game->addChild(this->getSprite());
 }
 
-CCPoint* LineSegment::getStartVertice(){
-	return &_gameWorldVerticesCCW[1];
+float LineSegment::getStartVerticeNum(){
+	return 0;
+}
+
+float LineSegment::getEndVerticeNum(){
+	return 1;
 }

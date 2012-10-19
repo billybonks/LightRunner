@@ -3,7 +3,8 @@
 #define GAMEOBJECT
 
 #include "cocos2d.h"
-#include "box2d.h"
+#include "Box2D.h" 
+
  using namespace cocos2d;
  #define PTM_RATIO 32
 

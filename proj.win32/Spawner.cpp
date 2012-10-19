@@ -50,25 +50,25 @@ void Spawner::GenerateCompoundSegment(){
 	switch ( structType )
 	{
 	case 1:
-		segment = dynamic_cast<Segment*>(new LineSegment(_world,segmentDistance,0));
+		segment = new LineSegment(_world,segmentDistance,0);
 		break;
 	case 2:
 		height = Random(segmentDistance/3,segmentDistance/2);
-		segment = dynamic_cast<Segment*>(new LineSegment(_world,segmentDistance,height));
+		segment = new LineSegment(_world,segmentDistance,height);
 		break;	
 	case 3:
 		height = Random(segmentDistance/3,segmentDistance/2);
-		segment = dynamic_cast<Segment*>(new LineSegment(_world,segmentDistance,-height));
+		segment = new LineSegment(_world,segmentDistance,-height);
 		break;
 	case 4:
 		//drop
 		height = Random(segmentDistance/3,segmentDistance/2);
-		segment = dynamic_cast<Segment*>(new LineSegment(_world,0,-height));
+		segment = new LineSegment(_world,0,-height);
 		break;
 	case 5:
 		//lift
 		height = Random(segmentDistance/3,segmentDistance/2);
-		segment = dynamic_cast<Segment*>(new LineSegment(_world,0,height));
+		segment = new LineSegment(_world,0,height);
 		break;
 	case 6:
 		//LongDrop jump tunnel
@@ -80,8 +80,12 @@ void Spawner::GenerateCompoundSegment(){
 	case 8:
 		break;
 	}
-	segment->offsetStartPosition(_currentSegment->getEndVertice(),segment->getStartVertice(),_currentSegment);
+	CCPoint* endofLast=_currentSegment->getGameWorldVertice(_currentSegment->getEndVerticeNum());
+	CCPoint* relStartofCurrent=segment->getPolygonVertice(_currentSegment->getStartVerticeNum());
+	CCPoint absStartofCurrent=segment->offsetStartPosition(relStartofCurrent,endofLast,_currentSegment);
 
+	segment->setPosition(absStartofCurrent);
+	segment->addSprites(_game);
 	//b2Vec2 pos = segment->GetPosition();
 	
 	//Floaters
@@ -114,9 +118,8 @@ void Spawner::GenerateCompoundSegment(){
 	//segment->InitilizeData();
 	//Segment* ret =  dynamic_cast<Segment*>(segment);
 	_nextSegment = segment;
-	_nextSegment->generate();
+	//_nextSegment->generate();
 
-	//_game->addChild(_nextSegment->getSprite());	
 	//b2Vec2* vert = _lastSegment->GetGameWorldVerticies(0);
 	//return *ret;
 }

@@ -4,8 +4,8 @@
 		Segment::Segment();
 	}
 
-	B2Segment::B2Segment(CCPoint position){
-		Segment::Segment(position);
+	B2Segment::B2Segment(b2World *world,CCPoint position){
+		Segment::Segment(world,position);
 	}
 
 	 b2Body* B2Segment::getBody(){

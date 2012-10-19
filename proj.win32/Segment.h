@@ -9,6 +9,7 @@
 
 #define PTM_RATIO 32
 using namespace cocos2d;
+class Game;
 
 class Segment : public CCNode{
 private:
@@ -19,15 +20,16 @@ protected:
 	b2AABB* _pixelBounds;
 public:
 	Segment();	
-	Segment(CCPoint position);	
-	virtual void generate();
+	Segment(b2World *world, CCPoint position);	
+	virtual void generate(b2World *world);
 	CCPoint* getGameWorldVertice(int vertice);
 	CCPoint* getPolygonVertice(int vertice);
-	virtual void offsetStartPosition(CCPoint* sourceVert,CCPoint* targetVert,Segment* target );
+	virtual CCPoint offsetStartPosition(CCPoint* sourceVert,CCPoint* targetVert,Segment* target );
 	virtual bool insideBoundingBox();
 	void setBounds(b2AABB* bounds);
-	virtual CCPoint* getEndVertice();
-	virtual CCPoint* getStartVertice();
+	virtual float getEndVerticeNum();
+	virtual float getStartVerticeNum();
+	virtual void addSprites(Game* game);
 	b2AABB* getBounds();
 };
 
@@ -39,7 +41,7 @@ protected:
 		void genBoundingBox();
 public:
 	B2Segment();
-	B2Segment(CCPoint position);	
+	B2Segment(b2World *world,CCPoint position);	
 	virtual b2Body* getBody();
 	virtual CCSprite* getSprite();
 };
@@ -77,8 +79,10 @@ public:
 	LineSegment(b2World* world, CCPoint position,float width,float height);
 	LineSegment(b2World* world, float width,float height);
 	virtual void generate(b2World *world);
-	virtual CCPoint* getEndVertice();
-	virtual CCPoint* getStartVertice();
+	virtual float getEndVerticeNum();
+	virtual float getStartVerticeNum();
+	virtual void setPosition(const CCPoint& newPosition);
+	virtual void addSprites(Game* game);
 };
 
 

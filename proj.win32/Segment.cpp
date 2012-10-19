@@ -1,26 +1,27 @@
 #include "Segment.h"
+#include "GameScene.h"
 
 Segment::Segment(){
 		CCNode::CCNode();
 }
 
-Segment::Segment(CCPoint position){
+Segment::Segment(b2World *world, CCPoint position){
 		CCNode::CCNode();
 		this->setPosition(position);
-		generate();
+		generate(world);
 }
 
 
-void Segment::generate(){
+void Segment::generate(b2World *world){
 	
 }
 
-CCPoint* Segment::getEndVertice(){
-	return &_gameWorldVerticesCCW[0];
+float Segment::getEndVerticeNum(){
+	return 0;
 }
 
-CCPoint* Segment::getStartVertice(){
-	return &_gameWorldVerticesCCW[2];
+float Segment::getStartVerticeNum(){
+	return 2;
 }
 
 CCPoint* Segment::getGameWorldVertice(int vertice){
@@ -31,14 +32,18 @@ CCPoint* Segment::getPolygonVertice(int vertice){
 	return &_polygonVerticesCCW[vertice];
 }
 
-void Segment::offsetStartPosition(CCPoint* sourceVert,CCPoint* targetVert,Segment* target ){
-	float x=(targetVert->x/PTM_RATIO)-sourceVert->x;
-	float y=(targetVert->y/PTM_RATIO)-sourceVert->y;
-	this->setPosition(ccp(x,y));
+CCPoint Segment::offsetStartPosition(CCPoint* sourceVert,CCPoint* targetVert,Segment* target ){
+	float x=(targetVert->x)-sourceVert->x;
+	float y=(targetVert->y)-sourceVert->y;
+	return ccp(x,y);
 }
 
 bool Segment::insideBoundingBox(){
 	return TRUE;
+}
+
+void Segment::addSprites(Game* game){
+	
 }
 
 void Segment::setBounds(b2AABB* bounds){
