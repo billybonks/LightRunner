@@ -124,7 +124,7 @@ void Game::update(float dt) {
 	//move boss according to platforms
 	Segment* temp = _spawner->GetCurrentPlatform();
 	//float newY = _spawner->GetCurrentPlatform()->GetYForX(_boss->getBody()->GetPosition().x);
-	_boss->getBody()->SetLinearVelocity(b2Vec2(25,0));
+	_boss->getBody()->SetLinearVelocity(b2Vec2(15,0));
 	//_boss->getBody()->SetTransform(b2Vec2(_boss->getBody()->GetPosition().x,newY),_boss->getBody()->GetAngle());
 
 	temp = listener->GetLastPlatform();
@@ -157,9 +157,17 @@ void Game::CleanWorld(){
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
 		if (b->GetUserData() != NULL&&b->GetType()!=0) {
 			GameObject *myActor = (GameObject*)b->GetUserData();
-			if(myActor->isOffScreen(_scale)&&!myActor->canBeOffScreen()){
+			bool aa = myActor->isOffScreen(_scale);
+			bool bb = !myActor->canBeOffScreen();
+		//	if(aa&myActor!=_player&&myActor!=_boss)
+		//			CCLog("Other Off");
+		//	if(aa&myActor==_player)
+		//			CCLog("Player Off");
+		//	if(aa&myActor==_boss)
+		//			CCLog("Boss Off");
+			if(aa&&bb){
 				objectsToClean.push_back(myActor);	
-			}
+				}
 			else {
 				//Synchronize the Sprites position and rotation with the corresponding body
 				myActor->getSprite()->setPosition(ccp( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
@@ -171,6 +179,7 @@ void Game::CleanWorld(){
 	}
 	for(int i =0;i<objectsToClean.size();i++){
 		objectsToClean.at(i)->removeFromParentAndCleanup(); //err:not 100% sure this frees memory - test!
+	//	delete objectsToClean.at(i);
 	}
 	//move screen
 	this->setPosition(ccp((-_player->getBody()->GetPosition().x*PTM_RATIO*_scale+(winSize.width*0.1f)),(-_player->getBody()->GetPosition().y*PTM_RATIO*_scale+(winSize.height*0.5f))));

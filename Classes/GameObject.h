@@ -11,11 +11,16 @@
 
 class GameObject : public CCNode {
 public:
+	static CCRect *screen;
+
+	CCPoint _target;
+	string id;
+	float velocity;
+	bool CanBeOffScreen;
+
 	CCSprite* getSprite();
 	b2Body* getBody();
 	virtual void createBox2dObject(b2World* world);
-	CCPoint _target;
-	string id;
 	GameObject();
 	static GameObject* retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName);
 	static GameObject* retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame);
@@ -27,10 +32,9 @@ public:
 	void update(float dt);
 	void SetCanBeOffScreen(bool can);
 	void SetTarget(CCPoint position);
-	float velocity;
-	static CCRect *screen;
+	
 	static void SetScreen(CCRect * screen);
-	bool CanBeOffScreen;
+	
 	void init();
 
 private:
@@ -38,12 +42,14 @@ private:
 	int colourmode;
 	_ccColor3B colour;
 	float newtrail;
-	_ccColor3B nextColour();
 	b2AABB bounds;
+
+	_ccColor3B nextColour();
 
 protected:
 	b2Body *body;
 	CCSprite* sprite;
+
 	void setBoundingBox();
 
 };

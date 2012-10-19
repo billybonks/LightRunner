@@ -6,9 +6,9 @@
 		{
 			this->newtrail=0.05f;
 			_ccColor3B c =  {255,0,0};
-				this->colour =c;
-				this->colourmode=0;
-							this->CanBeOffScreen=false;
+			this->colour =c;
+			this->colourmode=0;
+			this->CanBeOffScreen=false;
 
 		CCNode::CCNode();
 		}
@@ -42,10 +42,14 @@
 			float winheight = screen->size.height*scale;
 			b2Vec2 screenlower=b2Vec2(bounds.lowerBound.x*scale -left,bounds.lowerBound.y*scale -bottom);
 			b2Vec2 screenupper=b2Vec2(bounds.upperBound.x*scale -left,bounds.upperBound.y*scale -bottom);
-			if (screenupper.x < 0) return true; // is left of screen
-			if (screenlower.x > winwidth) return true; // is right of screen
-			if (screenupper.y < 0) return true; // is above screen
-			if (screenlower.y > winheight) return true; // is below screen
+			if (screenupper.x < 0) 
+				return true; // is left of screen
+			if (screenlower.x > winwidth) 
+				return true; // is right of screen
+			if (screenupper.y < 0) 
+				return true; // is above screen
+			if (screenlower.y > winheight) 
+				return true; // is below screen
 			return false; // onscreen
 		}
 

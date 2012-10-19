@@ -30,6 +30,7 @@ public:
 	virtual float getEndVerticeNum();
 	virtual float getStartVerticeNum();
 	virtual void addSprites(Game* game);
+	CCPoint bossPositionAtDistance(float bossD);
 	b2AABB* getBounds();
 };
 
