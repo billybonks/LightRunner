@@ -195,8 +195,9 @@ void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 void Game::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	if(steps > 2.0f){
-		steps = 2.0f;
+		steps = 4.0f;
 	}
+	steps+=1.5;
 	_player->jump(steps);
 	tracking = false;
 }

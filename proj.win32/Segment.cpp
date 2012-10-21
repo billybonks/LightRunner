@@ -53,3 +53,7 @@ void Segment::setBounds(b2AABB* bounds){
 	b2AABB* Segment::getBounds(){
 		return this->_pixelBounds;
 }
+
+ 	void Segment::setPosition(const CCPoint& newPosition){
+
+	}

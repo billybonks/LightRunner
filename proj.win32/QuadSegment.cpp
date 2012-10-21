@@ -6,3 +6,7 @@ QuadSegment::QuadSegment(){
  void QuadSegment::generate(){
 
 	}
+
+ 	void QuadSegment::setPosition(const CCPoint& newPosition){
+
+	}

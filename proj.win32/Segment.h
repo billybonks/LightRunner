@@ -32,6 +32,7 @@ public:
 	virtual void addSprites(Game* game);
 	CCPoint bossPositionAtDistance(float bossD);
 	b2AABB* getBounds();
+	virtual void setPosition(const CCPoint& newPosition);
 };
 
 class B2Segment : public Segment{
@@ -49,10 +50,13 @@ public:
 
 class CompoundSegment : public Segment{
 private:
-	Segment* segments;
+	
 protected:
+	Segment* segments;
 public:
-	CompoundSegment();
+	virtual void setPosition(const CCPoint& newPosition);
+	CompoundSegment(b2World *world,CCPoint position);
+	CompoundSegment(b2World *world);
 };
 
 
@@ -68,6 +72,7 @@ protected:
 public:
 	QuadSegment();
 	virtual void generate();
+	virtual void setPosition(const CCPoint& newPosition);
 };
 
 class LineSegment : public B2Segment{
@@ -92,11 +97,16 @@ private:
 	bool _leftEntrance;
 	bool _rightExit;
 protected:
-	LineSegment* left;
-	LineSegment* right;
+//	LineSegment* entrance;0
+//	LineSegment *exit;1
+	int directionModifier;
 public:
-	Tunnel(b2World *world,b2Vec2 startPosition,float width,float height,bool leftEntrance,bool rightExit);
+	Tunnel(b2World *world,CCPoint startPosition,float width,float height,bool leftEntrance,bool rightExit);
 	Tunnel(b2World *world,float width,float height,bool leftEntrance,bool rightExit);
-	virtual void generate();
+	virtual void generate(b2World *world);
+	virtual void setPosition(const CCPoint& newPosition);
+	void init(b2World *world,float width,float height,bool leftEntrance,bool rightExit);
+		virtual float getEndVerticeNum();
+	virtual float getStartVerticeNum();
 };
 #endif

@@ -37,6 +37,8 @@ void Spawner::GenerateCompoundSegment(){
 	float distanceRemeinder;
 	int structType;
 	int height;
+	int startVerticie;
+	int endVerticie;
 
 	runtime = Random(1,6)/2;
 	float minRunTime = Random(1,6)/2;
@@ -46,33 +48,45 @@ void Spawner::GenerateCompoundSegment(){
 	segmentDistance =  Random(minDistance,maxDistance);
 	distanceRemeinder;
 	int spawnFloatingPLatformChance = 10;
-	structType = Random(1,3);
+	structType = Random(1,5);
 	switch ( structType )
 	{
 	case 1:
 		segment = new LineSegment(_world,segmentDistance,0);
+		startVerticie = 0;
+		endVerticie = 1;
 		break;
 	case 2:
 		height = Random(segmentDistance/3,segmentDistance/2);
 		segment = new LineSegment(_world,segmentDistance,height);
+		startVerticie = 0;
+		endVerticie = 1;
 		break;	
 	case 3:
 		height = Random(segmentDistance/3,segmentDistance/2);
 		segment = new LineSegment(_world,segmentDistance,-height);
+		startVerticie = 0;
+		endVerticie = 1;
 		break;
 	case 4:
 		//drop
 		height = Random(segmentDistance/3,segmentDistance/2);
-		segment = new LineSegment(_world,0,-height);
+		segment = new LineSegment(_world,0,-500);
+		startVerticie = 0;
+		endVerticie = 1;
 		break;
 	case 5:
 		//lift
+		startVerticie = 1;
+		endVerticie = 0;
 		height = Random(segmentDistance/3,segmentDistance/2);
-		segment = new LineSegment(_world,0,height);
+		segment = new LineSegment(_world,0,500);
 		break;
 	case 6:
-		//LongDrop jump tunnel
-
+		height = 400;
+		segment = new  Tunnel(_world,300,height,true,false);
+		startVerticie = 1;
+		endVerticie = 3;
 		break;
 	case 7:
 		//Upward jump tunnel
@@ -87,7 +101,7 @@ void Spawner::GenerateCompoundSegment(){
 	segment->setPosition(absStartofCurrent);
 	segment->addSprites(_game);
 	//b2Vec2 pos = segment->GetPosition();
-	
+
 	//Floaters
 	//int spawnFloatingPLatform = Random(1,10);
 	//if((spawnFloatingPLatformChance > spawnFloatingPLatform)&&(structType ==1)){
@@ -105,7 +119,7 @@ void Spawner::GenerateCompoundSegment(){
 
 	//Gaps
 	//structType = Random(1,10);
-//	if((structType < _verticalGapChance)&&(!spawnFloatingPLatformChance > spawnFloatingPLatform)){
+	//	if((structType < _verticalGapChance)&&(!spawnFloatingPLatformChance > spawnFloatingPLatform)){
 	//	pos.y = pos.y+100;
 	//}
 	//structType = Random(1,10);
@@ -136,8 +150,8 @@ void Spawner::update(){
 	//	x =_currentSegment->GetGameWorldVerticies(1)->x;
 	//}
 	//if(playerX >x+distanace){
-		GenerateCompoundSegment();
-		_currentSegment = _nextSegment;
+	GenerateCompoundSegment();
+	_currentSegment = _nextSegment;
 	//}
 
 }
