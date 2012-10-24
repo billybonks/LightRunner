@@ -47,7 +47,7 @@ void LineSegment::generate(b2World *world)
 	bodyDef.type = b2_staticBody;
 	//bodyDef.position.Set(this->getPositionX()/PTM_RATIO,this->getPositionY()/PTM_RATIO);
 	this->_body =world->CreateBody(&bodyDef);
-	this->_body->SetUserData(this);
+	this->_body->SetUserData(NULL);//If this needs to be changed then cleanWorld if conditions identifying only game objects needs to be changed too.
 	b2FixtureDef* fixture = new b2FixtureDef();
 	b2EdgeShape edge;
 	

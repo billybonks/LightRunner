@@ -51,7 +51,7 @@ bool Game::init()
 	world->SetContactListener(listener);
 
 	//prep stats
-	_scale =0.7f;
+	_scale =0.2f;
 	this->setScale(_scale);
 	winSize = CCDirector::sharedDirector()->getWinSize();
 	playerScreenPos = ccp(winSize.width*0.2, winSize.height*0.4);
@@ -103,7 +103,6 @@ bool Game::init()
 	//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("ghosts.mp3", true);    
 
 	syncScreenToPlayer();
-
 	return true;
 }
 
@@ -121,7 +120,6 @@ void Game::update(float dt) {
 		steps += dt;
 	}
 	_player->updateTrail(dt);
-
 	this->_spawner->update();
 
 	//move boss according to platforms
@@ -172,27 +170,12 @@ void Game::cleanWorld(){
 	_player->setPosition(ccp( _player->getBody()->GetPosition().x * PTM_RATIO, _player->getBody()->GetPosition().y * PTM_RATIO));
 	
 	syncScreenToPlayer();
-	
-
-/*
-	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width/_scale,this->getContentSize().height/_scale);
-	CCPoint test = ccp(screenBounds.origin.x,screenBounds.origin.y);
-	//this->setScale(this->getScale()+0.001f);
-	test.x-=(winSize.width*0.1f);
-	test.x/=_scale;
-	test.x+=(winSize.width*0.1f);
-	test.y-=(winSize.height*0.5f);
-	test.y/=_scale;
-	test.y+=(winSize.height*0.5f);
-	//_player->getSprite()->setPosition(ccp(test.x,test.y));
-	CCLog("screen %f,%f player %f,%f",test.x,test.y,_player->getPosition().x,_player->getPosition().y);
-	*/
 
 	//Sync other objects to body and remove offscreen ones that should be removed
-	//For performance here, should maybe keep list of only dynamic bodies and iterate over just them but whatever YOLO :D
+	//For performance here, should maybe keep list of only removable bodies and iterate over just them but whatever YOLO :D
 	vector<GameObject*> objectsToClean(0);
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
-		if (b->GetUserData() != NULL&&b->GetType()!=b2_staticBody) {
+		if (b->GetUserData() != NULL) {
 
 			GameObject *object = (GameObject*)b->GetUserData();
 			//Synchronize the Sprites position and rotation with the corresponding body
