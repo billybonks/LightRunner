@@ -4,9 +4,8 @@
 
 Tunnel::Tunnel(b2World *world,CCPoint position,float width,float height,bool leftEntrance,bool rightExit) :CompoundSegment(world,position){
 	this->init(world,width,height,leftEntrance,rightExit);
-	this->setPosition(position);
 	generate(world);
-
+	this->setPosition(position);
 }
 
 Tunnel::Tunnel(b2World *world,float width,float height,bool leftEntrance,bool rightExit) :CompoundSegment(world){
