@@ -47,38 +47,39 @@ bool Game::init()
 	//setting ContactListner
 	//ContactListener listener = new ContactListener();
 	listener = new ContactListener();
+	this->world=B2DLayer::world;
 	world->SetContactListener(listener);
 
 	//prep stats
-	_scale = 0.7f;
+	_scale =0.7f;
 	this->setScale(_scale);
-	this->setAnchorPoint(ccp(0.0f,0.0f));
 	winSize = CCDirector::sharedDirector()->getWinSize();
-	GameObject::SetScreen(&screenBounds);
+	playerScreenPos = ccp(winSize.width*0.2, winSize.height*0.4);
+	
+	
+	GameObject::setScreen(&screenBounds);
 
-	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("0.png");
-	_player->getSprite()->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
+	_player = (Player*) GameObject::retainedObjectWithSpriteFrameName("0.png",world);
 	_batchNode->addChild(_player->getSprite(), 1);
-	_player->getSprite()->setScale(0.8f);
-	_player->createBox2dObject(B2DLayer::world);
-	_player->createFootFixture(B2DLayer::world);
+	//_player->getSprite()->setScale(0.8f);
+	_player->createFootFixture(world);
+	_player->setPosition(playerScreenPos);
 	_player->init();
+	_lastPos = _player->getSprite()->getPosition();
 
 	//animation
 	CCArray* frames = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("3.png"),NULL);
 	CCAnimation *animation = CCAnimation::create(frames,0.2f);
 	_player->getSprite()->runAction(CCRepeatForever::create(CCAnimate::create(animation)));   
-	_lastPos = _player->getSprite()->getPosition();
 
 	//boss
-	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png");
-	_boss->getSprite()->setPosition(ccp(400.0f, winSize.height * 0.5));
+	_boss = GameObject::retainedObjectWithSpriteFrameName("boss2.png",world);
+	_boss->getSprite()->setPosition(ccp(winSize.width*0.5, winSize.height * 0.5));
 	_batchNode->addChild(_boss->getSprite(), 1);
-	_boss->createBox2dObject(B2DLayer::world);
-	_boss->SetCanBeOffScreen(true);
+	_boss->setCanBeOffScreen(true);
+	Light::setBoss(_boss);
 
-		Light::setBoss(_boss);
-
+		
 
 	//Register for touches and gameloop
 	this->setTouchEnabled(true) ;
@@ -99,7 +100,9 @@ bool Game::init()
 	_stats =  Statistics();
 
 	//MUsicccccc
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("ghosts.mp3", true);    
+	//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("ghosts.mp3", true);    
+
+	syncScreenToPlayer();
 
 	return true;
 }
@@ -148,42 +151,64 @@ void Game::update(float dt) {
 	_lastPos = _player->getSprite()->getPosition();
 	_stats.SetVelocity(_player->getBody()->GetLinearVelocity().x);
 
-	CleanWorld();
+	cleanWorld();
+}
+void Game::syncScreenToPlayer(){
+	this->setPosition(ccp((-_player->getPosition().x+playerScreenPos.x),(-_player->getPosition().y+playerScreenPos.y)));
+	CCPoint absanchor = _player->getPosition();
+	float relx = absanchor.x/winSize.width;
+	float rely = absanchor.y/winSize.height;
+	this->setAnchorPoint(ccp(relx,rely));
+
+	float screenwidth = this->getContentSize().width/_scale;
+	float screenheight = this->getContentSize().height/_scale;
+	float playershiftx = screenwidth*(playerScreenPos.x/winSize.width);
+	float playershifty = screenheight*(playerScreenPos.y/winSize.height);
+	screenBounds= CCRect(_player->getPosition().x-playershiftx ,_player->getPosition().y-playershifty,screenwidth,screenheight);
 }
 
-void Game::CleanWorld(){
+void Game::cleanWorld(){
+	//Sync Player to body
+	_player->setPosition(ccp( _player->getBody()->GetPosition().x * PTM_RATIO, _player->getBody()->GetPosition().y * PTM_RATIO));
+	
+	syncScreenToPlayer();
+	
+
+/*
+	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width/_scale,this->getContentSize().height/_scale);
+	CCPoint test = ccp(screenBounds.origin.x,screenBounds.origin.y);
+	//this->setScale(this->getScale()+0.001f);
+	test.x-=(winSize.width*0.1f);
+	test.x/=_scale;
+	test.x+=(winSize.width*0.1f);
+	test.y-=(winSize.height*0.5f);
+	test.y/=_scale;
+	test.y+=(winSize.height*0.5f);
+	//_player->getSprite()->setPosition(ccp(test.x,test.y));
+	CCLog("screen %f,%f player %f,%f",test.x,test.y,_player->getPosition().x,_player->getPosition().y);
+	*/
+
+	//Sync other objects to body and remove offscreen ones that should be removed
+	//For performance here, should maybe keep list of only dynamic bodies and iterate over just them but whatever YOLO :D
 	vector<GameObject*> objectsToClean(0);
-	//Iterate over the bodies in the physics world
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
-		if (b->GetUserData() != NULL&&b->GetType()!=0) {
-			GameObject *myActor = (GameObject*)b->GetUserData();
-			bool aa = myActor->isOffScreen(_scale);
-			bool bb = !myActor->canBeOffScreen();
-		//	if(aa&myActor!=_player&&myActor!=_boss)
-		//			CCLog("Other Off");
-		//	if(aa&myActor==_player)
-		//			CCLog("Player Off");
-		//	if(aa&myActor==_boss)
-		//			CCLog("Boss Off");
-			if(aa&&bb){
-				objectsToClean.push_back(myActor);	
-				}
-			else {
-				//Synchronize the Sprites position and rotation with the corresponding body
-				myActor->getSprite()->setPosition(ccp( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
-				myActor->setPosition(ccp( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
-				myActor->getSprite()->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
-				myActor->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
+		if (b->GetUserData() != NULL&&b->GetType()!=b2_staticBody) {
+
+			GameObject *object = (GameObject*)b->GetUserData();
+			//Synchronize the Sprites position and rotation with the corresponding body
+			object->setPosition(ccp( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO));
+			if(object->isOffScreen()&&!object->getCanBeOffScreen()){
+				objectsToClean.push_back(object);
 			}
 		}	
 	}
-	for(int i =0;i<objectsToClean.size();i++){
-		objectsToClean.at(i)->removeFromParentAndCleanup(); //err:not 100% sure this frees memory - test!
-	//	delete objectsToClean.at(i);
+	for(int i=0;i<objectsToClean.size();i++)
+	{
+			objectsToClean.at(i)->removeFromParentAndCleanup(); //err:not 100% sure this frees memory - test!
+			//delete objectsToClean.at(i);
 	}
-	//move screen
-	this->setPosition(ccp((-_player->getBody()->GetPosition().x*PTM_RATIO*_scale+(winSize.width*0.1f)),(-_player->getBody()->GetPosition().y*PTM_RATIO*_scale+(winSize.height*0.5f))));
-	screenBounds= CCRect(-this->getPositionX() ,-this->getPositionY(),this->getContentSize().width/_scale,this->getContentSize().height/_scale);
+	
+	
 
 }
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)

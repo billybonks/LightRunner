@@ -110,6 +110,9 @@
     <ClInclude Include="Path.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="PanScaleTestScene.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -182,6 +185,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="Tunnel.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="PanScaleTestScene.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

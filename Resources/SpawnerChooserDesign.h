@@ -17,7 +17,7 @@ private:
 public:
 	Spawner(Game* game);
 	void update();
-	Segment* GetCurrentSegment();
+	Segment* getCurrentSegment();
 };
 
 class Chooser 
@@ -25,7 +25,7 @@ class Chooser
 private:
 	
 public:
-	Segment GetNextSegment();
+	Segment* getNextSegment();
 protected:
 };
 
@@ -37,7 +37,7 @@ private:
 	int _floatingPlatformChance;
 	Statistics* _stats;
 public:
-	Segment GetNextSegment();
+	Segment* getNextSegment();
 protected:
 	
 };

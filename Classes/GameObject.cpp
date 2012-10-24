@@ -2,55 +2,78 @@
 
 		using namespace cocos2d;
 		CCRect* GameObject::screen;
+		GameObject::GameObject(b2World* world)
+		{
+			CCNode::CCNode();
+			this->init(world);
+
+		}
 		GameObject::GameObject()
 		{
-			this->newtrail=0.05f;
-			_ccColor3B c =  {255,0,0};
-			this->colour =c;
-			this->colourmode=0;
-			this->CanBeOffScreen=false;
-
-		CCNode::CCNode();
+			CCNode::CCNode();
 		}
 
-		void GameObject::SetScreen(CCRect* screen){
+		void GameObject::setScreen(CCRect* screen){
 			GameObject::screen = screen;
 		}
 
-		bool GameObject::canBeOffScreen(){
-			return CanBeOffScreen;
+		bool GameObject::getCanBeOffScreen(){
+			return canBeOffScreen;
 		}
 
-		void GameObject::SetCanBeOffScreen(bool can)
+		void GameObject::setCanBeOffScreen(bool can)
 		{
-			this->CanBeOffScreen=can;
+			this->canBeOffScreen=can;
 		}
 		
-		void GameObject::init()
+		void GameObject::setPosition(CCPoint pos){
+			CCNode::setPosition(pos);
+			this->getSprite()->setPosition(pos);
+			this->getBody()->SetTransform(b2Vec2(pos.x/ PTM_RATIO,pos.y/PTM_RATIO),this->getBody()->GetAngle());
+			setBoundingBox();
+
+		}
+
+		void GameObject::setPositionX(float x){
+			CCNode::setPositionX(x);
+			this->getSprite()->setPositionX(x);
+			this->getBody()->SetTransform(b2Vec2(x/PTM_RATIO,this->getBody()->GetPosition().y),this->getBody()->GetAngle());
+			setBoundingBox();
+		}
+
+		void GameObject::setPositionY(float y){
+			CCNode::setPositionY(y);
+			this->getSprite()->setPositionY(y);
+			this->getBody()->SetTransform(b2Vec2(this->getBody()->GetPosition().x,y/PTM_RATIO),this->getBody()->GetAngle());
+			setBoundingBox();
+		}
+
+		void GameObject::init(b2World* world)
 		{
 			this->newtrail=0.05f;
 			_ccColor3B c =  {255,0,0};
 			this->colour =c;
 			this->colourmode=0;
-			this->CanBeOffScreen=false;
+			this->canBeOffScreen=false;
+			this->createBox2dObject(world);
 		}
 
-		bool GameObject::isOffScreen(float scale){
+		
+		bool GameObject::isOffScreen(){
 			float left = screen->origin.x;
 			float bottom = screen->origin.y;
-			float winwidth = screen->size.width*scale;
-			float winheight = screen->size.height*scale;
-			b2Vec2 screenlower=b2Vec2(bounds.lowerBound.x*scale -left,bounds.lowerBound.y*scale -bottom);
-			b2Vec2 screenupper=b2Vec2(bounds.upperBound.x*scale -left,bounds.upperBound.y*scale -bottom);
+			b2Vec2 screenlower=b2Vec2(bounds.lowerBound.x -left,bounds.lowerBound.y -bottom);
+			b2Vec2 screenupper=b2Vec2(bounds.upperBound.x -left,bounds.upperBound.y -bottom);
+			//CCLog("%f, %f, %f, %f",bounds.lowerBound.x,bounds.lowerBound.y,bounds.upperBound.x,bounds.upperBound.y);
 			if (screenupper.x < 0) 
 				return true; // is left of screen
-			if (screenlower.x > winwidth) 
+			if (screenlower.x > screen->size.width) 
 				return true; // is right of screen
 			if (screenupper.y < 0) 
 				return true; // is above screen
-			if (screenlower.y > winheight) 
+			if (screenlower.y > screen->size.height) 
 				return true; // is below screen
-			return false; // onscreen
+			return false; // onscreen		
 		}
 
 	void GameObject::setBoundingBox(){
@@ -68,24 +91,24 @@
 		bounds=aabb;
 	}
 
-		GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName)
+		GameObject* GameObject::retainedObjectWithSpriteFrameName(const char *pszSpriteFrameName,b2World* world)
 		{
 		GameObject *obj = new GameObject();
 		if (obj->sprite=CCSprite::createWithSpriteFrameName(pszSpriteFrameName))
 		{
-			obj->init();
+			obj->init(world);
 			return obj;
 		}
 		CC_SAFE_DELETE(obj);
 		return NULL;
 		}
 
-		GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame)
+		GameObject* GameObject::retainedObjectWithSpriteFrame(CCSpriteFrame *pSpriteFrame,b2World* world)
 		{
 		GameObject *obj = new GameObject();
 		if (obj->sprite=CCSprite::create(pSpriteFrame))
 		{
-						obj->init();
+						obj->init(world);
 
 
 				return obj;
@@ -93,12 +116,12 @@
 		CC_SAFE_DELETE(obj);
 		return NULL;
 		}
-
-		GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite)
+		
+		GameObject* GameObject::retainedObjectWithSprite(CCSprite *pSprite,b2World* world)
 		{
 		GameObject *obj = new GameObject();
 		obj->sprite=pSprite;
-		obj->init();
+		obj->init(world);
 		return obj;
 	
 		}
@@ -154,7 +177,6 @@
 		void GameObject::createBox2dObject(b2World* world) {
 			b2BodyDef playerBodyDef;
 			playerBodyDef.type = b2_dynamicBody;
-			playerBodyDef.position.Set(this->sprite->getPosition().x/PTM_RATIO, this->sprite->getPosition().y/PTM_RATIO);
 			playerBodyDef.userData = this;
 			playerBodyDef.fixedRotation = true;
 			this->body = world->CreateBody(&playerBodyDef);
@@ -166,20 +188,17 @@
 			fixtureDef.friction = 0.0f;
 			fixtureDef.restitution =  0.0f;
 			this->body->CreateFixture(&fixtureDef);
-			setBoundingBox();
 		}
 
 		void GameObject::updateTrail(float dt){
 			this->newtrail-=dt;
 			if(this->newtrail<=0){
 			this->newtrail=0.01f;
-			GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame()); 
-			trail->sprite->setPosition(ccp(this->sprite->getPositionX(), this->sprite->getPositionY()));
+			GameObject* trail = GameObject::retainedObjectWithSpriteFrame(this->sprite->displayFrame(),this->getBody()->GetWorld()); 
+			trail->setPosition(ccp(this->sprite->getPositionX(), this->sprite->getPositionY()));
 			this->sprite->getParent()->addChild(trail->getSprite());
 			trail->sprite->setColor(nextColour());
 			trail->getSprite()->setScale(this->getSprite()->getScale());
-
-			trail->createBox2dObject(this->body->GetWorld());
 			trail->body->SetType(b2_staticBody);
 			//get the existing filter
 			b2Filter filter = trail->body->GetFixtureList()->GetFilterData();
@@ -194,11 +213,7 @@
 		void GameObject::update(float dt){
 
 		}
-
-
-		void GameObject::SetTarget(CCPoint position){
-		}
-
+		
 		void GameObject::removeFromParentAndCleanup(){
 
 			this->body->GetWorld()->DestroyBody( this->body );

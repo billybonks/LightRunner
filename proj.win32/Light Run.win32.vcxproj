@@ -155,6 +155,7 @@
     <ClInclude Include="B2DLayer.h" />
     <ClInclude Include="backgroundlayer.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="PanScaleTestScene.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="PlatformSprite.h" />
     <ClInclude Include="resource.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PanScaleTestScene.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="PlatformSprite.cpp" />
     <ClCompile Include="QuadSegment.cpp" />

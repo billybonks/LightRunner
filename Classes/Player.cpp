@@ -9,7 +9,7 @@ Player::Player(void)
 void Player::init(){
 	numFootContacts=0;
 	jumpTimeout=0;
-	SetCanBeOffScreen(true);
+	setCanBeOffScreen(true);
 }
 
 void Player::jump(float multiplier){
