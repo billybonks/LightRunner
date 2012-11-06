@@ -95,7 +95,7 @@ bool Game::init()
 
 	//Spawner
 	b2Vec2 start = b2Vec2(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
-	this->_spawner = new Spawner(this, &_stats,world,start,_boss);
+	this->_spawner = new Spawner(this, &_stats,world,_player);
 
 	_stats =  Statistics();
 
@@ -123,7 +123,7 @@ void Game::update(float dt) {
 	this->_spawner->update();
 
 	//move boss according to platforms
-	Segment* temp = _spawner->GetCurrentPlatform();
+	Segment* temp = _spawner->getCurrentPlatform();
 	//float newY = _spawner->GetCurrentPlatform()->GetYForX(_boss->getBody()->GetPosition().x);
 	_boss->getBody()->SetLinearVelocity(b2Vec2(15,0));
 	//_boss->getBody()->SetTransform(b2Vec2(_boss->getBody()->GetPosition().x,newY),_boss->getBody()->GetAngle());

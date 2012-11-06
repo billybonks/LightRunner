@@ -18,18 +18,23 @@ private:
 	Statistics* _stats;
 	b2Vec2 _initialSpawnLocation;
 	Segment* _currentSegment;
-	Segment* _nextSegment;
 	int _counter;
 	GameObject* _player;
 	int _verticalGapChance;
 	int _horizontalGapChance;
 	int _floatingPlatformChance;
+	int endVertex;
+	int startVertex;
+	int structType;
+	float segmentDistance;
 public:
-	Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* _player);
+	Spawner(Game* game,Statistics* stats,b2World* world,GameObject* _player);
 	int Random(int lowest, int highest);
-	void GenerateCompoundSegment();
+	void generateNextSegment();
+	Segment* chooseSegment();
 	void update();
-	Segment* GetCurrentPlatform();
+	void updateStats();
+	Segment* getCurrentPlatform();
 };
 
 #endif

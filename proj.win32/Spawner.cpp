@@ -1,92 +1,102 @@
 #include "Spawner.h"
 #include "GameScene.h"
 
-Spawner::Spawner(Game* game,Statistics* stats,b2World* world,b2Vec2 initialSpawnLocation,GameObject* player){
+Spawner::Spawner(Game* game,Statistics* stats,b2World* world,GameObject* player){
+	_verticalGapChance = 3;
+	_horizontalGapChance = 3;
+	
 	_game = game;
-	srand(time(0));
 	_stats = stats;
 	_world = world;
 	_player = player;
-	_initialSpawnLocation = initialSpawnLocation;
+	endVertex=1;
+	structType=0;
+
 	CCPoint* startPos = new CCPoint(200,100);
 	Segment* segment = dynamic_cast<Segment*>(new LineSegment (_world,*startPos,800,0));
 	_currentSegment= segment;
-	_verticalGapChance = 3;
-	_horizontalGapChance = 3;
+
 }
 
 int Spawner::Random(int lowest, int highest){
-
 	int range=(highest-lowest)+1;		    	
 	return lowest+int(range*rand()/(RAND_MAX + 1.0)); 
 }
 
-void Spawner::GenerateCompoundSegment(){
+void Spawner::generateNextSegment(){
+	CCPoint* endofLast=_currentSegment->getGameWorldVertice(endVertex);
+	
+	Segment* segment = chooseSegment();
+	
+	CCPoint* relStartofCurrent=segment->getPolygonVertice(startVertex);
+	CCPoint absStartofCurrent=segment->offsetStartPosition(relStartofCurrent,endofLast,_currentSegment);
 
-	/*
-	Currently only spawning with 3 test OBJects
-	str8 line	1
-	Incline line positive	2
-	Incline Line Negative	3
-	*/
-	int runtime;
-	float minDistance;
-	float maxDistance;
-	float segmentDistance;
-	Segment* segment;
-	float distanceRemeinder;
-	int structType;
+	segment->setPosition(absStartofCurrent);
+	segment->addSprites(_game);
+
+	_currentSegment = segment;
+
+}
+
+	Segment* Spawner::chooseSegment(){
+		
+	if(structType==4)//if last was drop
+	{
+		do //dont lift
+			structType = Random(1,5);
+		while(structType==5);
+	}
+	else if(structType==5)//if last was lift
+	{
+		do //dont lift
+			structType = Random(1,5);
+		while(structType==4);
+	}
+	else{
+		structType = Random(1,5);
+	}
+
 	int height;
-	int startVerticie;
-	int endVerticie;
+	Segment* segment;
 
-	runtime = Random(1,6)/2;
-	float minRunTime = Random(1,6)/2;
-	float speed = _stats->GetVelocity()*32;
-	minDistance = speed*minRunTime;
-	maxDistance = speed*runtime;
-	segmentDistance =  Random(minDistance,maxDistance);
-	distanceRemeinder;
-	int spawnFloatingPLatformChance = 10;
-	structType = Random(1,5);
 	switch ( structType )
 	{
 	case 1:
 		segment = new LineSegment(_world,segmentDistance,0);
-		startVerticie = 0;
-		endVerticie = 1;
+		startVertex = 0;
+		endVertex = 1;
 		break;
 	case 2:
 		height = Random(segmentDistance/3,segmentDistance/2);
 		segment = new LineSegment(_world,segmentDistance,height);
-		startVerticie = 0;
-		endVerticie = 1;
+		startVertex = 0;
+		endVertex = 1;
 		break;	
 	case 3:
 		height = Random(segmentDistance/3,segmentDistance/2);
 		segment = new LineSegment(_world,segmentDistance,-height);
-		startVerticie = 0;
-		endVerticie = 1;
+		startVertex = 0;
+		endVertex = 1;
 		break;
 	case 4:
 		//drop
 		height = Random(segmentDistance/3,segmentDistance/2);
-		segment = new LineSegment(_world,0,-500);
-		startVerticie = 0;
-		endVerticie = 1;
+		segment = new LineSegment(_world,0,500);
+		startVertex = 1;
+		endVertex = 0;
 		break;
 	case 5:
 		//lift
-		startVerticie = 1;
-		endVerticie = 0;
 		height = Random(segmentDistance/3,segmentDistance/2);
 		segment = new LineSegment(_world,0,500);
+		startVertex = 0;
+		endVertex = 1;
 		break;
 	case 6:
 		height = 400;
 		segment = new  Tunnel(_world,300,height,true,false);
-		startVerticie = 1;
-		endVerticie = 3;
+		startVertex = 1;
+		endVertex = 3;
 		break;
 	case 7:
 		//Upward jump tunnel
@@ -94,15 +104,26 @@ void Spawner::GenerateCompoundSegment(){
 	case 8:
 		break;
 	}
-	CCPoint* endofLast=_currentSegment->getGameWorldVertice(_currentSegment->getEndVerticeNum());
-	CCPoint* relStartofCurrent=segment->getPolygonVertice(_currentSegment->getStartVerticeNum());
-	CCPoint absStartofCurrent=segment->offsetStartPosition(relStartofCurrent,endofLast,_currentSegment);
+	return segment;
 
-	segment->setPosition(absStartofCurrent);
-	segment->addSprites(_game);
-	//b2Vec2 pos = segment->GetPosition();
+	/*
+	//Drop and reverse
+	int trydrop = Random(1,12);
+	if((trydrop > spawnDropAndReverseChance)){
+		int dist = segmentDistance;
+		if(dist>1){
+			int floatH = 20;
+
+			b2Vec2 floaterPos = *(new b2Vec2(pos.x+(segmentDistance/4),pos.y+100));
+			QuadSegment *floater = new QuadSegment(_world,floaterPos,floatDist,floatH);
+			floater->generateNextBody();
+			_game->addChild(floater->getSprite());	
+		}
+	}
+	*/
 
 	//Floaters
+	//int spawnFloatingPLatformChance = 10;
 	//int spawnFloatingPLatform = Random(1,10);
 	//if((spawnFloatingPLatformChance > spawnFloatingPLatform)&&(structType ==1)){
 	//	int floatDist = segmentDistance/2;
@@ -128,35 +149,24 @@ void Spawner::GenerateCompoundSegment(){
 	//}
 
 
-	//segment->SetPosition(pos);
-	//segment->InitilizeData();
-	//Segment* ret =  dynamic_cast<Segment*>(segment);
-	_nextSegment = segment;
-	//_nextSegment->generate();
-
-	//b2Vec2* vert = _lastSegment->GetGameWorldVerticies(0);
-	//return *ret;
-}
+	}
 
 void Spawner::update(){
-
-	float x;
-	float spawnX;
-	//float distanace = _currentSegment->CalculateDistance();
-	float playerX = _player->getBody()->GetPosition().x*PTM_RATIO;
-	//if(distanace>0){
-	//	x =_currentSegment->GetGameWorldVerticies(0)->x;
-	//}else{
-	//	x =_currentSegment->GetGameWorldVerticies(1)->x;
-	//}
-	//if(playerX >x+distanace){
-	GenerateCompoundSegment();
-	_currentSegment = _nextSegment;
-	//}
+	updateStats();
+	generateNextSegment();
 
 }
 
-Segment* Spawner::GetCurrentPlatform(){
+	void Spawner::updateStats(){
+		int runtime = Random(1,6)/2;
+		float minRunTime = Random(1,6)/2;
+		float speed = _stats->GetVelocity()*32;
+		float minDistance = speed*minRunTime;
+		float maxDistance = speed*runtime;
+		segmentDistance =  Random(minDistance,maxDistance);
+	}
+
+Segment* Spawner::getCurrentPlatform(){
 	return _currentSegment;
 }
 
