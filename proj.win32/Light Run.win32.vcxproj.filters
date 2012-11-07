@@ -199,5 +199,8 @@
     <ClCompile Include="ProcChooser.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="FileChooser.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

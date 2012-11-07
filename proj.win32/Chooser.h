@@ -49,14 +49,23 @@ protected:
 	
 };
 
+
 class FileChooser : public Chooser
 {
 private:
+	b2World* _world;
+	Segment* makePlatform(int type,int x,int y,int w,int h);
+	CCDictionary* level;
+	CCDictionary* platforms;
+	int numplatforms;
+	int currplatform;
 public:
+	FileChooser(b2World* world);
 	FileChooser();
 	virtual Segment* getNextSegment();
+	virtual Segment* init();
+
 protected:
 	
 };
-
 #endif

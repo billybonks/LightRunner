@@ -13,7 +13,9 @@ void Spawner::generateNextSegment(){
 	CCPoint* endofLast=_currentSegment->getGameWorldVertice(_chooser->getEndVertex());
 	
 	Segment* segment = _chooser->getNextSegment();
-	
+	if(segment==0){
+		return;
+	}
 	CCPoint* relStartofCurrent=segment->getPolygonVertice(_chooser->getStartVertex());
 	CCPoint absStartofCurrent=segment->offsetStartPosition(relStartofCurrent,endofLast,_currentSegment);
 

@@ -181,6 +181,7 @@
     <ClCompile Include="Chooser.cpp" />
     <ClCompile Include="CompoundSegment.cpp" />
     <ClCompile Include="ContactListener.cpp" />
+    <ClCompile Include="FileChooser.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PanScaleTestScene.cpp" />

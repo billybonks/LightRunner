@@ -95,7 +95,8 @@ bool Game::init()
 
 	//Spawner
 	b2Vec2 start = b2Vec2(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
-	this->_spawner = new Spawner(this,new ProcChooser(&_stats,world));
+	//this->_spawner = new Spawner(this,new ProcChooser(&_stats,world));
+	this->_spawner = new Spawner(this,new FileChooser(world));
 
 	_stats =  Statistics();
 
