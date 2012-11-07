@@ -55,7 +55,7 @@ bool Game::init()
 	this->setScale(_scale);
 	winSize = CCDirector::sharedDirector()->getWinSize();
 	playerScreenPos = ccp(winSize.width*0.2, winSize.height*0.4);
-	
+	direction=1;
 	
 	GameObject::setScreen(&screenBounds);
 
@@ -95,7 +95,7 @@ bool Game::init()
 
 	//Spawner
 	b2Vec2 start = b2Vec2(_boss->getSprite()->getPositionX()+50,_boss->getSprite()->getPositionY());
-	this->_spawner = new Spawner(this, &_stats,world,_player);
+	this->_spawner = new Spawner(this,new ProcChooser(&_stats,world));
 
 	_stats =  Statistics();
 
@@ -123,7 +123,7 @@ void Game::update(float dt) {
 	this->_spawner->update();
 
 	//move boss according to platforms
-	Segment* temp = _spawner->getCurrentPlatform();
+	Segment* temp = _spawner->getCurrentSegment();
 	//float newY = _spawner->GetCurrentPlatform()->GetYForX(_boss->getBody()->GetPosition().x);
 	_boss->getBody()->SetLinearVelocity(b2Vec2(15,0));
 	//_boss->getBody()->SetTransform(b2Vec2(_boss->getBody()->GetPosition().x,newY),_boss->getBody()->GetAngle());
@@ -137,8 +137,9 @@ void Game::update(float dt) {
 	//}
 
 	//player acceleration
-	if(_stats.GetVelocity()<_stats.GetMaximumVelocity()){
-		_player->getBody()->ApplyForce(_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
+	if(abs(_stats.GetVelocity())<_stats.GetMaximumVelocity()){
+		_player->getBody()->SetLinearVelocity(b2Vec2(direction*10.0f, _player->getBody()->GetLinearVelocity().y));
+		//_player->getBody()->ApplyForce(direction*_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
 	}
 
 	//Box2D tick
@@ -194,20 +195,36 @@ void Game::cleanWorld(){
 	
 
 }
+
 void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	tracking = true;
-	steps = 0;
+	//this->setScale(this->getScale()+0.1);
+	CCTouch* touch = (CCTouch*)( touches->anyObject() );
+    CCPoint location = touch->locationInView();
+    location = CCDirector::sharedDirector()->convertToGL(location);
+	float x =location.x;
+	float y = location.y;
+	if (x<240&&y<160)
+	{
+		//botleft
+		direction=-1;
+	}
+	else if(x>240&&y<160)
+	{
+		//botright.
+		direction=1;
+	}
+	else if(y>160)
+	{
+		//top
+		_player->jump();
+	}
+	
 }
 
 void Game::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	if(steps > 2.0f){
-		steps = 4.0f;
-	}
-	steps+=1.5;
-	_player->jump(steps);
-	tracking = false;
+
 }
 
 Statistics* Game::GetStats(){

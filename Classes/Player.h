@@ -15,7 +15,7 @@ public:
 	void addNumFootContacts();
 	void subNumFootContacts();
 	Player();
-	void jump(float multiplier);
+	void jump();
 	void init();
 	void timeOutJump();
 

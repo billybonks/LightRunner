@@ -154,6 +154,7 @@
     <ClInclude Include="b2debugDraw.h" />
     <ClInclude Include="B2DLayer.h" />
     <ClInclude Include="backgroundlayer.h" />
+    <ClInclude Include="Chooser.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="PanScaleTestScene.h" />
     <ClInclude Include="Path.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="B2DLayer.cpp" />
     <ClCompile Include="B2Segment.cpp" />
     <ClCompile Include="BackgroundLayer.cpp" />
+    <ClCompile Include="Chooser.cpp" />
     <ClCompile Include="CompoundSegment.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="LineSegment.cpp" />
@@ -184,6 +186,7 @@
     <ClCompile Include="PanScaleTestScene.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="PlatformSprite.cpp" />
+    <ClCompile Include="ProcChooser.cpp" />
     <ClCompile Include="QuadSegment.cpp" />
     <ClCompile Include="ScoreLayer.cpp" />
     <ClCompile Include="Segment.cpp" />

@@ -23,6 +23,7 @@ using namespace cocos2d;
 class Game : public B2DLayer
 {
 private:
+	int direction;
 	ContactListener* listener;
 	bool move;
 	CCSpriteBatchNode * _batchNode;

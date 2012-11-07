@@ -12,10 +12,9 @@ void Player::init(){
 	setCanBeOffScreen(true);
 }
 
-void Player::jump(float multiplier){
+void Player::jump(){
 	if ( this->numFootContacts>= 1 &&jumpTimeout==0) {
-    float vertImpulse =  10.0f*multiplier;
-	b2Vec2 impulse = b2Vec2(0.0f, vertImpulse*this->getBody()->GetMass());
+	b2Vec2 impulse = b2Vec2(0.0f, 10.0f*this->getBody()->GetMass());
     this->body->ApplyLinearImpulse(impulse, this->body->GetWorldCenter());	
 	CCArray* jumpframes = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("4.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("5.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("6.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("7.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("8.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("7.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("6.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("5.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("4.png"),NULL);
 	CCArray* runframes = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("3.png"),NULL);

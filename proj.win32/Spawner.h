@@ -6,6 +6,7 @@
 #include "Statistics.h"
 #include "Light.h"
 #include "Segment.h"
+#include "Chooser.h"
 #include <vector>
 using namespace cocos2d;
 class  Game;
@@ -14,27 +15,16 @@ class Spawner
 {
 private:
 	Game* _game;
-	b2World* _world;
-	Statistics* _stats;
-	b2Vec2 _initialSpawnLocation;
 	Segment* _currentSegment;
 	int _counter;
-	GameObject* _player;
-	int _verticalGapChance;
-	int _horizontalGapChance;
-	int _floatingPlatformChance;
-	int endVertex;
-	int startVertex;
-	int structType;
-	float segmentDistance;
+	
+	Chooser* _chooser;
+
 public:
-	Spawner(Game* game,Statistics* stats,b2World* world,GameObject* _player);
-	int Random(int lowest, int highest);
+	Spawner(Game* game, Chooser* chooser);
 	void generateNextSegment();
-	Segment* chooseSegment();
 	void update();
-	void updateStats();
-	Segment* getCurrentPlatform();
+	Segment* getCurrentSegment();
 };
 
 #endif

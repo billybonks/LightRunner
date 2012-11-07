@@ -113,6 +113,9 @@
     <ClInclude Include="PanScaleTestScene.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Chooser.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -188,6 +191,12 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="PanScaleTestScene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Chooser.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcChooser.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
