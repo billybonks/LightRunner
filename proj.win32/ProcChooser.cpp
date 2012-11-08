@@ -24,12 +24,12 @@ ProcChooser::ProcChooser(Statistics* stats,b2World* world)
 	_stats = stats;
 	_world = world;
 
-		srand(time(0));
+	srand(time(0));
 
 	endVertex=1;
 	startVertex=0;
 	structType=0;
-
+	offset =ccp(0,0);
 	
 }
 

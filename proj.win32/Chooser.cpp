@@ -21,3 +21,7 @@ int Chooser::getEndVertex(){
 int	Chooser::getStartVertex(){
 	return startVertex;
 }
+
+CCPoint Chooser::getOffset(){
+	return offset;
+}

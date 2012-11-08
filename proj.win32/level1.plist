@@ -11,9 +11,9 @@
 				<key>type</key>
 				<integer>1</integer>
 				<key>x</key>
-				<integer>200</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>0</integer>
 				<key>w</key>
 				<integer>800</integer>
 				<key>h</key>
@@ -24,9 +24,9 @@
 				<key>type</key>
 				<integer>1</integer>
 				<key>x</key>
-				<integer>1000</integer>
+				<integer>50</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>0</integer>
 				<key>w</key>
 				<integer>200</integer>
 				<key>h</key>
@@ -37,9 +37,9 @@
 				<key>type</key>
 				<integer>1</integer>
 				<key>x</key>
-				<integer>1800</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>50</integer>
 				<key>w</key>
 				<integer>0</integer>
 				<key>h</key>
@@ -50,9 +50,9 @@
 				<key>type</key>
 				<integer>1</integer>
 				<key>x</key>
-				<integer>2600</integer>
+				<integer>50</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>50</integer>
 				<key>w</key>
 				<integer>200</integer>
 				<key>h</key>
@@ -63,9 +63,9 @@
 				<key>type</key>
 				<integer>1</integer>
 				<key>x</key>
-				<integer>3800</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>0</integer>
 				<key>w</key>
 				<integer>200</integer>
 				<key>h</key>
@@ -76,9 +76,9 @@
 				<key>type</key>
 				<integer>1</integer>
 				<key>x</key>
-				<integer>3800</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>0</integer>
 				<key>w</key>
 				<integer>100</integer>
 				<key>h</key>
@@ -89,9 +89,9 @@
 				<key>type</key>
 				<integer>1</integer>
 				<key>x</key>
-				<integer>3800</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>0</integer>
 				<key>w</key>
 				<integer>200</integer>
 				<key>h</key>
@@ -102,9 +102,9 @@
 				<key>type</key>
 				<integer>2</integer>
 				<key>x</key>
-				<integer>3800</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>100</integer>
+				<integer>0</integer>
 				<key>w</key>
 				<integer>200</integer>
 				<key>h</key>

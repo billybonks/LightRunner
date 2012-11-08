@@ -14,10 +14,11 @@ public:
 	int getEndVertex();
 	int	getStartVertex();
 	virtual Segment* init();
+	virtual CCPoint getOffset();
 protected:
 	int endVertex;
 	int startVertex;
-
+	CCPoint offset;
 };
 
 
@@ -54,7 +55,7 @@ class FileChooser : public Chooser
 {
 private:
 	b2World* _world;
-	Segment* makePlatform(int type,int x,int y,int w,int h);
+	Segment* makePlatform(int type,int w,int h);
 	CCDictionary* level;
 	CCDictionary* platforms;
 	int numplatforms;

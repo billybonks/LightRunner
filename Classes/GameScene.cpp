@@ -120,7 +120,7 @@ void Game::update(float dt) {
 	{
 		steps += dt;
 	}
-	_player->updateTrail(dt);
+	//_player->updateTrail(dt);
 	this->_spawner->update();
 
 	//move boss according to platforms
@@ -138,10 +138,10 @@ void Game::update(float dt) {
 	//}
 
 	//player acceleration
-	if(abs(_stats.GetVelocity())<_stats.GetMaximumVelocity()){
+	//if(abs(_stats.GetVelocity())<_stats.GetMaximumVelocity()){
 		_player->getBody()->SetLinearVelocity(b2Vec2(direction*10.0f, _player->getBody()->GetLinearVelocity().y));
 		//_player->getBody()->ApplyForce(direction*_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
-	}
+	//}
 
 	//Box2D tick
 	B2DLayer::update(dt);

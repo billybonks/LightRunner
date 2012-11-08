@@ -7,6 +7,8 @@ Spawner::Spawner(Game* game, Chooser* chooser){
 	_chooser=chooser;
 
 	_currentSegment=_chooser->init();
+	_currentSegment->addSprites(_game);
+
 }
 
 void Spawner::generateNextSegment(){
@@ -18,8 +20,10 @@ void Spawner::generateNextSegment(){
 	}
 	CCPoint* relStartofCurrent=segment->getPolygonVertice(_chooser->getStartVertex());
 	CCPoint absStartofCurrent=segment->offsetStartPosition(relStartofCurrent,endofLast,_currentSegment);
+	CCPoint offSet = _chooser->getOffset();
+	CCPoint position =ccp(absStartofCurrent.x+offSet.x,absStartofCurrent.y+offSet.y);
+	segment->setPosition(position);
 
-	segment->setPosition(absStartofCurrent);
 	segment->addSprites(_game);
 
 	_currentSegment = segment;
