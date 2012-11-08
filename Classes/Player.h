@@ -11,17 +11,19 @@
 class Player : public GameObject {
 public:
 	void createFootFixture(b2World* world);
-	void setNumFootContacts(int i);
-	void addNumFootContacts();
-	void subNumFootContacts();
+	void addNumFootContacts(int i);
+	void subNumFootContacts(int i);
 	Player();
 	void jump();
 	void init();
 	void timeOutJump();
+	void setDirection(int i);
+	int getDirection();
 
 	private:
-	int numFootContacts;
+	int numFootContacts[3];
 	int jumpTimeout;
+	int direction;
 };
   
 #endif

@@ -51,11 +51,10 @@ bool Game::init()
 	world->SetContactListener(listener);
 
 	//prep stats
-	_scale =0.2f;
+	_scale =0.1f;
 	this->setScale(_scale);
 	winSize = CCDirector::sharedDirector()->getWinSize();
 	playerScreenPos = ccp(winSize.width*0.2, winSize.height*0.4);
-	direction=1;
 	
 	GameObject::setScreen(&screenBounds);
 
@@ -66,6 +65,7 @@ bool Game::init()
 	_player->setPosition(playerScreenPos);
 	_player->init();
 	_lastPos = _player->getSprite()->getPosition();
+	_player->setDirection(1);
 
 	//animation
 	CCArray* frames = CCArray::create(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("1.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("2.png"),CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("3.png"),NULL);
@@ -139,8 +139,8 @@ void Game::update(float dt) {
 
 	//player acceleration
 	//if(abs(_stats.GetVelocity())<_stats.GetMaximumVelocity()){
-		_player->getBody()->SetLinearVelocity(b2Vec2(direction*10.0f, _player->getBody()->GetLinearVelocity().y));
-		//_player->getBody()->ApplyForce(direction*_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
+		_player->getBody()->SetLinearVelocity(b2Vec2(_player->getDirection()*20.0f, _player->getBody()->GetLinearVelocity().y));
+		//_player->getBody()->ApplyForce(_player->getDirection*_player->getBody()->GetMass()*b2Vec2(5.0f, 0.0f),_player->getBody()->GetWorldCenter());
 	//}
 
 	//Box2D tick
@@ -208,12 +208,12 @@ void Game::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 	if (x<240&&y<160)
 	{
 		//botleft
-		direction=-1;
+		_player->setDirection(-1);
 	}
 	else if(x>240&&y<160)
 	{
 		//botright.
-		direction=1;
+		_player->setDirection(1);
 	}
 	else if(y>160)
 	{

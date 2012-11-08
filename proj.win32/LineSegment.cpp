@@ -58,10 +58,12 @@ void LineSegment::generate(b2World *world)
 	fixture->shape = &edge;
 	fixture->density = 1.0f;
 	fixture->friction = 0;
+	fixture->userData = (void*) -1;
+
 	this->_body->CreateFixture(fixture);
 
 	this->_sprite=Light::retainedLight(_polygonVerticesCCW);
-	fixture->userData = (void*) 1;
+
 	genBoundingBox();
 }
 
